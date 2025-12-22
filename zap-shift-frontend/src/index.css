@@ -1,0 +1,106 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* ======================================
+   LIGHT THEME — COLOR VARIABLES
+   ====================================== */
+:root {
+  /* ===== Backgrounds ===== */
+  --bg-base: #F4F6F8;        /* Light Gray — Page Background */
+  --bg-surface: #FFFFFF;     /* White — Cards, Navbar */
+  --bg-surface-alt: #EEF1F4; /* Soft Gray — Alt Sections */
+
+  /* ===== Brand / Primary ===== */
+  --primary: #CAEB66;        /* Lime Green — Primary CTA */
+  --primary-hover: #6FBF3A;  /* Dark Lime Green — Hover */
+  --primary-soft: #E9F7D9;   /* Pale Green — Soft UI */
+
+  /* ===== Accent ===== */
+  --accent: #0F3D3E;         /* Deep Teal — Hero, Footer */
+  --accent-soft: #D6ECEC;    /* Light Teal — Icon BG */
+
+  /* ===== Borders ===== */
+  --border-base: #E2E6EA;    /* Light Border Gray */
+
+  /* ===== Text ===== */
+  --text-primary: #0F172A;   /* Charcoal Black — Headings */
+  --text-secondary: #475569; /* Slate Gray — Paragraphs */
+  --text-muted: #94A3B8;     /* Cool Gray — Helper Text */
+  --text-inverted: #FFFFFF;  /* White — On Dark BG */
+
+  /* ===== Status ===== */
+  --success: #22C55E;        /* Green */
+  --warning: #FACC15;        /* Yellow */
+  --error: #EF4444;          /* Red */
+  --info: #38BDF8;           /* Sky Blue */
+}
+
+
+/* ======================================
+   DARK THEME — COLOR VARIABLES
+   ====================================== */
+[data-theme="dark"] {
+  /* ===== Backgrounds ===== */
+  --bg-base: #0B1F1F;        /* Very Dark Teal — Page BG */
+  --bg-surface: #112B2B;     /* Dark Teal — Cards, Navbar */
+  --bg-surface-alt: #163636; /* Muted Teal — Alt Sections */
+
+  /* ===== Brand / Primary ===== */
+  --primary: #CAEB66;        /* Lime Green — Primary CTA */
+  --primary-hover: #6FBF3A;  /* Dark Lime Green — Hover */
+  --primary-soft: #243A2A;   /* Dark Green Tint — Soft UI */
+
+  /* ===== Accent ===== */
+  --accent: #0E3A3B;         /* Deep Teal — Hero, Footer */
+  --accent-soft: #1F4F50;    /* Muted Teal — Icon BG */
+
+  /* ===== Borders ===== */
+  --border-base: #244949;    /* Dark Teal Border */
+
+  /* ===== Text ===== */
+  --text-primary: #E6F1F1;   /* Off-White — Headings */
+  --text-secondary: #B6D1D1; /* Light Teal Gray — Paragraphs */
+  --text-muted: #7FA5A5;     /* Muted Teal Gray — Helper Text */
+  --text-inverted: #0B1F1F;  /* Dark Teal — On Light Buttons */
+
+  /* ===== Status ===== */
+  --success: #4ADE80;        /* Soft Green */
+  --warning: #FDE047;        /* Soft Yellow */
+  --error: #F87171;          /* Soft Red */
+  --info: #7DD3FC;           /* Soft Blue */
+}
+
+
+/* ======================================
+   UTILITY CLASSES (USING VARIABLES)
+   ====================================== */
+
+/* ===== Backgrounds ===== */
+.bg-base { background-color: var(--bg-base); }
+.bg-surface { background-color: var(--bg-surface); }
+.bg-surface-alt { background-color: var(--bg-surface-alt); }
+
+.bg-primary { background-color: var(--primary); }
+.bg-primary-soft { background-color: var(--primary-soft); }
+.bg-accent { background-color: var(--accent); }
+.bg-accent-soft { background-color: var(--accent-soft); }
+
+/* Hover helpers */
+.hover\:bg-primary-hover:hover {
+  background-color: var(--primary-hover);
+}
+
+/* ===== Borders ===== */
+.border-base { border-color: var(--border-base); }
+
+/* ===== Text ===== */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-inverted { color: var(--text-inverted); }
+
+/* ===== Status Text ===== */
+.text-success { color: var(--success); }
+.text-warning { color: var(--warning); }
+.text-error { color: var(--error); }
+.text-info { color: var(--info); }
