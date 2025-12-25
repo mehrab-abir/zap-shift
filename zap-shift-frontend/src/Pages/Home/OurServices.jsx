@@ -14,7 +14,7 @@ const OurServices = () => {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-10">
-        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-300!">
+        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
           <img src={serviceImg} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Express and Standard Delivery
@@ -26,7 +26,7 @@ const OurServices = () => {
           </p>
         </div>
 
-        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-300!">
+        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
           <img src={serviceImg} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Nationwide Delivery
@@ -36,7 +36,7 @@ const OurServices = () => {
             ensuring your products reach customers within 48-72 hours.
           </p>
         </div>
-        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-300!">
+        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
           <img src={serviceImg} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Fulfillment Solution
@@ -46,7 +46,7 @@ const OurServices = () => {
             online order processing, packaging, and after sales support.
           </p>
         </div>
-        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-300!">
+        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
           <img src={serviceImg} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Cash on Home Delivery
@@ -56,7 +56,7 @@ const OurServices = () => {
             of your product.
           </p>
         </div>
-        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-300!">
+        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
           <img src={serviceImg} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Corporate Service / Contract In Logistics
@@ -66,7 +66,7 @@ const OurServices = () => {
             management support.
           </p>
         </div>
-        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-300!">
+        <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
           <img src={serviceImg} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Parcel Return
