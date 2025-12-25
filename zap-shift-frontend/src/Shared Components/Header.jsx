@@ -18,7 +18,7 @@ const Header = () => {
   }, [theme]);
 
   return (
-    <header className="w-full md:w-11/12 mx-auto py-5 bg-surface md:rounded-xl">
+    <header className="w-full md:w-10/12 mx-auto py-5 bg-surface md:rounded-xl">
       <div className="px-5 flex justify-between items-center">
         <div
           onClick={() => setOpenMenu(true)}
@@ -89,7 +89,7 @@ const Header = () => {
             Sign In
           </button>
           <button
-            className={`btn bg-primary rounded-xl cursor-pointer text-gray-800`}
+            className={`btn bg-primary rounded-xl cursor-pointer text-gray-800 hover:bg-primary-hover hover:text-white`}
           >
             Sign Up
           </button>
@@ -98,7 +98,7 @@ const Header = () => {
 
       {/* menu for small screens  */}
       <div
-        className={`fixed top-0 left-0 w-full h-screen bg-surface ${
+        className={`fixed top-0 left-0 w-full h-screen bg-surface z-50 ${
           !openMenu && "-translate-x-full"
         } transition-all duration-500 `}
       >
