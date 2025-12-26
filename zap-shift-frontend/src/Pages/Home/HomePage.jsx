@@ -2,7 +2,11 @@ import React from 'react';
 import Banner from './Banner';
 import HowItWorks from './HowItWorks';
 import OurServices from './OurServices';
-import BrandsMarquee from './BrandsMarquee';
+import BrandsSlider from './BrandsSlider';
+import TopFeature from './TopFeature';
+import BeAMarchent from './BeAMarchent';
+import CustomerReviews from './CustomerReviews';
+import FAQ from './FAQ';
 
 const HomePage = () => {
     return (
@@ -10,7 +14,11 @@ const HomePage = () => {
             <Banner></Banner>
             <HowItWorks></HowItWorks>
             <OurServices></OurServices>
-            <BrandsMarquee></BrandsMarquee>
+            <BrandsSlider></BrandsSlider>
+            <TopFeature></TopFeature>
+            <BeAMarchent></BeAMarchent>
+            <CustomerReviews></CustomerReviews>
+            <FAQ></FAQ>
         </div>
     );
 };

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-@import "swiper/css";
-@import "swiper/css/autoplay";
+/* @import "swiper/css";
+@import "swiper/css/autoplay"; */
 
 /* ======================================
    LIGHT THEME — COLOR VARIABLES
@@ -16,7 +16,7 @@
   /* ===== Brand / Primary ===== */
   --primary: #CAEB66;        /* Lime Green — Primary CTA */
   --primary-hover: #6FBF3A;  /* Dark Lime Green — Hover */
-  --primary-soft: #E9F7D9;   /* Pale Green — Soft UI */
+  --primary-soft: #cae3ae;   /* Pale Green — Soft UI */
 
   /* ===== Accent ===== */
   --accent: #0F3D3E;         /* Deep Teal — Hero, Footer */
@@ -30,6 +30,7 @@
   --text-secondary: #475569; /* Slate Gray — Paragraphs */
   --text-muted: #94A3B8;     /* Cool Gray — Helper Text */
   --text-inverted: #FFFFFF;  /* White — On Dark BG */
+  --text-accent: #0F3D3E;
 
   /* ===== Status ===== */
   --success: #22C55E;        /* Green */
@@ -51,7 +52,7 @@
   /* ===== Brand / Primary ===== */
   --primary: #CAEB66;        /* Lime Green — Primary CTA */
   --primary-hover: #6FBF3A;  /* Dark Lime Green — Hover */
-  --primary-soft: #243A2A;   /* Dark Green Tint — Soft UI */
+  --primary-soft: #1e3424;   /* Dark Green Tint — Soft UI */
 
   /* ===== Accent ===== */
   --accent: #0E3A3B;         /* Deep Teal — Hero, Footer */
@@ -65,6 +66,7 @@
   --text-secondary: #B6D1D1; /* Light Teal Gray — Paragraphs */
   --text-muted: #7FA5A5;     /* Muted Teal Gray — Helper Text */
   --text-inverted: #0B1F1F;  /* Dark Teal — On Light Buttons */
+  --text-accent: #12f0f3;
 
   /* ===== Status ===== */
   --success: #4ADE80;        /* Soft Green */
@@ -102,6 +104,7 @@
 .text-secondary { color: var(--text-secondary); }
 .text-muted { color: var(--text-muted); }
 .text-inverted { color: var(--text-inverted); }
+.text-accent{color : var(--text-accent);}
 
 /* ===== Status Text ===== */
 .text-success { color: var(--success); }

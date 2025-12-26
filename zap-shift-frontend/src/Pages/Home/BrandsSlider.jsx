@@ -16,8 +16,8 @@ const brands = [brand1, brand2, brand3, brand4, brand5, brand6, brand7];
 
 const BrandsMarquee = () => {
     return (
-      <div className="my-20 bg-surface-alt rounded-xl py-5">
-        <h2 className="text-2xl font-bold text-primary text-center mb-10">We've helped thousands of sales team</h2>
+      <div className="my-20 bg-surface-alt rounded-xl py-5 w-11/12 mx-auto md:w-full">
+        <h2 className="text-xl md:text-2xl font-bold text-primary text-center mb-10">We've helped thousands of sales team</h2>
         <Swiper
           slidesPerView={4}
           centeredSlides={true}
