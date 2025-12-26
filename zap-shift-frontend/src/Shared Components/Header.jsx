@@ -41,7 +41,7 @@ const Header = () => {
             Services
           </NavLink>
           <NavLink
-            to="/"
+            to="/coverage"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
           >
             Coverage
@@ -114,7 +114,7 @@ const Header = () => {
             Services
           </NavLink>
           <NavLink
-            to="/"
+            to="/coverage"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
           >
             Coverage
