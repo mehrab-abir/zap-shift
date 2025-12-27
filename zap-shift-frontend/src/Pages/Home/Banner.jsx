@@ -14,7 +14,9 @@ const Banner = () => {
           <button className="btn rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black">
             Track Your Parcel
           </button>
-          <button className="btn rounded-full bg-surface border-none outline-none hover:bg-primary-hover hover:text-white">Be A Rider</button>
+          <button className="btn rounded-full bg-surface border border-lime-500 outline-none hover:bg-primary-hover hover:text-white">
+            Be A Rider
+          </button>
         </div>
       </div>
       <div className="relative">
@@ -23,7 +25,9 @@ const Banner = () => {
           <button className="btn rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black">
             Track Your Parcel
           </button>
-          <button className="btn rounded-full bg-surface border-none outline-none hover:bg-primary-hover hover:text-white">Be A Rider</button>
+          <button className="btn rounded-full bg-surface border border-lime-500 outline-none hover:bg-primary-hover hover:text-white">
+            Be A Rider
+          </button>
         </div>
       </div>
       <div className="relative">
@@ -32,7 +36,9 @@ const Banner = () => {
           <button className="btn rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black">
             Track Your Parcel
           </button>
-          <button className="btn rounded-full bg-surface border-none outline-none hover:bg-primary-hover hover:text-white">Be A Rider</button>
+          <button className="btn rounded-full bg-surface border border-lime-500 outline-none hover:bg-primary-hover hover:text-white">
+            Be A Rider
+          </button>
         </div>
       </div>
     </Carousel>

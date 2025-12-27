@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import logo from "../assets/logo.png";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { LiaTimesCircleSolid } from "react-icons/lia";
 import { MdDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
+import { AuthContext } from "../Context/Auth/AuthContext";
 
 const Header = () => {
+  const { user, logOutUser } = use(AuthContext);
+
   const [openMenu, setOpenMenu] = useState(false);
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "light"
@@ -16,6 +19,12 @@ const Header = () => {
     html.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
+
+  const handleLogOut = () => {
+    logOutUser().then(() => {});
+  };
+
+  console.log(user);
 
   return (
     <header className="w-full md:w-10/12 mx-auto py-5 bg-surface md:rounded-xl">
@@ -28,10 +37,10 @@ const Header = () => {
           <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
           <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
         </div>
-        <div className="flex">
+        <Link to='/' className="flex">
           <img src={logo} alt="" />
           <h1 className="font-bold text-3xl self-end -ml-4">ZapShift</h1>
-        </div>
+        </Link>
 
         <nav className="hidden md:flex items-center space-x-6">
           <NavLink
@@ -85,14 +94,32 @@ const Header = () => {
             />
           )}
 
-          <button className="btn bg-surface border-lime-400 rounded-xl  cursor-pointer">
-            Sign In
-          </button>
-          <button
-            className={`btn bg-primary rounded-xl cursor-pointer text-gray-800 hover:bg-primary-hover hover:text-white`}
-          >
-            Sign Up
-          </button>
+          {user ? (
+            <div className="flex ietms-center gap-2">
+              <img src={user?.photoURL} alt="" className="w-12 rounded-full" />
+              <button
+                onClick={handleLogOut}
+                className="btn bg-surfae border border-red-500"
+              >
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                to="/auth/login"
+                className="btn bg-surface border-lime-400 rounded-xl  cursor-pointer"
+              >
+                Log In
+              </Link>
+              <Link
+                to="/auth/register"
+                className={`btn bg-primary rounded-xl cursor-pointer text-gray-800 hover:bg-primary-hover hover:text-white`}
+              >
+                Register
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
@@ -144,16 +171,16 @@ const Header = () => {
             Contact
           </NavLink>
           <NavLink
-            to="/"
+            to="/auth/login"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
           >
-            Sign In
+            Log In
           </NavLink>
           <NavLink
-            to="/"
+            to="/auth/register"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
           >
-            Sign Up
+            Register
           </NavLink>
         </nav>
       </div>

@@ -13,64 +13,71 @@ const ServiceCoverage = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleSearch = (e)=>{
+  const handleSearch = (e) => {
     e.preventDefault();
 
     const location = e.target.location.value;
 
-    const city = serviceCenters.find((center)=>center.city.toLowerCase().includes(location.toLowerCase()));
+    const city = serviceCenters.find((center) =>
+      center.city.toLowerCase().includes(location.toLowerCase())
+    );
 
-    if(city){
-        const co_ordinate = [city.latitude, city.longitude];
+    if (city) {
+      const co_ordinate = [city.latitude, city.longitude];
 
-        //fly to that location
-        mapRef.current.flyTo(co_ordinate,14);
+      //fly to that location
+      mapRef.current.flyTo(co_ordinate, 12);
     }
-  }
+  };
 
   const position = [23.685, 90.3563];
   return (
-    <div className="w-11/12 md:10/12 mx-auto">
-      <div>
-        <h2 className="text-2xl font-bold text-primary text-center my-5">
-          We are available in 64 districts
+    <div className="w-10/12 md:10/12 mx-auto mb-10 bg-surface rounded-xl">
+      <div className=" pt-5 my-5">
+        <h2 className="text-2xl md:text-4xl font-bold text-primary text-center mb-5">
+          We deliver all over Bangladesh
         </h2>
-        <form className="mb-5" onSubmit={(e) => handleSearch(e)}>
+        <form className="mb-2 px-2 md:px-10 flex" onSubmit={(e) => handleSearch(e)}>
           <input
             type="text"
             name="location"
-            className="input outline-none"
+            className="input outline-none w-full md:w-1/2 rounded-r-none"
             placeholder="Enter a city to fly there..."
           />
-          <button type="submit" className="btn bg-primary">
+          <button type="submit" className="btn bg-primary hover:bg-primary-hover text-black rounded-l-none border-none">
             Go
           </button>
         </form>
       </div>
-      <MapContainer
-        center={position}
-        zoom={8}
-        scrollWheelZoom={false}
-        className="w-full h-200"
-        ref={mapRef}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {serviceCenters.map((center, index) => {
-          return (
-            <Marker key={index} position={[center.latitude, center.longitude]}>
-              <Popup>
-                <strong>
-                  {center.city} <br />
-                </strong>
-                Service area:{center.covered_area.join(",")}
-              </Popup>
-            </Marker>
-          );
-        })}
-      </MapContainer>
+      <div className="p-2 md:p-10">
+        <MapContainer
+          center={position}
+          zoom={8}
+          scrollWheelZoom={false}
+          className="w-full h-100 md:h-200 z-30"
+          ref={mapRef}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {serviceCenters.map((center, index) => {
+            return (
+              <Marker
+                key={index}
+                position={[center.latitude, center.longitude]}
+              >
+                <Popup>
+                  <strong>
+                    {center.city} <br />
+                  </strong>
+                  Service area:{center.covered_area.join(",")}
+                </Popup>
+              </Marker>
+            );
+          })}
+        </MapContainer>
+      </div>
     </div>
   );
 };
