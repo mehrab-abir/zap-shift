@@ -24,7 +24,7 @@ const Header = () => {
     logOutUser().then(() => {});
   };
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <header className="w-full md:w-10/12 mx-auto py-5 bg-surface md:rounded-xl">
@@ -56,6 +56,13 @@ const Header = () => {
             Coverage
           </NavLink>
           <NavLink
+            to="/sendparcel"
+            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+          >
+            Send a Parcel
+          </NavLink>
+
+          <NavLink
             to="/"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
           >
@@ -67,18 +74,7 @@ const Header = () => {
           >
             Pricing
           </NavLink>
-          <NavLink
-            to="/"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-          >
-            Blog
-          </NavLink>
-          <NavLink
-            to="/"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-          >
-            Contact
-          </NavLink>
+          
         </nav>
 
         <div className="flex gap-2 items-center">
@@ -157,18 +153,6 @@ const Header = () => {
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
           >
             Pricing
-          </NavLink>
-          <NavLink
-            to="/"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-          >
-            Blog
-          </NavLink>
-          <NavLink
-            to="/"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-          >
-            Contact
           </NavLink>
           <NavLink
             to="/auth/login"

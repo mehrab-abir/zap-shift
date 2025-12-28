@@ -6,6 +6,8 @@ import Login from "../Pages/Auth/Login";
 import AuthLayout from "../Pages/Auth/AuthLayout";
 import Register from "../Pages/Auth/Register";
 import ForgetPassword from "../Pages/Auth/ForgetPassword";
+import SendParcel from "../Pages/SendParcel";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -15,6 +17,14 @@ const router = createBrowserRouter([
             {
                 index : true,
                 Component : HomePage
+            },
+            {
+                path : 'sendparcel',
+                element : <PrivateRoute>
+                    <SendParcel></SendParcel>
+                </PrivateRoute>,
+                loader : ()=>fetch('/service_center.json'),
+                hydrateFallbackElement : <p>Loading...</p>
             },
             {
                 path : 'coverage',

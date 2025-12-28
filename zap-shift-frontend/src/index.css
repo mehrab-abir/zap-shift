@@ -1,8 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-/* @import "swiper/css";
-@import "swiper/css/autoplay"; */
+
+.active{
+  color:#6FBF3A;
+  text-decoration: underline;
+}
 
 /* ======================================
    LIGHT THEME — COLOR VARIABLES
