@@ -10,7 +10,7 @@ import FAQ from './FAQ';
 
 const HomePage = () => {
     return (
-        <div className='w-full md:w-10/12 mx-auto mt-10'>
+        <div className='w-full md:w-10/12 mx-auto md:mt-5'>
             <Banner></Banner>
             <HowItWorks></HowItWorks>
             <OurServices></OurServices>

@@ -3,10 +3,12 @@ import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../Context/Auth/AuthContext";
+import useAxios from "../Hook/useAxios";
 
 const SendParcel = () => {
   const { user } = use(AuthContext);
   const { register, handleSubmit, control } = useForm();
+  const axios = useAxios();
 
   const serviceCenters = useLoaderData();
   const regions = [...new Set(serviceCenters.map((c) => c.region))];
@@ -52,6 +54,7 @@ const SendParcel = () => {
         cost = minCharge + extraCharge;
       }
     }
+    const parcelDetails = { ...data, deliveryFee: cost };
 
     // console.log("Total cost : ",cost);
     Swal.fire({
@@ -63,11 +66,16 @@ const SendParcel = () => {
       confirmButtonText: "Ok, continue!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Thank you.",
-          text: "Courier is on tha way...",
-          icon: "success",
-        });
+        axios.post("/parcels", parcelDetails).then((afterPost) => {
+          if (afterPost.data.insertedId) {
+            Swal.fire({
+              title: "Thank you.",
+              text: "Courier driver is on the way...",
+              icon: "success",
+            });
+          }
+        })
+        .catch(error=>console.log("Post error",error))
       }
     });
   };
@@ -143,7 +151,7 @@ const SendParcel = () => {
                     type="text"
                     defaultValue={user?.displayName}
                     className="input w-full focus:outline-2 outline-lime-500"
-                    {...register("SenderName", { required: true })}
+                    {...register("senderName", { required: true })}
                     placeholder="Sender name"
                   />
                 </div>
@@ -153,7 +161,7 @@ const SendParcel = () => {
                     type="email"
                     defaultValue={user?.email}
                     className="input w-full focus:outline-2 outline-lime-500"
-                    {...register("SenderEmail", { required: true })}
+                    {...register("senderEmail", { required: true })}
                     placeholder="Sender email"
                   />
                 </div>
@@ -162,7 +170,7 @@ const SendParcel = () => {
                   <input
                     type="text"
                     className="input w-full focus:outline-2 outline-lime-500"
-                    {...register("SenderPhone", { required: true })}
+                    {...register("senderPhone", { required: true })}
                     placeholder="Sender phone no"
                   />
                 </div>
@@ -172,7 +180,7 @@ const SendParcel = () => {
                   <input
                     type="text"
                     className="input w-full focus:outline-2 outline-lime-500"
-                    {...register("SenderAddress", { required: true })}
+                    {...register("senderAddress", { required: true })}
                     placeholder="Sender address"
                   />
                 </div>

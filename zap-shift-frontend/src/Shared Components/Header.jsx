@@ -37,17 +37,18 @@ const Header = () => {
           <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
           <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
         </div>
-        <Link to='/' className="flex">
+        <Link to="/" className="flex">
           <img src={logo} alt="" />
-          <h1 className="font-bold text-3xl self-end -ml-4">ZapShift</h1>
+          <h1 className="font-bold text-xl md:text-3xl self-center md:self-end -ml-4">ZapShift</h1>
         </Link>
 
+        {/* navabr for large screens */}
         <nav className="hidden md:flex items-center space-x-6">
           <NavLink
             to="/"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
           >
-            Services
+            Home
           </NavLink>
           <NavLink
             to="/coverage"
@@ -63,18 +64,19 @@ const Header = () => {
           </NavLink>
 
           <NavLink
-            to="/"
+            to="/about-us"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
           >
             About Us
           </NavLink>
-          <NavLink
-            to="/"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-          >
-            Pricing
-          </NavLink>
-          
+          {user && (
+            <NavLink
+              to="/dashboard"
+              className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+            >
+              Dashboard
+            </NavLink>
+          )}
         </nav>
 
         <div className="flex gap-2 items-center">
@@ -133,36 +135,51 @@ const Header = () => {
           <NavLink
             to="/"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+            onClick={() => setOpenMenu(!openMenu)}
           >
-            Services
+            Home
+          </NavLink>
+          {user && (
+            <NavLink
+              to="/dashboard"
+              className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+              onClick={() => setOpenMenu(!openMenu)}
+            >
+              Dashboard
+            </NavLink>
+          )}
+          <NavLink
+            to="/sendparcel"
+            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+          >
+            Send a Parcel
           </NavLink>
           <NavLink
             to="/coverage"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+            onClick={() => setOpenMenu(!openMenu)}
           >
             Coverage
           </NavLink>
           <NavLink
-            to="/"
+            to="/about-us"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+            onClick={() => setOpenMenu(!openMenu)}
           >
             About Us
           </NavLink>
-          <NavLink
-            to="/"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-          >
-            Pricing
-          </NavLink>
+
           <NavLink
             to="/auth/login"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+            onClick={() => setOpenMenu(!openMenu)}
           >
             Log In
           </NavLink>
           <NavLink
             to="/auth/register"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+            onClick={() => setOpenMenu(!openMenu)}
           >
             Register
           </NavLink>
