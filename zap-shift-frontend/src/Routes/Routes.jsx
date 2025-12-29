@@ -12,72 +12,81 @@ import DashboardLayout from "../Pages/Dashboard/DashboardLayout";
 import DashboardInterface from "../Pages/Dashboard/DashboardInterface";
 import AboutUs from "../Pages/AboutUs";
 import MyParcels from "../Pages/Dashboard/MyParcels";
+import Payment from "../Pages/Dashboard/Payment";
 
 const router = createBrowserRouter([
-    {
-        path : '/',
-        Component : Root,
-        children : [
-            {
-                index : true,
-                Component : HomePage
-            },
-            {
-                path : 'sendparcel',
-                element : <PrivateRoute>
-                    <SendParcel></SendParcel>
-                </PrivateRoute>,
-                loader : ()=>fetch('/service_center.json'),
-                hydrateFallbackElement : <p>Loading...</p>
-            },
-            {
-                path : 'coverage',
-                Component : ServiceCoverage
-            },
-            {
-                path : 'about-us',
-                Component : AboutUs
-            }
-        ]
-    },
-    {
-        path : '/auth',
-        Component : AuthLayout,
-        children : [
-            {
-                index : true,
-                Component : Login
-            },
-            {
-                path : '/auth/login',
-                Component : Login 
-            },
-            {
-                path : '/auth/register',
-                Component : Register
-            },
-            {
-                path : '/auth/resetpassword',
-                Component : ForgetPassword
-            }
-        ]
-    },
-    {
-        path : '/dashboard',
-        element : <PrivateRoute>
-            <DashboardLayout></DashboardLayout>
-        </PrivateRoute>,
-        children : [
-            {
-                index: true,
-                Component : DashboardInterface
-            },
-            {
-                path : '/dashboard/myparcels',
-                Component : MyParcels
-            }
-        ]
-    }
-])
+  {
+    path: "/",
+    Component: Root,
+    children: [
+      {
+        index: true,
+        Component: HomePage,
+      },
+      {
+        path: "sendparcel",
+        element: (
+          <PrivateRoute>
+            <SendParcel></SendParcel>
+          </PrivateRoute>
+        ),
+        loader: () => fetch("/service_center.json"),
+        hydrateFallbackElement: <p>Loading...</p>,
+      },
+      {
+        path: "coverage",
+        Component: ServiceCoverage,
+      },
+      {
+        path: "about-us",
+        Component: AboutUs,
+      },
+    ],
+  },
+  {
+    path: "/auth",
+    Component: AuthLayout,
+    children: [
+      {
+        index: true,
+        Component: Login,
+      },
+      {
+        path: "/auth/login",
+        Component: Login,
+      },
+      {
+        path: "/auth/register",
+        Component: Register,
+      },
+      {
+        path: "/auth/resetpassword",
+        Component: ForgetPassword,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
+      {
+        index: true,
+        Component: DashboardInterface,
+      },
+      {
+        path: "/dashboard/myparcels",
+        Component: MyParcels,
+      },
+      {
+        path: "/dashboard/payment/:parcelId",
+        Component: Payment,
+      },
+    ],
+  },
+]);
 
 export default router;

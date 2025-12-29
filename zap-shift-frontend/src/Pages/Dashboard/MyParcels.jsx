@@ -5,12 +5,21 @@ import { use } from "react";
 import { AuthContext } from "../../Context/Auth/AuthContext";
 import useAxios from "../../Hook/useAxios";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router";
+import { CiSearch } from "react-icons/ci";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 const MyParcels = () => {
   const { user } = use(AuthContext);
   const axios = useAxios();
 
-  const { data: myParcels = [], isLoading, isFetching } = useQuery({
+  const {
+    data: myParcels = [],
+    isLoading,
+    isFetching,
+    refetch
+  } = useQuery({
     queryKey: ["myParcels", user?.email],
     queryFn: async () => {
       const response = await axios.get(`/parcels?email=${user?.email}`);
@@ -18,8 +27,12 @@ const MyParcels = () => {
     },
   });
 
-  if(isLoading){
-    return <p><i>Percels Loading...</i></p>
+  if (isLoading) {
+    return (
+      <p>
+        <i>Percels Loading...</i>
+      </p>
+    );
   }
 
   /* const [myParcels, setMyparcels] = useState([]);
@@ -31,10 +44,98 @@ const MyParcels = () => {
         .then(response =>setMyparcels(response.data));
     },[axios, user?.email]) */
 
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`/parcels/${id}`).then((afterDelete) => {
+          if (afterDelete.data.deletedCount) {
+            refetch();
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your parcel has been deleted.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
+
   return (
     <div className="w-11/12 md:w-10/12 mx-auto my-5">
-        {isFetching && <p><i>fetching data...</i></p>}
-      <h1 className="text-2xl font-bold">My Parcels {myParcels.length}</h1>
+      {isFetching && (
+        <p>
+          <i>fetching data...</i>
+        </p>
+      )}
+      <h1 className="text-2xl font-bold">My Parcels ({myParcels.length})</h1>
+
+      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2">
+        <table className="table">
+          {/* head */}
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Tracking Id</th>
+              <th>Payment Status</th>
+              <th>Delivery Status</th>
+              <th>Delivery Fees</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {myParcels.map((parcel, index) => {
+              return (
+                <tr key={parcel._id}>
+                  <th>{index + 1}</th>
+                  <td className="font-semibold">{parcel.parcelName}</td>
+                  <td>
+                    {parcel.trackingId ? parcel.trackingId : "Need payment"}
+                  </td>
+                  <td>
+                    {parcel.paymentStatus === "Paid" ? (
+                      <span className="text-green-400 font-semibold">Paid</span>
+                    ) : (
+                      <Link to={`/dashboard/payment/${parcel._id}`} className="text-red-600 font-semibold">
+                        Pay Now
+                      </Link>
+                    )}
+                  </td>
+                  <td>...</td>
+                  <td className="font-semibold">${parcel.deliveryFee}</td>
+                  <td className="flex items-center gap-4">
+                    <button className="cursor-pointer">
+                      <CiSearch className="text-2xl hover:text-lime-500" />
+                    </button>
+                    <button
+                      disabled={parcel.paymentStatus === "Paid"}
+                      className={`cursor-pointer`}
+                      onClick={() => handleDelete(parcel._id)}
+                    >
+                      <RiDeleteBin6Line
+                        className={`text-2xl  ${
+                          parcel.paymentStatus === "Paid"
+                            ? "text-gray-400 hover:text-gray-400"
+                            : "hover:text-red-500"
+                        }`}
+                      />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

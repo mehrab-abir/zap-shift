@@ -94,10 +94,10 @@ const Header = () => {
 
           {user ? (
             <div className="flex ietms-center gap-2">
-              <img src={user?.photoURL} alt="" className="w-12 rounded-full" />
+              <img src={user?.photoURL} alt="" className="w-10 md:w-12 rounded-full" />
               <button
                 onClick={handleLogOut}
-                className="btn bg-surfae border border-red-500"
+                className="btn btn-sm bg-surface border border-red-500"
               >
                 Log Out
               </button>

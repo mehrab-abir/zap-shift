@@ -14,7 +14,7 @@
   /* ===== Backgrounds ===== */
   --bg-base: #F4F6F8;        /* Light Gray — Page Background */
   --bg-surface: #FFFFFF;     /* White — Cards, Navbar */
-  --bg-surface-alt: #EEF1F4; /* Soft Gray — Alt Sections */
+  --bg-surface-alt: #EEF1F4; /* Soft Gray — Alt Sections */;
 
   /* ===== Brand / Primary ===== */
   --primary: #CAEB66;        /* Lime Green — Primary CTA */
@@ -87,6 +87,7 @@
 .bg-base { background-color: var(--bg-base); }
 .bg-surface { background-color: var(--bg-surface); }
 .bg-surface-alt { background-color: var(--bg-surface-alt); }
+.bg-drawer{ background-color:  var(--bg-drawer);}
 
 .bg-primary { background-color: var(--primary); }
 .bg-primary-soft { background-color: var(--primary-soft); }

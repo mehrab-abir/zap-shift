@@ -54,7 +54,8 @@ const SendParcel = () => {
         cost = minCharge + extraCharge;
       }
     }
-    const parcelDetails = { ...data, deliveryFee: cost };
+    const createdAt = new Date();
+    const parcelDetails = { ...data, deliveryFee: cost, createdAt };
 
     // console.log("Total cost : ",cost);
     Swal.fire({
