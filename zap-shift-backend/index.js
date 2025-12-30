@@ -4,11 +4,21 @@ const cors = require('cors');
 require('dotenv').config()
 const port = process.env.PORT || 3000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
+
+function generateTrackingId() {
+    const prefix = "TRK";
+    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const timestamp = Date.now().toString().slice(-6);
+
+    return `${prefix}-${random}-${timestamp}`;
+}
+
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.send("Zap shift server is running");
 })
 
@@ -27,9 +37,10 @@ async function run() {
 
         const db = client.db("zap-shift-db");
         const parcelCollection = db.collection("parcels");
+        const paymentCollection = db.collection("payments");
 
         //post a parcel 
-        app.post('/parcels',async (req,res)=>{
+        app.post('/parcels', async (req, res) => {
             const newParcel = req.body;
             const afterPost = await parcelCollection.insertOne(newParcel);
             res.send(afterPost)
@@ -37,11 +48,11 @@ async function run() {
 
 
         //get all my parcels
-        app.get('/parcels',async (req,res)=>{
-            const {email} = req.query;
+        app.get('/parcels', async (req, res) => {
+            const { email } = req.query;
             const query = {};
 
-            if(email){
+            if (email) {
                 query.senderEmail = email;
             }
 
@@ -50,28 +61,123 @@ async function run() {
         })
 
         //get one parcel by id
-        app.get('/parcels/:id',async (req,res)=>{
+        app.get('/parcels/:id', async (req, res) => {
             const id = req.params.id;
-            const parcel = await parcelCollection.findOne({_id : new ObjectId(id)});
+            const parcel = await parcelCollection.findOne({ _id: new ObjectId(id) });
             res.send(parcel);
         })
 
         //delete a parcel
-        app.delete('/parcels/:id',async (req,res)=>{
-            const {id} = req.params;
-            const afterDelete = await parcelCollection.deleteOne({_id : new ObjectId(id)});
+        app.delete('/parcels/:id', async (req, res) => {
+            const { id } = req.params;
+            const afterDelete = await parcelCollection.deleteOne({ _id: new ObjectId(id) });
             res.send(afterDelete);
+        })
+
+        //payment apis
+        app.post('/create-checkout-session', async (req, res) => {
+            try {
+                const paymentInfo = req.body;
+                const amount = Number(paymentInfo.deliveryFee) * 100;
+
+                const session = await stripe.checkout.sessions.create({
+                    line_items: [
+                        {
+                            price_data: {
+                                currency: 'USD',
+                                unit_amount: amount,
+                                product_data: {
+                                    name: paymentInfo.parcelName
+                                },
+                            },
+                            quantity: 1
+                        }
+                    ],
+                    customer_email: paymentInfo.senderEmail,
+                    mode: 'payment',
+                    metadata: {
+                        parcelId: paymentInfo.parcelId,
+                        parcelName : paymentInfo.parcelName
+                    },
+                    success_url: `${process.env.SITE_DOMAIN}/dashboard/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+                    cancel_url: `${process.env.SITE_DOMAIN}/dashboard/payment-cancelled`,
+                })
+
+                // console.log(session);
+
+                res.send({ url: session.url });
+            } catch (err) {
+                res.send({error: err.message})
+            }
+        })
+
+
+        app.patch('/payment-success',async (req,res)=>{
+            const sessionId = req.query.session_id;
+            const session = await stripe.checkout.sessions.retrieve(sessionId);
+            // console.log(session);
+
+            const paymentExist = await paymentCollection.findOne({transactionId: session.payment_intent});
+
+            if(paymentExist){
+                return res.send({
+                    message: "Payment already exists",
+                    transactionId : session.payment_intent,
+                    trackingId : paymentExist.trackingId
+                })
+            }
+
+            if(session.payment_status==='paid'){
+                const parcelId = session.metadata.parcelId;
+                const paymentDate = new Date();
+                const transactionId = session.payment_intent;
+                const trackingId = generateTrackingId();
+
+                const afterUpdate = await parcelCollection.updateOne({_id:new ObjectId(parcelId)},{
+                    $set : {
+                        paymentStatus : 'Paid',
+                        paidAt : paymentDate,
+                        trackingId : trackingId
+                    }
+                });
+
+                //payment info
+                const payment = {
+                    parcelName : session.metadata.parcelName,
+                    parcelId : session.metadata.parcelId,
+                    senderEmail : session.customer_email,
+                    currency : session.currency,
+                    amount : (session.amount_total)/100,
+                    transactionId : transactionId,
+                    trackingId : trackingId,
+                    paymentStatus : session.payment_status,
+                    paidAt : paymentDate
+                }
+
+                if(session.payment_status === 'paid'){
+                    const postPayment = await paymentCollection.insertOne(payment);
+
+                    res.send({success : true,
+                        afterPayment : afterUpdate,
+                        paymentInfo : postPayment,
+                        trackingId: trackingId,
+                        transactionId:transactionId})
+                }
+            }
+            else{
+                res.send({message: "Payment not completed"});
+            }
         })
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
-        
+
     }
 }
 run().catch(console.dir);
 
-app.listen(port,()=>{
+app.listen(port, () => {
     console.log(`Zap shift server is running on port localhost:${port}`);
 })

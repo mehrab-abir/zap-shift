@@ -1,0 +1,13 @@
+import React from 'react';
+import { Link } from 'react-router';
+
+const PaymentCancelled = () => {
+    return (
+      <div>
+        <h1 className='text-center text-red-600 text-xl my-2'>Payment Cancelled. Please Try again</h1>
+        <Link to="/dashboard/myparcels" className='mb-5 text-white btn bg-accent mt-2'>Go back to My Parcels page</Link>
+      </div>
+    );
+};
+
+export default PaymentCancelled;

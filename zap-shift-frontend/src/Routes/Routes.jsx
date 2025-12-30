@@ -12,7 +12,9 @@ import DashboardLayout from "../Pages/Dashboard/DashboardLayout";
 import DashboardInterface from "../Pages/Dashboard/DashboardInterface";
 import AboutUs from "../Pages/AboutUs";
 import MyParcels from "../Pages/Dashboard/MyParcels";
-import Payment from "../Pages/Dashboard/Payment";
+import Payment from "../Pages/Dashboard/Payment/Payment";
+import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
+import PaymentCancelled from "../Pages/Dashboard/Payment/PaymentCancelled";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +87,14 @@ const router = createBrowserRouter([
         path: "/dashboard/payment/:parcelId",
         Component: Payment,
       },
+      {
+        path : '/dashboard/payment-success',
+        Component : PaymentSuccess
+      },
+      {
+        path : '/dashboard/payment-cancelled',
+        Component : PaymentCancelled
+      }
     ],
   },
 ]);

@@ -1,12 +1,13 @@
 import React, { use } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../Context/Auth/AuthContext";
 import useAxios from "../Hook/useAxios";
 
 const SendParcel = () => {
   const { user } = use(AuthContext);
+  const navigate = useNavigate();
   const { register, handleSubmit, control } = useForm();
   const axios = useAxios();
 
@@ -55,7 +56,8 @@ const SendParcel = () => {
       }
     }
     const createdAt = new Date();
-    const parcelDetails = { ...data, deliveryFee: cost, createdAt };
+    const paymentStatus = "Not Paid";
+    const parcelDetails = { ...data, deliveryFee: cost, paymentStatus, createdAt };
 
     // console.log("Total cost : ",cost);
     Swal.fire({
@@ -74,6 +76,7 @@ const SendParcel = () => {
               text: "Courier driver is on the way...",
               icon: "success",
             });
+            navigate('/dashboard/myparcels');
           }
         })
         .catch(error=>console.log("Post error",error))

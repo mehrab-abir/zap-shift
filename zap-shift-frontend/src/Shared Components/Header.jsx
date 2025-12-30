@@ -97,7 +97,7 @@ const Header = () => {
               <img src={user?.photoURL} alt="" className="w-10 md:w-12 rounded-full" />
               <button
                 onClick={handleLogOut}
-                className="btn btn-sm bg-surface border border-red-500"
+                className="btn btn-sm md:btn-md self-center bg-surface border border-red-500"
               >
                 Log Out
               </button>

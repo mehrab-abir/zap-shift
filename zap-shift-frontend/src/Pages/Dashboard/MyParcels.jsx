@@ -69,6 +69,23 @@ const MyParcels = () => {
     });
   };
 
+  const handlePayment = async (parcel)=>{
+    try{
+      const paymentInfo = {
+        parcelId: parcel._id,
+        parcelName: parcel.parcelName,
+        deliveryFee: parcel.deliveryFee,
+        senderEmail: parcel.senderEmail,
+      };
+
+      const response = await axios.post('/create-checkout-session',paymentInfo);
+      window.location.assign(response.data.url);
+    }
+    catch(err){
+      console.log(err);
+    }
+  }
+
   return (
     <div className="w-11/12 md:w-10/12 mx-auto my-5">
       {isFetching && (
@@ -105,9 +122,9 @@ const MyParcels = () => {
                     {parcel.paymentStatus === "Paid" ? (
                       <span className="text-green-400 font-semibold">Paid</span>
                     ) : (
-                      <Link to={`/dashboard/payment/${parcel._id}`} className="text-red-600 font-semibold">
+                      <button onClick={()=>handlePayment(parcel)} className="text-red-500 font-semibold cursor-pointer">
                         Pay Now
-                      </Link>
+                      </button>
                     )}
                   </td>
                   <td>...</td>
