@@ -5,6 +5,12 @@ require('dotenv').config()
 const port = process.env.PORT || 3000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const stripe = require('stripe')(process.env.STRIPE_SECRET);
+const admin = require("firebase-admin");
+const serviceAccount = require("./zap-shift-firebase-key.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
 
 function generateTrackingId() {
     const prefix = "TRK";
@@ -12,6 +18,29 @@ function generateTrackingId() {
     const timestamp = Date.now().toString().slice(-6);
 
     return `${prefix}-${random}-${timestamp}`;
+}
+
+//firebase token verification
+const verifyToken = async (req, res, next) =>{
+    if (!req.headers.authorization){
+        return res.status(401).send({message : "unauthorized access"});
+    }
+
+    const token = req.headers.authorization.split(' ')[1];
+
+    if(!token){
+        return res.status(401).send({message : "unauthorized access"});
+    }
+
+    try{
+        const decode = await admin.auth().verifyIdToken(token);
+        req.token_email = decode.email;
+
+        next();
+    }
+    catch{
+        return res.status(401).send({message : "unauthorized access"});
+    }
 }
 
 
@@ -40,7 +69,7 @@ async function run() {
         const paymentCollection = db.collection("payments");
 
         //post a parcel 
-        app.post('/parcels', async (req, res) => {
+        app.post('/parcels', verifyToken, async (req, res) => {
             const newParcel = req.body;
             const afterPost = await parcelCollection.insertOne(newParcel);
             res.send(afterPost)
@@ -48,11 +77,16 @@ async function run() {
 
 
         //get all my parcels
-        app.get('/parcels', async (req, res) => {
+        app.get('/parcels', verifyToken, async (req, res) => {
             const { email } = req.query;
             const query = {};
 
             if (email) {
+
+                if(email !== req.token_email){
+                    return res.status(403).send({message : "forbidden access"});
+                }
+
                 query.senderEmail = email;
             }
 
@@ -61,21 +95,21 @@ async function run() {
         })
 
         //get one parcel by id
-        app.get('/parcels/:id', async (req, res) => {
+        app.get('/parcels/:id', verifyToken, async (req, res) => {
             const id = req.params.id;
             const parcel = await parcelCollection.findOne({ _id: new ObjectId(id) });
             res.send(parcel);
         })
 
         //delete a parcel
-        app.delete('/parcels/:id', async (req, res) => {
+        app.delete('/parcels/:id', verifyToken, async (req, res) => {
             const { id } = req.params;
             const afterDelete = await parcelCollection.deleteOne({ _id: new ObjectId(id) });
             res.send(afterDelete);
         })
 
         //payment apis
-        app.post('/create-checkout-session', async (req, res) => {
+        app.post('/create-checkout-session', verifyToken, async (req, res) => {
             try {
                 const paymentInfo = req.body;
                 const amount = Number(paymentInfo.deliveryFee) * 100;
@@ -97,7 +131,8 @@ async function run() {
                     mode: 'payment',
                     metadata: {
                         parcelId: paymentInfo.parcelId,
-                        parcelName : paymentInfo.parcelName
+                        parcelName : paymentInfo.parcelName,
+                        receiverName : paymentInfo.receiverName
                     },
                     success_url: `${process.env.SITE_DOMAIN}/dashboard/payment-success?session_id={CHECKOUT_SESSION_ID}`,
                     cancel_url: `${process.env.SITE_DOMAIN}/dashboard/payment-cancelled`,
@@ -111,7 +146,7 @@ async function run() {
             }
         })
 
-
+        //change payment status after successfull payment and post payment information to database and send to client
         app.patch('/payment-success',async (req,res)=>{
             const sessionId = req.query.session_id;
             const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -127,6 +162,7 @@ async function run() {
                 })
             }
 
+            //update paymetn status
             if(session.payment_status==='paid'){
                 const parcelId = session.metadata.parcelId;
                 const paymentDate = new Date();
@@ -141,11 +177,12 @@ async function run() {
                     }
                 });
 
-                //payment info
+                //payment info to store in the db
                 const payment = {
                     parcelName : session.metadata.parcelName,
                     parcelId : session.metadata.parcelId,
                     senderEmail : session.customer_email,
+                    receiverName : session.metadata.receiverName,
                     currency : session.currency,
                     amount : (session.amount_total)/100,
                     transactionId : transactionId,
@@ -154,19 +191,32 @@ async function run() {
                     paidAt : paymentDate
                 }
 
-                if(session.payment_status === 'paid'){
-                    const postPayment = await paymentCollection.insertOne(payment);
-
-                    res.send({success : true,
-                        afterPayment : afterUpdate,
-                        paymentInfo : postPayment,
-                        trackingId: trackingId,
-                        transactionId:transactionId})
-                }
+                //post payment info to db
+                const postPayment = await paymentCollection.insertOne(payment);
+                res.send({
+                    success: true,
+                    afterPayment: afterUpdate,
+                    paymentInfo: postPayment,
+                    trackingId: trackingId,
+                    transactionId: transactionId
+                })
             }
             else{
                 res.send({message: "Payment not completed"});
             }
+        })
+
+        //get all payments info for payment history
+        app.get('/payment-history',async (req,res)=>{
+            const {email} = req.query;
+            const query = {};
+
+            if(email){
+                query.senderEmail = email;
+            }
+
+            const allPayments = await paymentCollection.find(query).toArray();
+            res.send(allPayments);
         })
 
         // Send a ping to confirm a successful connection

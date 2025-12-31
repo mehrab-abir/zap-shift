@@ -76,6 +76,7 @@ const MyParcels = () => {
         parcelName: parcel.parcelName,
         deliveryFee: parcel.deliveryFee,
         senderEmail: parcel.senderEmail,
+        receiverName : parcel.receiverName
       };
 
       const response = await axios.post('/create-checkout-session',paymentInfo);

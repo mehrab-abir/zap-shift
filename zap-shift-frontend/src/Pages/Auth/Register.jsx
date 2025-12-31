@@ -1,6 +1,6 @@
 import React, { use, useState } from "react";
 import authImage from "../../assets/authImage.png";
-import { Link, Navigate, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
 import { useForm } from "react-hook-form";

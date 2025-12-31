@@ -28,7 +28,7 @@ const DashboardLayout = () => {
         </div>
 
         <div
-          className={`absolute top-0 left-0 w-52 h-screen bg-accent p-10 justify-center shadow-lg z-30 ${
+          className={`absolute top-0 left-0 w-60 h-screen bg-accent p-10 justify-center shadow-lg z-30 ${
             !openDrawer && "-translate-x-full"
           } transition-all duration-500`}
           data-theme="dark"
@@ -37,7 +37,7 @@ const DashboardLayout = () => {
             onClick={() => setOpenDrawer(!openDrawer)}
             className="text-4xl text-white top-10 right-2 absolute cursor-pointer"
           />
-          <nav className="mt-10 flex flex-col space-y-2 text-lg text-white">
+          <nav className="mt-10 flex flex-col space-y-2 md:text-lg text-white">
             <NavLink
               to="/"
               className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
@@ -55,6 +55,12 @@ const DashboardLayout = () => {
               className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
             >
               Send a Parcel
+            </NavLink>
+            <NavLink
+              to="/dashboard/payment-history"
+              className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+            >
+              Payment History
             </NavLink>
           </nav>
         </div>
