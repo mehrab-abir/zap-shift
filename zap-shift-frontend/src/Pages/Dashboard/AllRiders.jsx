@@ -1,18 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../Hook/useAxios";
 import { IoMdCheckmark } from "react-icons/io";
 import { LiaTimesSolid } from "react-icons/lia";
-import { BsTrash } from "react-icons/bs";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const AllRiders = () => {
   const axios = useAxios();
 
   const [riderStatus, setRiderStatus] = useState("all");
 
-  const { data: riders = [], isLoading, refetch} = useQuery({
+  const {
+    data: riders = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["riders", riderStatus],
     queryFn: async () => {
       const response = await axios.get(`/riders?status=${riderStatus}`);
@@ -57,6 +61,7 @@ const AllRiders = () => {
         All Riders ({riders.length})
       </h1>
 
+      {/* filter riders based on status */}
       <select
         className="select focus:outline-2 focus:outline-lime-500 cursor-pointer"
         value={riderStatus}
@@ -127,9 +132,9 @@ const AllRiders = () => {
                           }`}
                         />
                       </button>
-                      <button className="btn btn-sm bg-base text-primary cursor-pointer">
-                        <BsTrash className="text-2xl" />
-                      </button>
+                      <Link to={`/dashboard/riders/riderdetails/${rider._id}`} className="btn btn-sm bg-base text-primary cursor-pointer">
+                        Details
+                      </Link>
                     </td>
                   </tr>
                 );

@@ -262,6 +262,13 @@ async function run() {
             res.send(allRiders);
         })
 
+        //get a rider's details
+        app.get('/riders/:id',async (req,res)=>{
+            const {id} = req.params;
+            const rider = await ridersCollection.findOne({_id : new ObjectId(id)});
+            res.send(rider);
+        })
+
         //update rider status --approve or reject
         app.patch('/riders/:id',async (req,res)=>{
             const id = req.params.id;

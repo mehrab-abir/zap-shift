@@ -18,6 +18,7 @@ import PaymentCancelled from "../Pages/Dashboard/Payment/PaymentCancelled";
 import PaymentHistory from "../Pages/Dashboard/Payment/PaymentHistory";
 import RiderRegistration from "../Pages/RiderRegistration";
 import AllRiders from "../Pages/Dashboard/AllRiders";
+import RiderDetails from "../Pages/Dashboard/RiderDetails";
 
 const router = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ const router = createBrowserRouter([
       {
         path : "/dashboard/riders",
         Component : AllRiders
+      },
+      {
+        path : "/dashboard/riders/riderdetails/:id",
+        Component : RiderDetails,
       }
     ],
   },
