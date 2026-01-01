@@ -7,9 +7,13 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Context/Auth/AuthContext";
 import GoogleLogin from "./GoogleLogin";
 import axios from "axios";
+import useAxios from "../../Hook/useAxios";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const { createAccount, updateUser, setUser } = use(AuthContext);
+  const axiosHook = useAxios();
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,23 +24,25 @@ const Register = () => {
   } = useForm();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleRegister = async (data) => {
     // console.log(data.profileImg[0])
+
+    setIsSubmitting(true);
 
     const profileImg = data.profileImg[0];
     const result = await createAccount(data.email, data.password);
 
     const formData = new FormData();
-    formData.append('image',profileImg);
-    
+    formData.append("image", profileImg);
+
     const image_api_url = `https://api.imgbb.com/1/upload?key=${
       import.meta.env.VITE_image_host_key
     }`;
 
-    const img_data = await axios.post(image_api_url,formData);
+    const img_data = await axios.post(image_api_url, formData);
     // console.log(img_data.data.data.display_url);
-    
 
     const userInfo = {
       displayName: data.name,
@@ -45,10 +51,29 @@ const Register = () => {
 
     await updateUser(userInfo);
 
+    //post the user to db
+    const newUser = {
+      displayName: data.name,
+      email: data.email,
+      photoURL: img_data.data.data.display_url,
+      role : "user",
+      createdAt : new Date()
+    };
+
+    const response = await axiosHook.post(`/users`, newUser);
+    if (response.data.insertedId) {
+      navigate("/", { replace: true });
+      Swal.fire({
+        title: "Account created!",
+        icon: "success",
+        draggable: true,
+      });
+    }
+
     const user = result.user;
     setUser({ ...user, userInfo });
 
-    navigate(location?.state || '/', {replace : true})
+    setIsSubmitting(false);
   };
 
   return (
@@ -59,7 +84,11 @@ const Register = () => {
             <h1 className="text-2xl font-bold my-3">Create an Account</h1>
             <p className="text-sm">
               Already have an account?{" "}
-              <Link state={location.pathname} to="/auth/login" className="text-lime-600 hover:underline">
+              <Link
+                state={location.pathname}
+                to="/auth/login"
+                className="text-lime-600 hover:underline"
+              >
                 Sign in here
               </Link>
             </p>
@@ -151,7 +180,7 @@ const Register = () => {
               type="submit"
               className="btn bg-primary w-full text-black rounded-md border-none mt-4 hover:shadow-md hover:shadow-indigo-300"
             >
-              Sign Up
+              {isSubmitting ? <i>Signing Up...</i> : 'Sign Up'}
             </button>
 
             <p className="text-center my-4">Or</p>

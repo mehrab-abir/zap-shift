@@ -16,6 +16,8 @@ import Payment from "../Pages/Dashboard/Payment/Payment";
 import PaymentSuccess from "../Pages/Dashboard/Payment/PaymentSuccess";
 import PaymentCancelled from "../Pages/Dashboard/Payment/PaymentCancelled";
 import PaymentHistory from "../Pages/Dashboard/Payment/PaymentHistory";
+import RiderRegistration from "../Pages/RiderRegistration";
+import AllRiders from "../Pages/Dashboard/AllRiders";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
       {
         path: "coverage",
         Component: ServiceCoverage,
+      },
+      {
+        path: "/rider-registration",
+        element : <PrivateRoute>
+          <RiderRegistration></RiderRegistration>
+        </PrivateRoute>,
+        loader: () => fetch("/service_center.json"),
+        hydrateFallbackElement: <p>Loading...</p>,
       },
       {
         path: "about-us",
@@ -89,16 +99,20 @@ const router = createBrowserRouter([
         Component: Payment,
       },
       {
-        path : '/dashboard/payment-success',
-        Component : PaymentSuccess
+        path: "/dashboard/payment-success",
+        Component: PaymentSuccess,
       },
       {
-        path : '/dashboard/payment-cancelled',
-        Component : PaymentCancelled
+        path: "/dashboard/payment-cancelled",
+        Component: PaymentCancelled,
       },
       {
-        path : '/dashboard/payment-history',
-        Component : PaymentHistory
+        path: "/dashboard/payment-history",
+        Component: PaymentHistory,
+      },
+      {
+        path : "/dashboard/riders",
+        Component : AllRiders
       }
     ],
   },

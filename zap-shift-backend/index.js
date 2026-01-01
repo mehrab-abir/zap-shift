@@ -67,6 +67,8 @@ async function run() {
         const db = client.db("zap-shift-db");
         const parcelCollection = db.collection("parcels");
         const paymentCollection = db.collection("payments");
+        const usersCollection = db.collection("users");
+        const ridersCollection = db.collection("riders");
 
         //post a parcel 
         app.post('/parcels', verifyToken, async (req, res) => {
@@ -162,7 +164,7 @@ async function run() {
                 })
             }
 
-            //update paymetn status
+            //update payment status
             if(session.payment_status==='paid'){
                 const parcelId = session.metadata.parcelId;
                 const paymentDate = new Date();
@@ -195,8 +197,8 @@ async function run() {
                 const postPayment = await paymentCollection.insertOne(payment);
                 res.send({
                     success: true,
-                    afterPayment: afterUpdate,
-                    paymentInfo: postPayment,
+                    afterUpdate: afterUpdate,
+                    postPayment: postPayment,
                     trackingId: trackingId,
                     transactionId: transactionId
                 })
@@ -215,8 +217,83 @@ async function run() {
                 query.senderEmail = email;
             }
 
-            const allPayments = await paymentCollection.find(query).toArray();
+            const allPayments = await paymentCollection.find(query).sort({paidAt : -1}).toArray();
             res.send(allPayments);
+        })
+
+        //post user to db
+        app.post('/users',async (req,res)=>{
+            const newUser = req.body;
+
+            const userExists = await usersCollection.findOne({email : newUser.email});
+
+            if(userExists){
+                return res.send({userExists : "user already exists, not posted."});
+            }
+
+            const afterPost = await usersCollection.insertOne(newUser);
+            res.send(afterPost);
+        })
+
+        //save a rider application to db
+        app.post('/riders',async (req,res)=>{
+            const rider = req.body;
+            const postRider = await ridersCollection.insertOne(rider);
+            res.send(postRider);
+        })
+
+        //get all riders - as admin
+        app.get('/riders',async (req,res)=>{
+            const status = req.query.status;
+
+            const query = {};
+
+            if(status === "pending"){
+                query.status = "pending"
+            }
+            else if(status === "approved"){
+                query.status = "approved"
+            }
+            else if(status === "rejected"){
+                query.status = "rejected"
+            }
+
+            const allRiders = await ridersCollection.find(query).toArray();
+            res.send(allRiders);
+        })
+
+        //update rider status --approve or reject
+        app.patch('/riders/:id',async (req,res)=>{
+            const id = req.params.id;
+            const status = req.body.status;
+            const email = req.body.email;
+
+            const afterUpdate = await ridersCollection.updateOne({_id : new ObjectId(id)},{
+                $set : {
+                    status : status
+                }
+            })
+
+            let updateRole = {};
+
+            if(status === "approved"){
+                updateRole = await usersCollection.updateOne({email : email},{
+                    $set : {
+                        role : "rider"
+                    }
+                })
+            }
+            else{
+                updateRole = await usersCollection.updateOne({ email: email }, {
+                    $set: {
+                        role: "user"
+                    }
+                })
+            }
+
+            res.send({afterUpdate : afterUpdate,
+                updateRole : updateRole
+            })
         })
 
         // Send a ping to confirm a successful connection

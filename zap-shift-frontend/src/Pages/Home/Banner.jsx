@@ -4,6 +4,7 @@ import banner2 from "../../assets/banner/banner2.png";
 import banner3 from "../../assets/banner/banner3.png";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import { Link } from "react-router";
 
 const Banner = () => {
   return (
@@ -14,9 +15,12 @@ const Banner = () => {
           <button className="btn rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black">
             Track Your Parcel
           </button>
-          <button className="btn rounded-full bg-surface border border-lime-500 outline-none hover:bg-primary-hover hover:text-white">
+          <Link
+            to="/rider-registration"
+            className="btn rounded-full bg-gray-800 border border-lime-500 outline-none hover:bg-primary-hover text-white"
+          >
             Be A Rider
-          </button>
+          </Link>
         </div>
       </div>
       <div className="relative">
@@ -25,9 +29,12 @@ const Banner = () => {
           <button className="btn rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black">
             Track Your Parcel
           </button>
-          <button className="btn rounded-full bg-surface border border-lime-500 outline-none hover:bg-primary-hover hover:text-white">
+          <Link
+            to="/rider-registration"
+            className="btn rounded-full bg-gray-800 border border-lime-500 outline-none hover:bg-primary-hover text-white"
+          >
             Be A Rider
-          </button>
+          </Link>
         </div>
       </div>
       <div className="relative">
@@ -36,9 +43,12 @@ const Banner = () => {
           <button className="btn rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black">
             Track Your Parcel
           </button>
-          <button className="btn rounded-full bg-surface border border-lime-500 outline-none hover:bg-primary-hover hover:text-white">
+          <Link
+            to="/rider-registration"
+            className="btn rounded-full bg-gray-800 border border-lime-500 outline-none hover:bg-primary-hover text-white"
+          >
             Be A Rider
-          </button>
+          </Link>
         </div>
       </div>
     </Carousel>

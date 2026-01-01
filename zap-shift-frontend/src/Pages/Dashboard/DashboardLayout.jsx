@@ -62,6 +62,12 @@ const DashboardLayout = () => {
             >
               Payment History
             </NavLink>
+            <NavLink
+              to="/dashboard/riders"
+              className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+            >
+              All Riders
+            </NavLink>
           </nav>
         </div>
       </div>
