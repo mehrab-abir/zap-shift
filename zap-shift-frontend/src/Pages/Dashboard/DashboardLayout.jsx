@@ -68,6 +68,12 @@ const DashboardLayout = () => {
             >
               All Riders
             </NavLink>
+            <NavLink
+              to="/dashboard/manage-users"
+              className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+            >
+              Manage Users
+            </NavLink>
           </nav>
         </div>
       </div>
