@@ -310,6 +310,32 @@ async function run() {
             res.send(users);
         })
 
+        //update user role
+        app.patch('/users/:id',async (req,res)=>{
+            const id = req.params.id;
+            const roleInfo = req.body;
+
+            //find this user to check their previousRole to make it thier currentRole
+            const thisUser = await usersCollection.findOne({_id : new ObjectId(id)});
+
+            //if currentRole comes '' from front-end, that means he is getting removed from admin, so set their previousRole to their currentRole,
+            /* this will update the roleInfo object that has come from front-end,
+            where the currentRole was empty, now it will be whatever their previousRole was
+            */
+            if(roleInfo.currentRole === ''){
+                roleInfo.currentRole = thisUser.previousRole;
+            }
+
+            const afterUpdate = await usersCollection.updateOne({_id : new ObjectId(id)},{
+                $set : {
+                    currentRole : roleInfo.currentRole, //roleInfo updated here in backend, from '' to whatever their previousRole was
+                    previousRole : roleInfo.previousRole //previousRole being set to whatever their currentRole was, which has come from front-end
+                }
+            });
+
+            res.send(afterUpdate);
+        })
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
