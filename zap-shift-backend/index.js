@@ -70,6 +70,19 @@ async function run() {
         const usersCollection = db.collection("users");
         const ridersCollection = db.collection("riders");
 
+        //middleware for admin verification
+        //must be called after 'verifyToken' in the api definition
+        const verifyAdmin = async (req,res,next)=>{
+            const email = req.token_email;
+
+            const user = await usersCollection.findOne({email:email});
+
+            if(!user || user.currentRole !== "admin"){
+                return res.status(403).send({message : "forbidden access"});
+            }
+            next();
+        }
+
         //post a parcel 
         app.post('/parcels', verifyToken, async (req, res) => {
             const newParcel = req.body;
@@ -149,7 +162,7 @@ async function run() {
         })
 
         //change payment status after successfull payment and post payment information to database and send to client
-        app.patch('/payment-success',async (req,res)=>{
+        app.patch('/payment-success',verifyToken,async (req,res)=>{
             const sessionId = req.query.session_id;
             const session = await stripe.checkout.sessions.retrieve(sessionId);
             // console.log(session);
@@ -209,7 +222,7 @@ async function run() {
         })
 
         //get all payments info for payment history
-        app.get('/payment-history',async (req,res)=>{
+        app.get('/payment-history',verifyToken,async (req,res)=>{
             const {email} = req.query;
             const query = {};
 
@@ -236,14 +249,14 @@ async function run() {
         })
 
         //save a rider application to db
-        app.post('/riders',async (req,res)=>{
+        app.post('/riders',verifyToken,async (req,res)=>{
             const rider = req.body;
             const postRider = await ridersCollection.insertOne(rider);
             res.send(postRider);
         })
 
         //get all riders - as admin
-        app.get('/riders',async (req,res)=>{
+        app.get('/riders',verifyToken,verifyAdmin,async (req,res)=>{
             const status = req.query.status;
 
             const query = {};
@@ -263,14 +276,14 @@ async function run() {
         })
 
         //get a rider's details
-        app.get('/riders/:id',async (req,res)=>{
+        app.get('/riders/:id',verifyToken,verifyAdmin,async (req,res)=>{
             const {id} = req.params;
             const rider = await ridersCollection.findOne({_id : new ObjectId(id)});
             res.send(rider);
         })
 
         //update rider status --approve or reject
-        app.patch('/riders/:id',async (req,res)=>{
+        app.patch('/riders/:id',verifyToken,verifyAdmin,async (req,res)=>{
             const id = req.params.id;
             const status = req.body.status;
             const email = req.body.email;
@@ -286,14 +299,14 @@ async function run() {
             if(status === "approved"){
                 updateRole = await usersCollection.updateOne({email : email},{
                     $set : {
-                        role : "rider"
+                        currentRole : "rider"
                     }
                 })
             }
             else{
                 updateRole = await usersCollection.updateOne({ email: email }, {
                     $set: {
-                        role: "user"
+                        currentRole: "user"
                     }
                 })
             }
@@ -303,15 +316,28 @@ async function run() {
             })
         })
 
-
         //get all users
-        app.get('/users',async (req,res)=>{
+        app.get('/users',verifyToken,verifyAdmin,async (req,res)=>{
             const users = await usersCollection.find().toArray();
             res.send(users);
         })
 
+        //get one user
+        app.get('/users/:id',verifyToken, verifyAdmin, async (req,res)=>{
+            const id = req.params.id;
+            const user = await usersCollection.findOne({_id : new ObjectId(id)});
+            res.send(user);
+        })
+
+        //get one user but send only their role
+        app.get('/users/:email/role',verifyToken,async (req,res)=>{
+            const email = req.params.email;
+            const user = await usersCollection.findOne({email : email});
+            res.send({role : user?.currentRole || 'user'});
+        })
+
         //update user role
-        app.patch('/users/:id',async (req,res)=>{
+        app.patch('/users/:id',verifyToken, verifyAdmin,async (req,res)=>{
             const id = req.params.id;
             const roleInfo = req.body;
 

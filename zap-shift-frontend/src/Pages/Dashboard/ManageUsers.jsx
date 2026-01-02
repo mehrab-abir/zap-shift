@@ -4,6 +4,7 @@ import useAxios from "../../Hook/useAxios";
 import { FaFileShield } from "react-icons/fa6";
 import { FiShieldOff } from "react-icons/fi";
 import Swal from "sweetalert2";
+import userAvatar from '../../assets/userAvatar.png';
 
 const ManageUsers = () => {
   const axios = useAxios();
@@ -21,20 +22,33 @@ const ManageUsers = () => {
   });
 
   const updateUserRole = async (user, newRole) => {
-    const roleInfo = {
-      currentRole: newRole,
-      previousRole: user.currentRole,
-    };
+    const result = await Swal.fire({
+      title: "Are you sure to change the user role?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: `No`,
+    });
 
-    const response = await axios.patch(`/users/${user._id}`, roleInfo);
-    if (response.data.modifiedCount) {
-      refetch();
-      Swal.fire({
-        title: `${newRole === 'admin' ? `${user.displayName} is now an Admin` : `${user.displayName} is no more an Admin`}`,
-        icon: "success",
-        draggable: true,
-      });
+    if(result.isConfirmed){
+        const roleInfo = {
+        currentRole: newRole,
+        previousRole: user.currentRole,
+      };
+
+      const response = await axios.patch(`/users/${user._id}`, roleInfo);
+      if (response.data.modifiedCount) {
+        refetch();
+        Swal.fire({
+          title: `${newRole === 'admin' ? `${user.displayName} is now an Admin` : `${user.displayName} is no more an Admin`}`,
+          icon: "success",
+          draggable: true,
+        });
+      }
     }
+    else if (result.isDenied) {
+        Swal.fire("Nothing changed");
+      }
   };
 
   const makeAdmin = (user) => {
@@ -52,6 +66,7 @@ const ManageUsers = () => {
       </p>
     );
   }
+
   return (
     <div className="w-11/12 md:w-10/12 mx-auto my-10 bg-surface p-10">
       <h1 className="text-2xl md:text-4xl font-bold my-6">
@@ -75,6 +90,7 @@ const ManageUsers = () => {
             </thead>
             <tbody>
               {users.map((user, index) => {
+                const userProfile = user?.photoURL || userAvatar;
                 return (
                   <tr key={user._id}>
                     <th>{index + 1}</th>
@@ -83,12 +99,12 @@ const ManageUsers = () => {
                     <td>
                       <div className="mask mask-squircle h-12 w-12">
                         <img
-                          src={user.photoURL}
+                          src={userProfile}
                           alt="Avatar Tailwind CSS Component"
                         />
                       </div>
                     </td>
-                    <td>{user.currentRole}</td>
+                    <td className={`${user.currentRole === 'admin' && 'text-lime-600'} font-semibold`}>{user.currentRole.toUpperCase()}</td>
                     <td className="align-middle space-x-4">
                       <button
                         onClick={() => makeAdmin(user)}

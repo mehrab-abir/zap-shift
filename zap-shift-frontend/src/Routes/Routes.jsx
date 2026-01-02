@@ -20,6 +20,7 @@ import RiderRegistration from "../Pages/RiderRegistration";
 import AllRiders from "../Pages/Dashboard/AllRiders";
 import RiderDetails from "../Pages/Dashboard/RiderDetails";
 import ManageUsers from "../Pages/Dashboard/ManageUsers";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -114,15 +115,21 @@ const router = createBrowserRouter([
       },
       {
         path : "/dashboard/riders",
-        Component : AllRiders
+        element : <AdminRoute>
+          <AllRiders></AllRiders>
+        </AdminRoute>
       },
       {
         path : "/dashboard/riders/riderdetails/:id",
-        Component : RiderDetails,
+        element : <AdminRoute>
+          <RiderDetails></RiderDetails>
+        </AdminRoute>
       },
       {
         path : "/dashboard/manage-users",
-        Component : ManageUsers
+        element : <AdminRoute>
+          <ManageUsers></ManageUsers>
+        </AdminRoute>
       }
     ],
   },

@@ -24,7 +24,7 @@ const GoogleLogin = () => {
         displayName: result.user.displayName,
         email: result.user.email,
         photoURL: result.user.photoURL,
-        role: "user",
+        currentRole: "user",
         createdAt: new Date(),
       };
 

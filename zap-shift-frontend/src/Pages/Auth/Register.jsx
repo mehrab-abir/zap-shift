@@ -56,7 +56,7 @@ const Register = () => {
       displayName: data.name,
       email: data.email,
       photoURL: img_data.data.data.display_url,
-      role : "user",
+      currentRole : "user",
       createdAt : new Date()
     };
 

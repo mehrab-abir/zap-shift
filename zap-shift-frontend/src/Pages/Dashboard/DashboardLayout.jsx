@@ -5,8 +5,11 @@ import Footer from "../../Shared Components/Footer";
 import { IoChevronForwardCircleOutline } from "react-icons/io5";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
 import { NavLink } from "react-router";
+import useRole from "../../Hook/useRole";
 
 const DashboardLayout = () => {
+  const { role } = useRole();
+
   const [openDrawer, setOpenDrawer] = useState(false);
   return (
     <div className="bg-base">
@@ -62,18 +65,23 @@ const DashboardLayout = () => {
             >
               Payment History
             </NavLink>
-            <NavLink
-              to="/dashboard/riders"
-              className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
-            >
-              All Riders
-            </NavLink>
-            <NavLink
-              to="/dashboard/manage-users"
-              className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
-            >
-              Manage Users
-            </NavLink>
+            {role === "admin" && (
+              <NavLink
+                to="/dashboard/riders"
+                className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+              >
+                All Riders
+              </NavLink>
+            )}
+
+            {role === "admin" && (
+              <NavLink
+                to="/dashboard/manage-users"
+                className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+              >
+                Manage Users
+              </NavLink>
+            )}
           </nav>
         </div>
       </div>
