@@ -57,7 +57,12 @@ const SendParcel = () => {
     }
     const createdAt = new Date();
     const paymentStatus = "Not Paid";
-    const parcelDetails = { ...data, deliveryFee: cost, paymentStatus, createdAt };
+    const parcelDetails = {
+      ...data,
+      deliveryFee: cost,
+      paymentStatus,
+      createdAt,
+    };
 
     // console.log("Total cost : ",cost);
     Swal.fire({
@@ -69,17 +74,19 @@ const SendParcel = () => {
       confirmButtonText: "Ok, continue!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.post("/parcels", parcelDetails).then((afterPost) => {
-          if (afterPost.data.insertedId) {
-            Swal.fire({
-              title: "Thank you.",
-              text: "Courier driver is on the way...",
-              icon: "success",
-            });
-            navigate('/dashboard/myparcels');
-          }
-        })
-        .catch(error=>console.log("Post error",error))
+        axios
+          .post("/parcels", parcelDetails)
+          .then((afterPost) => {
+            if (afterPost.data.insertedId) {
+              Swal.fire({
+                title: "Thank you.",
+                text: "Courier driver is on the way...",
+                icon: "success",
+              });
+              navigate("/dashboard/myparcels");
+            }
+          })
+          .catch((error) => console.log("Post error", error));
       }
     });
   };
@@ -153,7 +160,7 @@ const SendParcel = () => {
                   <label className="font-semibold">Sender Name:</label>
                   <input
                     type="text"
-                    defaultValue={user?.displayName}
+                    value={user?.displayName}
                     className="input w-full focus:outline-2 outline-lime-500"
                     {...register("senderName", { required: true })}
                     placeholder="Sender name"
@@ -163,7 +170,7 @@ const SendParcel = () => {
                   <label className="font-semibold">Sender Email</label>
                   <input
                     type="email"
-                    defaultValue={user?.email}
+                    value={user?.email}
                     className="input w-full focus:outline-2 outline-lime-500"
                     {...register("senderEmail", { required: true })}
                     placeholder="Sender email"

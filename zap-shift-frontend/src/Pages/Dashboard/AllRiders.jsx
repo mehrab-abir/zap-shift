@@ -56,7 +56,7 @@ const AllRiders = () => {
   }
 
   return (
-    <div className="w-11/12 md:w-10/12 mx-auto my-10 bg-surface p-10 rounded-xl">
+    <div className="bg-surface p-10 rounded-xl">
       <h1 className="text-2xl md:text-4xl font-bold my-5">
         All Riders ({riders.length})
       </h1>
@@ -94,8 +94,8 @@ const AllRiders = () => {
                 return (
                   <tr key={rider._id}>
                     <th>{index + 1}</th>
-                    <td>{rider.name}</td>
-                    <td>{rider.email}</td>
+                    <td>{rider.riderName}</td>
+                    <td>{rider.riderEmail}</td>
                     <td>{rider.riderRegion}</td>
                     <td>{rider.riderDistrict}</td>
                     <td

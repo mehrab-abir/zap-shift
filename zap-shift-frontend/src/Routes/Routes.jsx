@@ -21,6 +21,7 @@ import AllRiders from "../Pages/Dashboard/AllRiders";
 import RiderDetails from "../Pages/Dashboard/RiderDetails";
 import ManageUsers from "../Pages/Dashboard/ManageUsers";
 import AdminRoute from "./AdminRoute";
+import PendingPickupParcels from "../Pages/Dashboard/PendingPickup";
 
 const router = createBrowserRouter([
   {
@@ -47,9 +48,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/rider-registration",
-        element : <PrivateRoute>
-          <RiderRegistration></RiderRegistration>
-        </PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <RiderRegistration></RiderRegistration>
+          </PrivateRoute>
+        ),
         loader: () => fetch("/service_center.json"),
         hydrateFallbackElement: <p>Loading...</p>,
       },
@@ -114,23 +117,35 @@ const router = createBrowserRouter([
         Component: PaymentHistory,
       },
       {
-        path : "/dashboard/riders",
+        path: "/dashboard/riders",
+        element: (
+          <AdminRoute>
+            <AllRiders></AllRiders>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/riders/riderdetails/:id",
+        element: (
+          <AdminRoute>
+            <RiderDetails></RiderDetails>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/pending-pickup-parcels",
         element : <AdminRoute>
-          <AllRiders></AllRiders>
+          <PendingPickupParcels></PendingPickupParcels>
         </AdminRoute>
       },
       {
-        path : "/dashboard/riders/riderdetails/:id",
-        element : <AdminRoute>
-          <RiderDetails></RiderDetails>
-        </AdminRoute>
+        path: "/dashboard/manage-users",
+        element: (
+          <AdminRoute>
+            <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
       },
-      {
-        path : "/dashboard/manage-users",
-        element : <AdminRoute>
-          <ManageUsers></ManageUsers>
-        </AdminRoute>
-      }
     ],
   },
 ]);

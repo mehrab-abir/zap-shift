@@ -87,7 +87,7 @@ const RiderRegistration = () => {
             <input
               type="text"
               className="input w-full focus:outline-2 outline-lime-500"
-              {...register("name")}
+              {...register("riderName")}
               value={user?.displayName}
             />
           </div>
@@ -96,7 +96,7 @@ const RiderRegistration = () => {
             <input
               type="email"
               className="input w-full focus:outline-2 outline-lime-500"
-              {...register("email")}
+              {...register("riderEmail")}
               value={user?.email}
             />
           </div>

@@ -61,7 +61,7 @@ const ManageUsers = () => {
   };
 
   return (
-    <div className="w-11/12 md:w-10/12 mx-auto my-10 bg-surface p-10">
+    <div className="bg-surface p-10">
       <h1 className="text-2xl md:text-4xl font-bold my-6">
         Manage Users ({users.length})
       </h1>
@@ -100,7 +100,7 @@ const ManageUsers = () => {
                 </tr>
               ) : (
                 users.map((user, index) => {
-                  const userProfile = user?.photoURL || userAvatar;
+                  const userProfile = user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
                   return (
                     <tr key={user._id}>
                       <th>{index + 1}</th>

@@ -27,7 +27,7 @@ const RiderDetails = () => {
     }
 
     return (
-      <div className="w-11/12 md:w-10/12 mx-auto my-10">
+      <div className="">
         <div className="bg-surface p-6 md:p-10 rounded-xl shadow">
           <h1 className="text-2xl md:text-4xl font-bold mb-6">Rider Details</h1>
 

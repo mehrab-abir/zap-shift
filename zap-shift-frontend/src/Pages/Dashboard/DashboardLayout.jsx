@@ -73,6 +73,14 @@ const DashboardLayout = () => {
                 All Riders
               </NavLink>
             )}
+            {role === "admin" && (
+              <NavLink
+                to="/dashboard/pending-pickup-parcels"
+                className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+              >
+                Assign Rider To Parcel
+              </NavLink>
+            )}
 
             {role === "admin" && (
               <NavLink
@@ -86,7 +94,10 @@ const DashboardLayout = () => {
         </div>
       </div>
 
-      <Outlet></Outlet>
+      <div className="p-10">
+        <Outlet></Outlet>
+      </div>
+
       <Footer></Footer>
     </div>
   );

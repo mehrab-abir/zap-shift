@@ -21,25 +21,25 @@ function generateTrackingId() {
 }
 
 //firebase token verification
-const verifyToken = async (req, res, next) =>{
-    if (!req.headers.authorization){
-        return res.status(401).send({message : "unauthorized access"});
+const verifyToken = async (req, res, next) => {
+    if (!req.headers.authorization) {
+        return res.status(401).send({ message: "unauthorized access" });
     }
 
     const token = req.headers.authorization.split(' ')[1];
 
-    if(!token){
-        return res.status(401).send({message : "unauthorized access"});
+    if (!token) {
+        return res.status(401).send({ message: "unauthorized access" });
     }
 
-    try{
+    try {
         const decode = await admin.auth().verifyIdToken(token);
         req.token_email = decode.email;
 
         next();
     }
-    catch{
-        return res.status(401).send({message : "unauthorized access"});
+    catch {
+        return res.status(401).send({ message: "unauthorized access" });
     }
 }
 
@@ -72,13 +72,13 @@ async function run() {
 
         //middleware for admin verification
         //must be called after 'verifyToken' in the api definition
-        const verifyAdmin = async (req,res,next)=>{
+        const verifyAdmin = async (req, res, next) => {
             const email = req.token_email;
 
-            const user = await usersCollection.findOne({email:email});
+            const user = await usersCollection.findOne({ email: email });
 
-            if(!user || user.currentRole !== "admin"){
-                return res.status(403).send({message : "forbidden access"});
+            if (!user || user.currentRole !== "admin") {
+                return res.status(403).send({ message: "forbidden access" });
             }
             next();
         }
@@ -91,21 +91,15 @@ async function run() {
         })
 
 
-        //get all my parcels
+        //get all my parcels - as normal user
         app.get('/parcels', verifyToken, async (req, res) => {
             const { email } = req.query;
-            const query = {};
 
-            if (email) {
-
-                if(email !== req.token_email){
-                    return res.status(403).send({message : "forbidden access"});
-                }
-
-                query.senderEmail = email;
+            if (email !== req.token_email) {
+                return res.status(403).send({ message: "forbidden access" });
             }
 
-            const parcels = await parcelCollection.find(query).toArray();
+            const parcels = await parcelCollection.find({ senderEmail: req.token_email }).toArray();
             res.send(parcels);
         })
 
@@ -146,8 +140,8 @@ async function run() {
                     mode: 'payment',
                     metadata: {
                         parcelId: paymentInfo.parcelId,
-                        parcelName : paymentInfo.parcelName,
-                        receiverName : paymentInfo.receiverName
+                        parcelName: paymentInfo.parcelName,
+                        receiverName: paymentInfo.receiverName
                     },
                     success_url: `${process.env.SITE_DOMAIN}/dashboard/payment-success?session_id={CHECKOUT_SESSION_ID}`,
                     cancel_url: `${process.env.SITE_DOMAIN}/dashboard/payment-cancelled`,
@@ -157,117 +151,169 @@ async function run() {
 
                 res.send({ url: session.url });
             } catch (err) {
-                res.send({error: err.message})
+                res.send({ error: err.message })
             }
         })
 
         //change payment status after successfull payment and post payment information to database and send to client
-        app.patch('/payment-success',verifyToken,async (req,res)=>{
-            const sessionId = req.query.session_id;
-            const session = await stripe.checkout.sessions.retrieve(sessionId);
-            // console.log(session);
+        app.patch("/payment-success", verifyToken, async (req, res) => {
+            try {
+                const sessionId = req.query.session_id;
+                const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-            const paymentExist = await paymentCollection.findOne({transactionId: session.payment_intent});
-
-            if(paymentExist){
-                return res.send({
-                    message: "Payment already exists",
-                    transactionId : session.payment_intent,
-                    trackingId : paymentExist.trackingId
-                })
-            }
-
-            //update payment status
-            if(session.payment_status==='paid'){
-                const parcelId = session.metadata.parcelId;
-                const paymentDate = new Date();
                 const transactionId = session.payment_intent;
-                const trackingId = generateTrackingId();
 
-                const afterUpdate = await parcelCollection.updateOne({_id:new ObjectId(parcelId)},{
-                    $set : {
-                        paymentStatus : 'Paid',
-                        paidAt : paymentDate,
-                        trackingId : trackingId
-                    }
-                });
+                // Fast-path: if already saved, return same response as before
+                const paymentExist = await paymentCollection.findOne({ transactionId });
 
-                //payment info to store in the db
-                const payment = {
-                    parcelName : session.metadata.parcelName,
-                    parcelId : session.metadata.parcelId,
-                    senderEmail : session.customer_email,
-                    receiverName : session.metadata.receiverName,
-                    currency : session.currency,
-                    amount : (session.amount_total)/100,
-                    transactionId : transactionId,
-                    trackingId : trackingId,
-                    paymentStatus : session.payment_status,
-                    paidAt : paymentDate
+                if (paymentExist) {
+                    return res.send({
+                        message: "Payment already exists",
+                        transactionId,
+                        trackingId: paymentExist.trackingId,
+                    });
                 }
 
-                //post payment info to db
-                const postPayment = await paymentCollection.insertOne(payment);
-                res.send({
-                    success: true,
-                    afterUpdate: afterUpdate,
-                    postPayment: postPayment,
-                    trackingId: trackingId,
-                    transactionId: transactionId
-                })
+                // update payment status
+                if (session.payment_status === "paid") {
+                    const parcelId = session.metadata.parcelId;
+                    const paymentDate = new Date();
+                    const trackingId = generateTrackingId();
+
+                    const afterUpdate = await parcelCollection.updateOne(
+                        { _id: new ObjectId(parcelId) },
+                        {
+                            $set: {
+                                paymentStatus: "Paid",
+                                paidAt: paymentDate,
+                                trackingId: trackingId,
+                                deliveryStatus: "Pending to pickup",
+                            },
+                        }
+                    );
+
+                    // payment info to store in the db
+                    const payment = {
+                        parcelName: session.metadata.parcelName,
+                        parcelId: session.metadata.parcelId,
+                        senderEmail: session.customer_email,
+                        receiverName: session.metadata.receiverName,
+                        currency: session.currency,
+                        amount: session.amount_total / 100,
+                        transactionId,
+                        trackingId,
+                        paymentStatus: session.payment_status,
+                        paidAt: paymentDate,
+                    };
+
+                    // post payment info to db
+                    let postPayment;
+                    try {
+                        postPayment = await paymentCollection.insertOne(payment);
+                    } catch (err) {
+                        // Duplicate key (unique index on transactionId) => another request inserted first
+                        if (err?.code === 11000) {
+                            const existing = await paymentCollection.findOne({ transactionId });
+
+                            return res.send({
+                                message: "Payment already exists",
+                                transactionId,
+                                trackingId: existing?.trackingId,
+                            });
+                        }
+
+                        // anything else is a real error
+                        throw err;
+                    }
+
+                    return res.send({
+                        success: true,
+                        afterUpdate: afterUpdate,
+                        postPayment: postPayment,
+                        trackingId: trackingId,
+                        transactionId: transactionId,
+                    });
+                } else {
+                    return res.send({ message: "Payment not completed" });
+                }
+            } catch (err) {
+                console.error("payment-success error:", err);
+                return res.status(500).send({ message: "Internal server error" });
             }
-            else{
-                res.send({message: "Payment not completed"});
-            }
-        })
+        });
+
 
         //get all payments info for payment history
-        app.get('/payment-history',verifyToken,async (req,res)=>{
-            const {email} = req.query;
+        app.get('/payment-history', verifyToken, async (req, res) => {
+            const { email } = req.query;
             const query = {};
 
-            if(email){
+            if (email) {
                 query.senderEmail = email;
             }
 
-            const allPayments = await paymentCollection.find(query).sort({paidAt : -1}).toArray();
+            const allPayments = await paymentCollection.find(query).sort({ paidAt: -1 }).toArray();
             res.send(allPayments);
         })
 
         //post user to db
-        app.post('/users',async (req,res)=>{
+        app.post('/users', async (req, res) => {
             const newUser = req.body;
 
-            const userExists = await usersCollection.findOne({email : newUser.email});
+            const userExists = await usersCollection.findOne({ email: newUser.email });
 
-            if(userExists){
-                return res.send({userExists : "user already exists, not posted."});
+            if (userExists) {
+                return res.send({ userExists: "user already exists, not posted." });
             }
 
             const afterPost = await usersCollection.insertOne(newUser);
             res.send(afterPost);
         })
 
+
+        //get all parcels - admin
+        app.get('/admin/parcels', verifyToken, verifyAdmin, async (req, res) => {
+            const { searchText, deliveryStatus } = req.query;
+            const query = {};
+
+            if (deliveryStatus === "Pending to pickup") {
+                query.deliveryStatus = "Pending to pickup";
+            }
+            else if (deliveryStatus === 'In transit') {
+                query.deliveryStatus = "In transit";
+            }
+            else if (deliveryStatus === "Delivered") {
+                query.deliveryStatus = "Delivered";
+            }
+
+            if (searchText) {
+                query.senderEmail = { $regex: searchText, $options: 'i' }
+            }
+
+            const parcels = await parcelCollection.find(query).toArray();
+            res.send(parcels);
+        })
+
         //save a rider application to db
-        app.post('/riders',verifyToken,async (req,res)=>{
+        app.post('/riders', verifyToken, async (req, res) => {
             const rider = req.body;
             const postRider = await ridersCollection.insertOne(rider);
             res.send(postRider);
         })
 
         //get all riders - as admin
-        app.get('/riders',verifyToken,verifyAdmin,async (req,res)=>{
+        app.get('/riders', verifyToken, verifyAdmin, async (req, res) => {
             const status = req.query.status;
 
             const query = {};
 
-            if(status === "pending"){
+            if (status === "pending") {
                 query.status = "pending"
             }
-            else if(status === "approved"){
+            else if (status === "approved") {
                 query.status = "approved"
             }
-            else if(status === "rejected"){
+            else if (status === "rejected") {
                 query.status = "rejected"
             }
 
@@ -275,35 +321,35 @@ async function run() {
             res.send(allRiders);
         })
 
-        //get a rider's details
-        app.get('/riders/:id',verifyToken,verifyAdmin,async (req,res)=>{
-            const {id} = req.params;
-            const rider = await ridersCollection.findOne({_id : new ObjectId(id)});
+        //get a rider's details - admin
+        app.get('/riders/:id', verifyToken, verifyAdmin, async (req, res) => {
+            const { id } = req.params;
+            const rider = await ridersCollection.findOne({ _id: new ObjectId(id) });
             res.send(rider);
         })
 
-        //update rider status --approve or reject
-        app.patch('/riders/:id',verifyToken,verifyAdmin,async (req,res)=>{
+        //update rider status --approve or reject - admin
+        app.patch('/riders/:id', verifyToken, verifyAdmin, async (req, res) => {
             const id = req.params.id;
             const status = req.body.status;
             const email = req.body.email;
 
-            const afterUpdate = await ridersCollection.updateOne({_id : new ObjectId(id)},{
-                $set : {
-                    status : status
+            const afterUpdate = await ridersCollection.updateOne({ _id: new ObjectId(id) }, {
+                $set: {
+                    status: status
                 }
             })
 
             let updateRole = {};
 
-            if(status === "approved"){
-                updateRole = await usersCollection.updateOne({email : email},{
-                    $set : {
-                        currentRole : "rider"
+            if (status === "approved") {
+                updateRole = await usersCollection.updateOne({ email: email }, {
+                    $set: {
+                        currentRole: "rider"
                     }
                 })
             }
-            else{
+            else {
                 updateRole = await usersCollection.updateOne({ email: email }, {
                     $set: {
                         currentRole: "user"
@@ -311,20 +357,21 @@ async function run() {
                 })
             }
 
-            res.send({afterUpdate : afterUpdate,
-                updateRole : updateRole
+            res.send({
+                afterUpdate: afterUpdate,
+                updateRole: updateRole
             })
         })
 
-        //get all users
-        app.get('/users',verifyToken,verifyAdmin,async (req,res)=>{
+        //get all users - admin
+        app.get('/users', verifyToken, verifyAdmin, async (req, res) => {
             const searchText = req.query.searchText;
             const query = {};
 
-            if(searchText){
+            if (searchText) {
                 query.$or = [
-                    {displayName : {$regex: searchText, $options : 'i'}},
-                    {email : {$regex: searchText, $options : 'i'}}
+                    { displayName: { $regex: searchText, $options: 'i' } },
+                    { email: { $regex: searchText, $options: 'i' } }
                 ]
             }
 
@@ -332,40 +379,40 @@ async function run() {
             res.send(users);
         })
 
-        //get one user
-        app.get('/users/:id',verifyToken, verifyAdmin, async (req,res)=>{
+        //get one user - admin
+        app.get('/users/:id', verifyToken, verifyAdmin, async (req, res) => {
             const id = req.params.id;
-            const user = await usersCollection.findOne({_id : new ObjectId(id)});
+            const user = await usersCollection.findOne({ _id: new ObjectId(id) });
             res.send(user);
         })
 
         //get one user but send only their role
-        app.get('/users/:email/role',verifyToken,async (req,res)=>{
+        app.get('/users/:email/role', verifyToken, async (req, res) => {
             const email = req.params.email;
-            const user = await usersCollection.findOne({email : email});
-            res.send({role : user?.currentRole || 'user'});
+            const user = await usersCollection.findOne({ email: email });
+            res.send({ role: user?.currentRole || 'user' });
         })
 
-        //update user role
-        app.patch('/users/:id',verifyToken, verifyAdmin,async (req,res)=>{
+        //update user role -admin
+        app.patch('/users/:id', verifyToken, verifyAdmin, async (req, res) => {
             const id = req.params.id;
             const roleInfo = req.body;
 
             //find this user to check their previousRole to make it thier currentRole
-            const thisUser = await usersCollection.findOne({_id : new ObjectId(id)});
+            const thisUser = await usersCollection.findOne({ _id: new ObjectId(id) });
 
             //if currentRole comes '' from front-end, that means he is getting removed from admin, so set their previousRole to their currentRole,
             /* this will update the roleInfo object that has come from front-end,
             where the currentRole was empty, now it will be whatever their previousRole was
             */
-            if(roleInfo.currentRole === ''){
+            if (roleInfo.currentRole === '') {
                 roleInfo.currentRole = thisUser.previousRole;
             }
 
-            const afterUpdate = await usersCollection.updateOne({_id : new ObjectId(id)},{
-                $set : {
-                    currentRole : roleInfo.currentRole, //roleInfo updated here in backend, from '' to whatever their previousRole was
-                    previousRole : roleInfo.previousRole //previousRole being set to whatever their currentRole was, which has come from front-end
+            const afterUpdate = await usersCollection.updateOne({ _id: new ObjectId(id) }, {
+                $set: {
+                    currentRole: roleInfo.currentRole, //roleInfo updated here in backend, from '' to whatever their previousRole was
+                    previousRole: roleInfo.previousRole //previousRole being set to whatever their currentRole was, which has come from front-end
                 }
             });
 

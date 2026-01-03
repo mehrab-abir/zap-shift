@@ -88,7 +88,7 @@ const MyParcels = () => {
   }
 
   return (
-    <div className="w-11/12 md:w-10/12 mx-auto my-5">
+    <div className="">
       {isFetching && (
         <p>
           <i>fetching data...</i>
@@ -117,18 +117,27 @@ const MyParcels = () => {
                   <th>{index + 1}</th>
                   <td className="font-semibold">{parcel.parcelName}</td>
                   <td>
-                    {parcel.trackingId ? parcel.trackingId : "Need payment"}
+                    {parcel.trackingId ? parcel.trackingId : "Payment required"}
                   </td>
                   <td>
                     {parcel.paymentStatus === "Paid" ? (
                       <span className="text-green-400 font-semibold">Paid</span>
                     ) : (
-                      <button onClick={()=>handlePayment(parcel)} className="text-red-500 font-semibold cursor-pointer">
+                      <button
+                        onClick={() => handlePayment(parcel)}
+                        className="text-red-500 font-semibold cursor-pointer"
+                      >
                         Pay Now
                       </button>
                     )}
                   </td>
-                  <td>...</td>
+                  <td
+                    className={`${parcel.deliveryStatus && "text-yellow-500"}`}
+                  >
+                    {parcel.deliveryStatus
+                      ? parcel.deliveryStatus
+                      : "Payment required"}
+                  </td>
                   <td className="font-semibold">${parcel.deliveryFee}</td>
                   <td className="flex items-center gap-4">
                     <button className="cursor-pointer">
