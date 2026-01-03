@@ -11,7 +11,7 @@ const useRole = () => {
         queryKey : ["user-role",user?.email],
         queryFn : async ()=>{
             const response = await axios.get(`/users/${user?.email}/role`);
-            console.log(response);
+            // console.log(response);
             return response.data.role;
         }
     })

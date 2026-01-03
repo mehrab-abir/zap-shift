@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../Hook/useAxios";
 import { FaFileShield } from "react-icons/fa6";
@@ -8,15 +8,16 @@ import userAvatar from '../../assets/userAvatar.png';
 
 const ManageUsers = () => {
   const axios = useAxios();
+  const [searchText, setSearchText] = useState('');
 
   const {
     isLoading,
     data: users = [],
     refetch,
   } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", searchText],
     queryFn: async () => {
-      const response = await axios.get("/users");
+      const response = await axios.get(`/users?searchText=${searchText}`);
       return response.data;
     },
   });
@@ -59,19 +60,21 @@ const ManageUsers = () => {
     updateUserRole(user, "");
   };
 
-  if (isLoading) {
-    return (
-      <p>
-        <i>Loading...</i>
-      </p>
-    );
-  }
-
   return (
     <div className="w-11/12 md:w-10/12 mx-auto my-10 bg-surface p-10">
       <h1 className="text-2xl md:text-4xl font-bold my-6">
         Manage Users ({users.length})
       </h1>
+
+      <div>
+        <input
+          onChange={(e) => setSearchText(e.target.value)}
+          type="text"
+          className="input outline-none"
+          value={searchText}
+          placeholder="Search by name or email"
+        />
+      </div>
 
       {/* users table */}
       <div>
@@ -89,55 +92,69 @@ const ManageUsers = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user, index) => {
-                const userProfile = user?.photoURL || userAvatar;
-                return (
-                  <tr key={user._id}>
-                    <th>{index + 1}</th>
-                    <td>{user.displayName}</td>
-                    <td>{user.email}</td>
-                    <td>
-                      <div className="mask mask-squircle h-12 w-12">
-                        <img
-                          src={userProfile}
-                          alt="Avatar Tailwind CSS Component"
-                        />
-                      </div>
-                    </td>
-                    <td className={`${user.currentRole === 'admin' && 'text-lime-600'} font-semibold`}>{user.currentRole.toUpperCase()}</td>
-                    <td className="align-middle space-x-4">
-                      <button
-                        onClick={() => makeAdmin(user)}
-                        className="cursor-pointer"
-                        disabled={user.currentRole === "admin"}
-                        title="make admin"
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-6">
+                    <i>Loading...</i>
+                  </td>
+                </tr>
+              ) : (
+                users.map((user, index) => {
+                  const userProfile = user?.photoURL || userAvatar;
+                  return (
+                    <tr key={user._id}>
+                      <th>{index + 1}</th>
+                      <td>{user.displayName}</td>
+                      <td>{user.email}</td>
+                      <td>
+                        <div className="mask mask-squircle h-12 w-12">
+                          <img
+                            src={userProfile}
+                            alt="Avatar Tailwind CSS Component"
+                          />
+                        </div>
+                      </td>
+                      <td
+                        className={`${
+                          user.currentRole === "admin" && "text-lime-600"
+                        } font-semibold`}
                       >
-                        <FaFileShield
-                          className={`text-2xl  ${
-                            user.currentRole === "admin"
-                              ? "text-gray-300 cursor-not-allowed"
-                              : "text-blue-600"
-                          }`}
-                        />
-                      </button>
-                      <button
-                        onClick={() => removeFromAdmin(user)}
-                        className="cursor-pointer"
-                        disabled={user.currentRole !== "admin"}
-                        title="remove from admin"
-                      >
-                        <FiShieldOff
-                          className={`text-2xl  ${
-                            user.currentRole !== "admin"
-                              ? "text-gray-300 cursor-not-allowed"
-                              : "text-red-500"
-                          }`}
-                        />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
+                        {user.currentRole.toUpperCase()}
+                      </td>
+                      <td className="align-middle space-x-4">
+                        <button
+                          onClick={() => makeAdmin(user)}
+                          className="cursor-pointer tooltip"
+                          disabled={user.currentRole === "admin"}
+                          data-tip="make admin"
+                        >
+                          <FaFileShield
+                            className={`text-2xl  ${
+                              user.currentRole === "admin"
+                                ? "text-gray-300 cursor-not-allowed"
+                                : "text-blue-600"
+                            }`}
+                          />
+                        </button>
+                        <button
+                          onClick={() => removeFromAdmin(user)}
+                          className="cursor-pointer tooltip"
+                          disabled={user.currentRole !== "admin"}
+                          data-tip="remove from admin"
+                        >
+                          <FiShieldOff
+                            className={`text-2xl  ${
+                              user.currentRole !== "admin"
+                                ? "text-gray-300 cursor-not-allowed"
+                                : "text-red-500"
+                            }`}
+                          />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>

@@ -318,7 +318,17 @@ async function run() {
 
         //get all users
         app.get('/users',verifyToken,verifyAdmin,async (req,res)=>{
-            const users = await usersCollection.find().toArray();
+            const searchText = req.query.searchText;
+            const query = {};
+
+            if(searchText){
+                query.$or = [
+                    {displayName : {$regex: searchText, $options : 'i'}},
+                    {email : {$regex: searchText, $options : 'i'}}
+                ]
+            }
+
+            const users = await usersCollection.find(query).toArray();
             res.send(users);
         })
 
