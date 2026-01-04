@@ -43,9 +43,9 @@ const RiderPage = () => {
   const updateWorkStatus = async (workStatus) => {
     try {
       const response = await axios.patch(`/rider/work-status/${rider?._id}`, {
-        workStatus,
+        workStatus
       });
-      if (response.data.modifiedCount) {
+      if (response.data.acknowledged) {
         setCurrentWorkStatus(workStatus);
         Swal.fire(`Your are now ${workStatus}`);
       }
@@ -79,14 +79,14 @@ const RiderPage = () => {
         <div className="my-5 flex gap-4">
           <button
             onClick={() => goOnline()}
-            className={`btn btn-sm text-xl text-white font-semibold ${currentWorkStatus === "available" ? "bg-gray-300" : "bg-blue-600"}`}
+            className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${currentWorkStatus === "available" ? "bg-gray-300" : "bg-blue-600"}`}
             disabled={currentWorkStatus === "available"}
           >
             Go Online
           </button>
           <button
             onClick={() => goOffline()}
-            className={`btn btn-sm text-xl text-white font-semibold ${currentWorkStatus === "offline" ? "bg-gray-300" : "bg-red-500"}`}
+            className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${currentWorkStatus === "offline" ? "bg-gray-300" : "bg-red-500"}`}
             disabled={currentWorkStatus === "offline"}
           >
             Go Offline

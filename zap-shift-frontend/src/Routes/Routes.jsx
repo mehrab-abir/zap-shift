@@ -24,7 +24,7 @@ import AdminRoute from "./AdminRoute";
 import PendingPickupParcels from "../Pages/Dashboard/PendingPickup";
 import RiderPage from "../Pages/Dashboard/RiderPage";
 import RiderRoute from "./RiderRoute";
-import RiderApplication from "../Pages/Dashboard/RiderApplication";
+import RiderApplicationStatus from "../Pages/Dashboard/RiderApplicationStatus";
 
 const router = createBrowserRouter([
   {
@@ -129,7 +129,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/rider-application",
-        Component : RiderApplication
+        Component : RiderApplicationStatus
       },
       {
         path: "/dashboard/riders",

@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import useAxios from "../../Hook/useAxios";
 import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const PendingPickupParcels = () => {
   const axios = useAxios();
   const [deliveryStatus, setDeliveryStatus] = useState("");
   const [searchText, setSearchText] = useState("");
+  const assignRiderModalRef = useRef();
 
-  const { data: parcels = [], isLoading } = useQuery({
+  const [selectedParcel, setSelectedParcel] = useState({});
+
+  const { data: parcels = [], isLoading , refetch : refetchParcel} = useQuery({
     queryKey: ["pending-pickup", deliveryStatus, searchText],
     queryFn: async () => {
       const response = await axios.get(
@@ -16,6 +20,41 @@ const PendingPickupParcels = () => {
       return response.data;
     },
   });
+
+  //query for assigning rider
+  const { data: riders = [] } = useQuery({
+    queryKey: ["'riders", selectedParcel],
+    queryFn: async () => {
+      const response = await axios.get(
+        `/assign-pickup/riders?status=approved&riderDistrict=${selectedParcel?.senderDistrict}&workStatus=available`
+      );
+      return response.data;
+    },
+  });
+
+  const openModal = (parcel) => {
+    setSelectedParcel(parcel);
+    assignRiderModalRef.current.showModal();
+  };
+
+  //assign rider
+  const assignRider = async (rider)=>{
+    const assignedRiderInfo = {
+        riderId : rider._id, 
+        riderName : rider.riderName,
+        riderEmail : rider.riderEmail,
+        parcelId : selectedParcel._id
+    }
+
+    const response = await axios.patch("/parcels/rider-assigned",assignedRiderInfo);
+    console.log(response);
+    if(response.data.updatedParcel.acknowledged){
+        assignRiderModalRef.current.close();
+        refetchParcel();
+        Swal.fire(`Rider assigned`);
+    }
+  }
+
   return (
     <div className="bg-surface p-10 rounded-xl">
       <h1 className="text-2xl md:text-4xl font-bold my-5">
@@ -68,13 +107,17 @@ const PendingPickupParcels = () => {
               ) : (
                 parcels.map((parcel, index) => {
                   return (
-                    <tr>
+                    <tr key={parcel._id}>
                       <th>{index + 1}</th>
                       <td>{parcel.parcelName}</td>
                       <td>{parcel.senderEmail}</td>
                       <td>{parcel.senderDistrict}</td>
                       <td>${parcel.deliveryFee}</td>
-                      <td className={`${parcel.paymentStatus === "Paid" && "text-green-500"}`}>
+                      <td
+                        className={`${
+                          parcel.paymentStatus === "Paid" && "text-green-500"
+                        }`}
+                      >
                         {parcel.paymentStatus}
                       </td>
                       <td className="text-yellow-500">
@@ -82,8 +125,11 @@ const PendingPickupParcels = () => {
                       </td>
                       <td>{new Date(parcel.createdAt).toLocaleDateString()}</td>
                       <td>
-                        <button className="btn btn-sm bg-primary text-black">
-                          Assign Rider
+                        <button
+                          onClick={() => openModal(parcel)}
+                          className="btn btn-sm bg-primary text-black"
+                        >
+                          Find Riders
                         </button>
                       </td>
                     </tr>
@@ -94,6 +140,55 @@ const PendingPickupParcels = () => {
           </table>
         </div>
       </div>
+
+      {/* assign rider modal */}
+      <dialog
+        ref={assignRiderModalRef}
+        className="modal modal-bottom sm:modal-middle"
+      >
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">
+            Available Riders ({riders.length})
+          </h3>
+          <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Rider District</th>
+                  <th>Work Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {riders.map((rider, index) => {
+                      return (
+                        <tr key={rider._id}>
+                          <th>{index + 1}</th>
+                          <td>{rider.riderName}</td>
+                          <td>{rider.riderDistrict}</td>
+                          <td>{rider.workStatus}</td>
+                          <td>
+                            <button onClick={()=>assignRider(rider)} className="btn btn-sm bg-green-800 text-[#ebebeb]">
+                              Assign
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+              </tbody>
+            </table>
+          </div>
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };

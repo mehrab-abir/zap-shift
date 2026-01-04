@@ -290,6 +290,7 @@ async function run() {
         app.patch('/rider/work-status/:id',async (req,res)=>{
             const {id} = req.params;
             const {workStatus} = req.body;
+
             const afterUpdate = await ridersCollection.updateOne({_id: new ObjectId(id)},{
                 $set : {
                     workStatus : workStatus
@@ -352,6 +353,40 @@ async function run() {
 
             const allRiders = await ridersCollection.find(query).toArray();
             res.send(allRiders);
+        })
+
+        //get all riders who are - approved, in same district as sender and available
+        app.get('/assign-pickup/riders',verifyToken, verifyAdmin,async (req,res)=>{
+            const {status, riderDistrict, workStatus} = req.query;
+            const query = {
+                status, riderDistrict, workStatus
+            };
+
+            const riders = await ridersCollection.find(query).toArray();
+            res.send(riders);
+        })
+
+        //update parcel's deliveryStatus and rider's work status after a rider is assigned to a parcel
+        app.patch("/parcels/rider-assigned",async (req,res)=>{
+            const {riderId,riderName, riderEmail, parcelId } = req.body;
+
+            //find the parcel and update its deliveryStatus
+            const updatedParcel = await parcelCollection.updateOne({_id: new ObjectId(parcelId)},{
+                $set : {
+                    deliveryStatus : "In-transit",
+                    riderName : riderName,
+                    riderEmail : riderEmail
+                }
+            })
+
+            //find the rider and update their workStatus to On a delivery
+            const updatedRider = await ridersCollection.updateOne({_id:new ObjectId(riderId)},{
+                $set : {
+                    workStatus : "On a delivery"
+                }
+            })
+
+            res.send({updatedParcel,updatedRider});
         })
 
         //get a rider's details - admin

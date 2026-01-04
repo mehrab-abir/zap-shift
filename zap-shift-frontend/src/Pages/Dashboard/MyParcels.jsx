@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { use } from "react";
 // import { useEffect } from "react";
 // import { useState } from "react";
@@ -13,6 +13,9 @@ import Swal from "sweetalert2";
 const MyParcels = () => {
   const { user } = use(AuthContext);
   const axios = useAxios();
+
+  const [selectedParcel, setSelectedParcel] = useState({});
+  const parcelDetailsModal = useRef();
 
   const {
     data: myParcels = [],
@@ -87,6 +90,12 @@ const MyParcels = () => {
     }
   }
 
+  //view parcel details
+  const viewDetails = (parcel)=>{
+    setSelectedParcel(parcel);
+    parcelDetailsModal.current.showModal();
+  }
+
   return (
     <div className="">
       {isFetching && (
@@ -115,7 +124,12 @@ const MyParcels = () => {
               return (
                 <tr key={parcel._id}>
                   <th>{index + 1}</th>
-                  <td className="font-semibold">{parcel.parcelName}</td>
+                  <td
+                    onClick={() => viewDetails(parcel)}
+                    className="font-semibold cursor-pointer hover:underline"
+                  >
+                    {parcel.parcelName}
+                  </td>
                   <td>
                     {parcel.trackingId ? parcel.trackingId : "Payment required"}
                   </td>
@@ -140,7 +154,10 @@ const MyParcels = () => {
                   </td>
                   <td className="font-semibold">${parcel.deliveryFee}</td>
                   <td className="flex items-center gap-4">
-                    <button className="cursor-pointer">
+                    <button
+                      onClick={() => viewDetails(parcel)}
+                      className="cursor-pointer"
+                    >
                       <CiSearch className="text-2xl hover:text-lime-500" />
                     </button>
                     <button
@@ -163,6 +180,31 @@ const MyParcels = () => {
           </tbody>
         </table>
       </div>
+
+      {/* view parcel details modal */}
+      <dialog ref={parcelDetailsModal} className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Details</h3>
+
+          <div className="my-3">
+            <p><span className="font-semibold">Parcel Name:</span> {selectedParcel.parcelName}</p>
+            <p><span className="font-semibold">Sender Name:</span> {selectedParcel.senderName}</p>
+            <p><span className="font-semibold">Delivery Fee:</span> ${selectedParcel.deliveryFee}</p>
+            <p><span className="font-semibold">Rider Name:</span> {selectedParcel.riderName}</p>
+            <p><span className="font-semibold">Rider Email:</span> {selectedParcel.riderEmail}</p>
+            <p><span className="font-semibold">Delivery Status:</span> {selectedParcel.deliveryStatus}</p>
+            <p><span className="font-semibold">Tracking ID:</span> {selectedParcel.trackingId}</p>
+          </div>
+
+
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn bt-sm bg-gray-600 text-white">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };

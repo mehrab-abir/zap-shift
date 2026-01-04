@@ -3,7 +3,7 @@ import useAxios from '../../Hook/useAxios';
 import { useQuery } from '@tanstack/react-query';
 import { AuthContext } from '../../Context/Auth/AuthContext';
 
-const RiderApplication = () => {
+const RiderApplicationStatus = () => {
     const {user} = use(AuthContext);
     const axios = useAxios();
 
@@ -27,4 +27,4 @@ const RiderApplication = () => {
     );
 };
 
-export default RiderApplication;
+export default RiderApplicationStatus;

@@ -47,7 +47,7 @@ const DashboardLayout = () => {
         </div>
 
         <div
-          className={`absolute top-0 left-0 w-60 h-screen bg-accent p-10 justify-center shadow-lg z-30 ${
+          className={`fixed top-0 left-0 w-60 h-screen bg-accent p-10 justify-center shadow-lg z-30 ${
             !openDrawer && "-translate-x-full"
           } transition-all duration-500`}
           data-theme="dark"
