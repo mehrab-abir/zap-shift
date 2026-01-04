@@ -32,22 +32,27 @@ const RiderDetails = () => {
           <h1 className="text-2xl md:text-4xl font-bold mb-6">Rider Details</h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Field label="Name" value={rider?.name} />
-            <Field label="Email" value={rider?.email} />
+            <Field label="Name" value={rider?.riderName} />
+
+            <Field label="Email" value={rider?.riderEmail} />
 
             <Field label="Driving License" value={rider?.drivingLicense} />
+
             <Field label="Phone Number" value={rider?.phoneNumber} />
 
             <Field label="Bike Model" value={rider?.bikeModel} />
+
             <Field
               label="Bike Registration Number"
               value={rider?.bikeRegistrationNumber}
             />
 
             <Field label="Current Address" value={rider?.currentAddress} />
+
             <Field label="Rider Region" value={rider?.riderRegion} />
 
-            <Field label="Status" value={rider?.status} />
+            <Field label="Status" value={rider?.status} className="text-green-500" />
+            
             <Field label="Applied At" value={rider?.appliedAt} />
           </div>
         </div>

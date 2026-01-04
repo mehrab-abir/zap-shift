@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { Outlet } from "react-router";
 import Header from "../../Shared Components/Header";
 import Footer from "../../Shared Components/Footer";
@@ -6,9 +6,25 @@ import { IoChevronForwardCircleOutline } from "react-icons/io5";
 import { IoChevronBackCircleOutline } from "react-icons/io5";
 import { NavLink } from "react-router";
 import useRole from "../../Hook/useRole";
+import { AuthContext } from "../../Context/Auth/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import useAxios from "../../Hook/useAxios";
 
 const DashboardLayout = () => {
+  const {user} = use(AuthContext);
   const { role } = useRole();
+  const axios = useAxios();
+
+  const {data : thisUser} = useQuery({
+    queryKey : ["rider-application", user?.email],
+    queryFn : async ()=>{
+      const response = await axios.get(`/rider-application/${user?.email}`);
+      // console.log("Rider application status",response.data);
+      return response.data;
+    }
+  })
+
+  // console.log("This user",thisUser?.appliedToBeRider);
 
   const [openDrawer, setOpenDrawer] = useState(false);
   return (
@@ -65,30 +81,46 @@ const DashboardLayout = () => {
             >
               Payment History
             </NavLink>
-            {role === "admin" && (
+
+            {role === "rider" && (
               <NavLink
-                to="/dashboard/riders"
+                to="/dashboard/rider-page"
                 className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
               >
-                All Riders
+                Rider Page
               </NavLink>
             )}
-            {role === "admin" && (
+
+            {thisUser?.appliedToBeRider && (
               <NavLink
-                to="/dashboard/pending-pickup-parcels"
+                to="/dashboard/rider-application"
                 className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
               >
-                Assign Rider To Parcel
+                Rider Application
               </NavLink>
             )}
 
             {role === "admin" && (
-              <NavLink
-                to="/dashboard/manage-users"
-                className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
-              >
-                Manage Users
-              </NavLink>
+              <>
+                <NavLink
+                  to="/dashboard/riders"
+                  className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                >
+                  All Riders
+                </NavLink>
+                <NavLink
+                  to="/dashboard/pending-pickup-parcels"
+                  className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                >
+                  Assign Rider To Parcel
+                </NavLink>
+                <NavLink
+                  to="/dashboard/manage-users"
+                  className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                >
+                  Manage Users
+                </NavLink>
+              </>
             )}
           </nav>
         </div>

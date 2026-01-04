@@ -7,12 +7,12 @@ const useRole = () => {
     const {user} = use(AuthContext);
     const axios = useAxios();
 
-    const {isLoading, data : role = 'user'} = useQuery({
+    const {isLoading, data : role} = useQuery({
         queryKey : ["user-role",user?.email],
         queryFn : async ()=>{
             const response = await axios.get(`/users/${user?.email}/role`);
-            // console.log(response);
-            return response.data.role;
+            // console.log("In useRole hook",response.data.role);
+            return response.data.currentRole;
         }
     })
 

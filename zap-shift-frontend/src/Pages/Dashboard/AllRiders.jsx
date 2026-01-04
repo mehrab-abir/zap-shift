@@ -25,12 +25,13 @@ const AllRiders = () => {
   });
 
   const updateRiderStatus = async (rider, status) => {
+    // console.log("Rider email while updating status: ", rider.riderEmail);
     const response = await axios.patch(`/riders/${rider._id}`, {
-      status,
-      email: rider.email,
+      status, email : rider.riderEmail,
     });
-    console.log(response);
+    // console.log(response);
     if (response.data.afterUpdate.modifiedCount) {
+      // console.log("After rider status update: ",response.data);
       Swal.fire({
         title: `Rider status set to ${status}`,
         icon: "success",

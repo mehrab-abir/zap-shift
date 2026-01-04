@@ -22,6 +22,9 @@ import RiderDetails from "../Pages/Dashboard/RiderDetails";
 import ManageUsers from "../Pages/Dashboard/ManageUsers";
 import AdminRoute from "./AdminRoute";
 import PendingPickupParcels from "../Pages/Dashboard/PendingPickup";
+import RiderPage from "../Pages/Dashboard/RiderPage";
+import RiderRoute from "./RiderRoute";
+import RiderApplication from "../Pages/Dashboard/RiderApplication";
 
 const router = createBrowserRouter([
   {
@@ -117,6 +120,18 @@ const router = createBrowserRouter([
         Component: PaymentHistory,
       },
       {
+        path: "/dashboard/rider-page",
+        element: (
+          <RiderRoute>
+            <RiderPage></RiderPage>
+          </RiderRoute>
+        ),
+      },
+      {
+        path: "/dashboard/rider-application",
+        Component : RiderApplication
+      },
+      {
         path: "/dashboard/riders",
         element: (
           <AdminRoute>
@@ -134,9 +149,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/pending-pickup-parcels",
-        element : <AdminRoute>
-          <PendingPickupParcels></PendingPickupParcels>
-        </AdminRoute>
+        element: (
+          <AdminRoute>
+            <PendingPickupParcels></PendingPickupParcels>
+          </AdminRoute>
+        ),
       },
       {
         path: "/dashboard/manage-users",

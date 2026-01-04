@@ -270,6 +270,33 @@ async function run() {
             res.send(afterPost);
         })
 
+        //rider application status
+        app.get('/rider-application/:email',async (req,res)=>{
+            const {email} = req.params;
+            const user = await usersCollection.findOne({email:email}, {
+                projection : {appliedToBeRider : 1}
+            });
+            res.send(user);
+        })
+
+        //get a rider's details -- for rider
+        app.get('/rider/details/:email',async(req, res)=>{
+            const {email} = req.params;
+            const rider = await ridersCollection.findOne({riderEmail : email});
+            res.send(rider);
+        })
+
+        //update work status of a rider, "available, in-a-trip, offline" --for rider
+        app.patch('/rider/work-status/:id',async (req,res)=>{
+            const {id} = req.params;
+            const {workStatus} = req.body;
+            const afterUpdate = await ridersCollection.updateOne({_id: new ObjectId(id)},{
+                $set : {
+                    workStatus : workStatus
+                }
+            })
+            res.send(afterUpdate);
+        })
 
         //get all parcels - admin
         app.get('/admin/parcels', verifyToken, verifyAdmin, async (req, res) => {
@@ -298,6 +325,12 @@ async function run() {
         app.post('/riders', verifyToken, async (req, res) => {
             const rider = req.body;
             const postRider = await ridersCollection.insertOne(rider);
+
+            await usersCollection.updateOne({email : rider.riderEmail},{
+                $set : {
+                    appliedToBeRider : true
+                }
+            })
             res.send(postRider);
         })
 
@@ -390,7 +423,7 @@ async function run() {
         app.get('/users/:email/role', verifyToken, async (req, res) => {
             const email = req.params.email;
             const user = await usersCollection.findOne({ email: email });
-            res.send({ role: user?.currentRole || 'user' });
+            res.send({ currentRole: user?.currentRole || 'user' });
         })
 
         //update user role -admin
