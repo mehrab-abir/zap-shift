@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 
 const PendingPickupParcels = () => {
   const axios = useAxios();
+
   const [deliveryStatus, setDeliveryStatus] = useState("");
   const [searchText, setSearchText] = useState("");
   const assignRiderModalRef = useRef();
@@ -26,7 +27,7 @@ const PendingPickupParcels = () => {
     queryKey: ["'riders", selectedParcel],
     queryFn: async () => {
       const response = await axios.get(
-        `/assign-pickup/riders?status=approved&riderDistrict=${selectedParcel?.senderDistrict}&workStatus=available`
+        `/assign-pickup/riders?status=approved&riderDistrict=${selectedParcel?.senderDistrict}&workStatus=Available`
       );
       return response.data;
     },
@@ -77,7 +78,7 @@ const PendingPickupParcels = () => {
           <option value="all">All Parcels</option>
           <option value="Pending to pickup">Pending to Pickup</option>
           <option value="Rider Assigned">Rider Assigned</option>
-          <option value="In-transit">In transit</option>
+          <option value="In transit">In transit</option>
           <option value="delivered">Delivered</option>
         </select>
       </div>
@@ -123,14 +124,16 @@ const PendingPickupParcels = () => {
                       </td>
                       <td
                         className={`${
-                          parcel.deliveryStatus === "Pending to pickup"
+                          parcel.deliveryStatus === "Looking for rider"
                             ? "text-yellow-500"
                             : parcel.deliveryStatus === "Rider Assigned"
                             ? "text-blue-500"
+                            : parcel.deliveryStatus === "Rider arriving"
+                            ? "text-purple-500"
                             : parcel.deliveryStatus === "Delivered"
                             ? "text-green-500"
                             : "text-primary"
-                        }`}
+                        } font-semibold`}
                       >
                         {parcel.deliveryStatus}
                       </td>
@@ -139,12 +142,12 @@ const PendingPickupParcels = () => {
                         <button
                           onClick={() => openModal(parcel)}
                           className={`btn btn-sm ${
-                            parcel.deliveryStatus !== "Pending to pickup"
+                            parcel.deliveryStatus !== "Looking for rider"
                               ? "bg-gray-200 text-gray-600"
                               : "bg-primary text-black"
                           }`}
                           disabled={
-                            parcel.deliveryStatus !== "Pending to pickup"
+                            parcel.deliveryStatus !== "Looking for rider"
                           }
                         >
                           Find Riders
@@ -192,12 +195,12 @@ const PendingPickupParcels = () => {
                             <button
                               onClick={() => assignRider(rider)}
                               className={`btn btn-sm ${
-                                rider.workStatus !== "available"
+                                rider.workStatus !== "Available"
                                   ? "bg-gray-300 text-black"
                                   : "bg-green-800 text-[#ebebeb]"
                               }`}
                             >
-                              {rider.workStatus !== "available"
+                              {rider.workStatus !== "Available"
                                 ? "Not Available"
                                 : "Assign"}
                             </button>

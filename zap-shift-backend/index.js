@@ -69,6 +69,7 @@ async function run() {
         const paymentCollection = db.collection("payments");
         const usersCollection = db.collection("users");
         const ridersCollection = db.collection("riders");
+        const completedDeliveriesCollection = db.collection("completed-deliveries");
 
         //middleware for admin verification
         //must be called after 'verifyToken' in the api definition
@@ -298,13 +299,6 @@ async function run() {
             res.send(afterUpdate);
         })
 
-        //get all assigned parcels --for rider
-        app.get("/parcels/assigned-to-me/:riderEmail",async (req,res)=>{
-            const riderEmail = req.params.riderEmail;
-            const assigned_parcels = await parcelCollection.find({riderEmail : riderEmail}).toArray();
-            res.send(assigned_parcels);
-        })
-
         //get all parcels - admin
         app.get('/admin/parcels', verifyToken, verifyAdmin, async (req, res) => {
             const { searchText, deliveryStatus } = req.query;
@@ -316,8 +310,8 @@ async function run() {
             else if(deliveryStatus === "Rider Assigned"){
                 query.deliveryStatus = "Rider Assigned";
             }
-            else if (deliveryStatus === 'In-transit') {
-                query.deliveryStatus = "In-transit";
+            else if (deliveryStatus === 'In transit') {
+                query.deliveryStatus = "In transit";
             }
             else if (deliveryStatus === "Delivered") {
                 query.deliveryStatus = "Delivered";
@@ -364,9 +358,10 @@ async function run() {
             res.send(allRiders);
         })
 
-        //get all riders who are - approved, in same district as sender and available
+        //get all riders who are - approved, in same district as sender and workStatus is available
         app.get('/assign-pickup/riders',verifyToken, verifyAdmin,async (req,res)=>{
-            const {status, riderDistrict, workStatus} = req.query;
+            let {status, riderDistrict, workStatus} = req.query;
+
             const query = {
                 status, riderDistrict, workStatus
             };
@@ -398,7 +393,14 @@ async function run() {
             res.send({updatedParcel,updatedRider});
         })
 
-        //rider accepts/rejects a parcel
+        //get all assigned parcels --for rider
+        app.get("/parcels/assigned-to-me/:riderEmail", async (req, res) => {
+            const riderEmail = req.params.riderEmail;
+            const assigned_parcels = await parcelCollection.find({ riderEmail: riderEmail, deliveryStatus : {$ne : "Delivered"}}).toArray();
+            res.send(assigned_parcels);
+        })
+
+        //rider accepts/rejects/confirm-pickup of a parcel
         app.patch('/parcel-request/:parcelId',async (req,res)=>{
             let {riderResponse, riderEmail, riderName} = req.body;
             const parcelId = req.params.parcelId;
@@ -408,6 +410,14 @@ async function run() {
             if(riderResponse === "accept"){
                 workStatus = "Picking up a parcel";
                 deliveryStatus = "Rider arriving";
+            }
+            else if(riderResponse === "confirm pickup"){
+                workStatus = "delivering a parcel";
+                deliveryStatus = "In transit";
+            }
+            else if(riderResponse === "complete delivery"){
+                workStatus = "Available";
+                deliveryStatus = "Delivered";
             }
             else{
                 workStatus = "Available";
@@ -433,6 +443,26 @@ async function run() {
             })
 
             res.send({updatedParcelDoc, updatedWorkStatus});
+        })
+
+        //complete a delivery
+        app.post('/rider/complete-delivery',async(req,res)=>{
+            const {parcelName, fare, senderName, senderEmail, senderDistrict, receiverName, receiverEmail, receiverDistrict, riderName, riderEmail} = req.body;
+
+            const completedAt = new Date();
+
+            const completedDelivery = { parcelName, fare, senderName, senderEmail, senderDistrict, receiverName, receiverEmail, receiverDistrict, riderName, riderEmail, completedAt };
+
+            const afterPost = await completedDeliveriesCollection.insertOne(completedDelivery);
+
+            res.send(afterPost);
+        })
+
+        //get all completed deliveries of a rider
+        app.get('/rider/my-completed-deliveries/:email',async(req,res)=>{
+            const email = req.params.email;
+            const completedDeliveries = await completedDeliveriesCollection.find({riderEmail : email}).toArray();
+            res.send(completedDeliveries);
         })
 
         //get a rider's details - admin

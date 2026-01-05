@@ -84,25 +84,18 @@ const RiderPage = () => {
           <button
             onClick={() => goOnline()}
             className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${
-              currentWorkStatus.toLowerCase() !== "offline"
-                ? "bg-gray-300"
-                : "bg-blue-600"
+              currentWorkStatus === "Available" ? "bg-gray-300" : "bg-blue-600"
             }`}
-            disabled={
-              currentWorkStatus.toLowerCase() === "available" ||
-              currentWorkStatus.toLowerCase() === "On a delivery"
-            }
+            disabled={currentWorkStatus === "Available"}
           >
             Go Online
           </button>
           <button
             onClick={() => goOffline()}
             className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${
-              currentWorkStatus.toLowerCase() === "offline"
-                ? "bg-gray-300"
-                : "bg-red-500"
+              currentWorkStatus !== "Available" ? "bg-gray-300" : "bg-red-500"
             }`}
-            disabled={currentWorkStatus.toLowerCase() === "offline"}
+            disabled={currentWorkStatus !== "Available"}
           >
             Go Offline
           </button>
