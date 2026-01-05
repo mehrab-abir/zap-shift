@@ -36,6 +36,7 @@ const RiderPage = () => {
     queryKey: ["rider", user?.email],
     queryFn: async () => {
       const response = await axios.get(`/rider/details/${user?.email}`);
+      setCurrentWorkStatus(response.data.workStatus);
       return response.data;
     },
   });
@@ -79,8 +80,8 @@ const RiderPage = () => {
         <div className="my-5 flex gap-4">
           <button
             onClick={() => goOnline()}
-            className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${currentWorkStatus === "available" ? "bg-gray-300" : "bg-blue-600"}`}
-            disabled={currentWorkStatus === "available"}
+            className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${currentWorkStatus !== "offline" ? "bg-gray-300" : "bg-blue-600"}`}
+            disabled={currentWorkStatus === "available" || currentWorkStatus === "On a delivery"}
           >
             Go Online
           </button>

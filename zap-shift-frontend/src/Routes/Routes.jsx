@@ -25,6 +25,7 @@ import PendingPickupParcels from "../Pages/Dashboard/PendingPickup";
 import RiderPage from "../Pages/Dashboard/RiderPage";
 import RiderRoute from "./RiderRoute";
 import RiderApplicationStatus from "../Pages/Dashboard/RiderApplicationStatus";
+import MyDeliveries from "../Pages/Dashboard/MyDeliveries";
 
 const router = createBrowserRouter([
   {
@@ -120,6 +121,10 @@ const router = createBrowserRouter([
         Component: PaymentHistory,
       },
       {
+        path: "/dashboard/rider-application",
+        Component : RiderApplicationStatus
+      },
+      {
         path: "/dashboard/rider-page",
         element: (
           <RiderRoute>
@@ -128,8 +133,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/rider-application",
-        Component : RiderApplicationStatus
+        path : "/dashboard/my-deliveries",
+        element : <RiderRoute>
+          <MyDeliveries></MyDeliveries>
+        </RiderRoute>
       },
       {
         path: "/dashboard/riders",

@@ -5,6 +5,7 @@ import { LiaTimesCircleSolid } from "react-icons/lia";
 import { MdDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
 import { AuthContext } from "../Context/Auth/AuthContext";
+import userAvatar from '../assets/userAvatar.png';
 
 const Header = () => {
   const { user, logOutUser } = use(AuthContext);
@@ -25,6 +26,7 @@ const Header = () => {
   };
 
   // console.log(user);
+  const userProfile = user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
 
   return (
     <header className="w-full md:w-10/12 mx-auto py-5 bg-surface md:rounded-xl">
@@ -39,7 +41,9 @@ const Header = () => {
         </div>
         <Link to="/" className="flex">
           <img src={logo} alt="" />
-          <h1 className="font-bold text-xl md:text-3xl self-center md:self-end -ml-4">ZapShift</h1>
+          <h1 className="font-bold text-xl md:text-3xl self-center md:self-end -ml-4">
+            ZapShift
+          </h1>
         </Link>
 
         {/* navabr for large screens */}
@@ -94,7 +98,11 @@ const Header = () => {
 
           {user ? (
             <div className="flex ietms-center gap-2">
-              <img src={user?.photoURL} alt="" className="w-10 md:w-12 rounded-full" />
+              <img
+                src={userProfile}
+                alt=""
+                className="w-10 md:w-12 rounded-full"
+              />
               <button
                 onClick={handleLogOut}
                 className="btn btn-sm md:btn-md self-center bg-surface border border-red-500"

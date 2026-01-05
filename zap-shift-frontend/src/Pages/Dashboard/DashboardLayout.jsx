@@ -83,12 +83,21 @@ const DashboardLayout = () => {
             </NavLink>
 
             {role === "rider" && (
+              <>
               <NavLink
                 to="/dashboard/rider-page"
                 className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
               >
                 Rider Page
               </NavLink>
+              <NavLink
+                to="/dashboard/my-deliveries"
+                className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+              >
+                My Deliveries
+              </NavLink>
+              </>
+              
             )}
 
             {thisUser?.appliedToBeRider && (

@@ -76,6 +76,7 @@ const PendingPickupParcels = () => {
         >
           <option value="all">All Parcels</option>
           <option value="Pending to pickup">Pending to Pickup</option>
+          <option value="Rider Assigned">Rider Assigned</option>
           <option value="In-transit">In transit</option>
           <option value="delivered">Delivered</option>
         </select>
@@ -120,14 +121,31 @@ const PendingPickupParcels = () => {
                       >
                         {parcel.paymentStatus}
                       </td>
-                      <td className="text-yellow-500">
+                      <td
+                        className={`${
+                          parcel.deliveryStatus === "Pending to pickup"
+                            ? "text-yellow-500"
+                            : parcel.deliveryStatus === "Rider Assigned"
+                            ? "text-blue-500"
+                            : parcel.deliveryStatus === "Delivered"
+                            ? "text-green-500"
+                            : "text-primary"
+                        }`}
+                      >
                         {parcel.deliveryStatus}
                       </td>
                       <td>{new Date(parcel.createdAt).toLocaleDateString()}</td>
                       <td>
                         <button
                           onClick={() => openModal(parcel)}
-                          className="btn btn-sm bg-primary text-black"
+                          className={`btn btn-sm ${
+                            parcel.deliveryStatus !== "Pending to pickup"
+                              ? "bg-gray-200 text-gray-600"
+                              : "bg-primary text-black"
+                          }`}
+                          disabled={
+                            parcel.deliveryStatus !== "Pending to pickup"
+                          }
                         >
                           Find Riders
                         </button>
@@ -171,8 +189,17 @@ const PendingPickupParcels = () => {
                           <td>{rider.riderDistrict}</td>
                           <td>{rider.workStatus}</td>
                           <td>
-                            <button onClick={()=>assignRider(rider)} className="btn btn-sm bg-green-800 text-[#ebebeb]">
-                              Assign
+                            <button
+                              onClick={() => assignRider(rider)}
+                              className={`btn btn-sm ${
+                                rider.workStatus !== "available"
+                                  ? "bg-gray-300 text-black"
+                                  : "bg-green-800 text-[#ebebeb]"
+                              }`}
+                            >
+                              {rider.workStatus !== "available"
+                                ? "Not Available"
+                                : "Assign"}
                             </button>
                           </td>
                         </tr>

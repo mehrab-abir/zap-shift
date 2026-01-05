@@ -146,17 +146,18 @@ const MyParcels = () => {
                     )}
                   </td>
                   <td
-                    className={`${parcel.deliveryStatus && "text-yellow-500"}`}
+                    className={`${parcel.deliveryStatus === "Pending to pickup" ? "text-yellow-500" : parcel.deliveryStatus === "Rider Assigned" ? "text-blue-500" : parcel.deliveryStatus === "Rider arriving" ? "text-purple-500" : parcel.deliveryStatus === "Delivered" && "text-green-500"} font-semibold`}
                   >
                     {parcel.deliveryStatus
                       ? parcel.deliveryStatus
-                      : "Payment required"}
+                      : "Parcel created"}
                   </td>
                   <td className="font-semibold">${parcel.deliveryFee}</td>
                   <td className="flex items-center gap-4">
                     <button
                       onClick={() => viewDetails(parcel)}
-                      className="cursor-pointer"
+                      className="cursor-pointer tooltip"
+                      data-tip="View details"
                     >
                       <CiSearch className="text-2xl hover:text-lime-500" />
                     </button>

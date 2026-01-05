@@ -299,6 +299,13 @@ async function run() {
             res.send(afterUpdate);
         })
 
+        //get all assigned parcels --for rider
+        app.get("/parcels/assigned-to-me/:riderEmail",async (req,res)=>{
+            const riderEmail = req.params.riderEmail;
+            const assigned_parcels = await parcelCollection.find({riderEmail : riderEmail}).toArray();
+            res.send(assigned_parcels);
+        })
+
         //get all parcels - admin
         app.get('/admin/parcels', verifyToken, verifyAdmin, async (req, res) => {
             const { searchText, deliveryStatus } = req.query;
@@ -307,8 +314,11 @@ async function run() {
             if (deliveryStatus === "Pending to pickup") {
                 query.deliveryStatus = "Pending to pickup";
             }
-            else if (deliveryStatus === 'In transit') {
-                query.deliveryStatus = "In transit";
+            else if(deliveryStatus === "Rider Assigned"){
+                query.deliveryStatus = "Rider Assigned";
+            }
+            else if (deliveryStatus === 'In-transit') {
+                query.deliveryStatus = "In-transit";
             }
             else if (deliveryStatus === "Delivered") {
                 query.deliveryStatus = "Delivered";
@@ -373,13 +383,13 @@ async function run() {
             //find the parcel and update its deliveryStatus
             const updatedParcel = await parcelCollection.updateOne({_id: new ObjectId(parcelId)},{
                 $set : {
-                    deliveryStatus : "In-transit",
+                    deliveryStatus : "Rider Assigned",
                     riderName : riderName,
                     riderEmail : riderEmail
                 }
             })
 
-            //find the rider and update their workStatus to On a delivery
+            //find the rider and update their workStatus to 'On a delivery'
             const updatedRider = await ridersCollection.updateOne({_id:new ObjectId(riderId)},{
                 $set : {
                     workStatus : "On a delivery"

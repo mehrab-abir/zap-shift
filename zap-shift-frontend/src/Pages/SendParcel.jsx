@@ -80,7 +80,7 @@ const SendParcel = () => {
             if (afterPost.data.insertedId) {
               Swal.fire({
                 title: "Thank you.",
-                text: "Courier driver is on the way...",
+                text: "Parcel created. You can check the delivery status in the parcel tracking page.",
                 icon: "success",
               });
               navigate("/dashboard/myparcels");
