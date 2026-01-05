@@ -48,7 +48,7 @@ const RiderPage = () => {
       });
       if (response.data.acknowledged) {
         setCurrentWorkStatus(workStatus);
-        Swal.fire(`Your are now ${workStatus}`);
+        Swal.fire(`${workStatus}`);
       }
     } catch (err) {
       console.log(err);
@@ -108,6 +108,8 @@ const RiderPage = () => {
 
           <Field label="Driving License" value={rider?.drivingLicense} />
 
+          <Field label="NID" value={rider?.nidNumber} />
+
           <Field label="Phone Number" value={rider?.phoneNumber} />
 
           <Field label="Bike Model" value={rider?.bikeModel} />
@@ -121,9 +123,11 @@ const RiderPage = () => {
 
           <Field label="Rider Region" value={rider?.riderRegion} />
 
+          <Field label="Rider District" value={rider?.riderDistrict} />
+
           <Field label="Status" value={rider?.status} />
 
-          <Field label="Applied At" value={rider?.appliedAt} />
+          <Field label="Applied At" value={new Date(rider?.appliedAt).toLocaleString()} />
         </div>
       </div>
     </div>

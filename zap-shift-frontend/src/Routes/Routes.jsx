@@ -21,11 +21,12 @@ import AllRiders from "../Pages/Dashboard/AllRiders";
 import RiderDetails from "../Pages/Dashboard/RiderDetails";
 import ManageUsers from "../Pages/Dashboard/ManageUsers";
 import AdminRoute from "./AdminRoute";
-import PendingPickupParcels from "../Pages/Dashboard/PendingPickup";
+import AssignRider from "../Pages/Dashboard/AssignRider";
 import RiderPage from "../Pages/Dashboard/RiderPage";
 import RiderRoute from "./RiderRoute";
 import RiderApplicationStatus from "../Pages/Dashboard/RiderApplicationStatus";
 import MyDeliveries from "../Pages/Dashboard/MyDeliveries";
+import ParcelTracking from "../Pages/ParcelTracking";
 
 const router = createBrowserRouter([
   {
@@ -61,9 +62,9 @@ const router = createBrowserRouter([
         hydrateFallbackElement: <p>Loading...</p>,
       },
       {
-        path: "about-us",
-        Component: AboutUs,
-      },
+        path : "/track-parcel/:trackingId",
+        Component : ParcelTracking
+      }
     ],
   },
   {
@@ -158,7 +159,7 @@ const router = createBrowserRouter([
         path: "/dashboard/pending-pickup-parcels",
         element: (
           <AdminRoute>
-            <PendingPickupParcels></PendingPickupParcels>
+            <AssignRider></AssignRider>
           </AdminRoute>
         ),
       },

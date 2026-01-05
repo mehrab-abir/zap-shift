@@ -3,7 +3,7 @@ import useAxios from "../../Hook/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
-const PendingPickupParcels = () => {
+const AssignRider = () => {
   const axios = useAxios();
 
   const [deliveryStatus, setDeliveryStatus] = useState("");
@@ -44,7 +44,8 @@ const PendingPickupParcels = () => {
         riderId : rider._id, 
         riderName : rider.riderName,
         riderEmail : rider.riderEmail,
-        parcelId : selectedParcel._id
+        parcelId : selectedParcel._id,
+        trackingId : selectedParcel.trackingId
     }
 
     const response = await axios.patch("/parcels/rider-assigned",assignedRiderInfo);
@@ -76,10 +77,10 @@ const PendingPickupParcels = () => {
           onChange={(e) => setDeliveryStatus(e.target.value)}
         >
           <option value="all">All Parcels</option>
-          <option value="Pending to pickup">Pending to Pickup</option>
-          <option value="Rider Assigned">Rider Assigned</option>
+          <option value="Looking for rider">Looking for rider</option>
+          <option value="Rider Assigned">Rider assigned</option>
           <option value="In transit">In transit</option>
-          <option value="delivered">Delivered</option>
+          <option value="Delivered">Delivered</option>
         </select>
       </div>
 
@@ -130,6 +131,8 @@ const PendingPickupParcels = () => {
                             ? "text-blue-500"
                             : parcel.deliveryStatus === "Rider arriving"
                             ? "text-purple-500"
+                            : parcel.deliveryStatus === "In transit"
+                            ? "text-accent"
                             : parcel.deliveryStatus === "Delivered"
                             ? "text-green-500"
                             : "text-primary"
@@ -223,4 +226,4 @@ const PendingPickupParcels = () => {
   );
 };
 
-export default PendingPickupParcels;
+export default AssignRider;

@@ -68,10 +68,10 @@ const Header = () => {
           </NavLink>
 
           <NavLink
-            to="/about-us"
+            to="/rider-registration"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
           >
-            About Us
+            Be a Rider
           </NavLink>
           {user && (
             <NavLink

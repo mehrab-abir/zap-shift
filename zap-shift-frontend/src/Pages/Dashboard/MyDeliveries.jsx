@@ -40,6 +40,7 @@ const MyDeliveries = () => {
         riderResponse: riderResponse,
         riderEmail: parcel.riderEmail,
         riderName: parcel.riderName,
+        trackingId : parcel.trackingId
       });
 
       if (response.data.updatedParcelDoc.acknowledged) {
@@ -164,7 +165,7 @@ const MyDeliveries = () => {
                     onClick={() => confirmPickup(assigned_parcel)}
                     className={`btn btn-sm text-black border-none outline-none ${
                       assigned_parcel.deliveryStatus !== "Rider arriving"
-                        ? "bg-green-300"
+                        ? "bg-green-300 cursor-not-allowed"
                         : "bg-green-500"
                     }`}
                     disabled={
@@ -178,7 +179,7 @@ const MyDeliveries = () => {
                     className={`btn btn-sm text-black  border-none outline-none ${
                       assigned_parcel.deliveryStatus === "In transit"
                         ? "bg-red-400"
-                        : "bg-red-200"
+                        : "bg-red-200 cursor-not-allowed"
                     }`}
                     disabled={assigned_parcel.deliveryStatus !== "In transit"}
                   >

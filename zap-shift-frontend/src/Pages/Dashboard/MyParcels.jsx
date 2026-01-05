@@ -79,7 +79,8 @@ const MyParcels = () => {
         parcelName: parcel.parcelName,
         deliveryFee: parcel.deliveryFee,
         senderEmail: parcel.senderEmail,
-        receiverName : parcel.receiverName
+        receiverName : parcel.receiverName,
+        trackingId : parcel.trackingId
       };
 
       const response = await axios.post('/create-checkout-session',paymentInfo);
@@ -131,7 +132,8 @@ const MyParcels = () => {
                     {parcel.parcelName}
                   </td>
                   <td>
-                    {parcel.trackingId ? parcel.trackingId : "Payment required"}
+                    <Link className="font-semibold hover:underline hover:text-lime-500" to={`/track-parcel/${parcel.trackingId}`}>{parcel.trackingId}</Link>
+                    
                   </td>
                   <td>
                     {parcel.paymentStatus === "Paid" ? (
@@ -146,9 +148,9 @@ const MyParcels = () => {
                     )}
                   </td>
                   <td
-                    className={`${parcel.deliveryStatus === "Pending to pickup" ? "text-yellow-500" : parcel.deliveryStatus === "Rider Assigned" ? "text-blue-500" : parcel.deliveryStatus === "Rider arriving" ? "text-purple-500" : parcel.deliveryStatus === "Delivered" && "text-green-500"} font-semibold`}
+                    className={`${parcel.deliveryStatus === "In transit" ? "text-accent" : parcel.deliveryStatus === "Rider Assigned" ? "text-blue-500" : parcel.deliveryStatus === "Rider arriving" ? "text-purple-500" : parcel.deliveryStatus === "Delivered" ? "text-green-500" : "text-primary"} font-semibold`}
                   >
-                    {parcel.deliveryStatus}
+                    {parcel.deliveryStatus ? parcel.deliveryStatus : "Parcel created"}
                   </td>
                   <td className="font-semibold">${parcel.deliveryFee}</td>
                   <td className="flex items-center gap-4">
