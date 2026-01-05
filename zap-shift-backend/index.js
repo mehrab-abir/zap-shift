@@ -90,7 +90,6 @@ async function run() {
             res.send(afterPost)
         })
 
-
         //get all my parcels - as normal user
         app.get('/parcels', verifyToken, async (req, res) => {
             const { email } = req.query;
@@ -392,11 +391,48 @@ async function run() {
             //find the rider and update their workStatus to 'On a delivery'
             const updatedRider = await ridersCollection.updateOne({_id:new ObjectId(riderId)},{
                 $set : {
-                    workStatus : "On a delivery"
+                    workStatus : "One Parcel Assigned"
                 }
             })
 
             res.send({updatedParcel,updatedRider});
+        })
+
+        //rider accepts/rejects a parcel
+        app.patch('/parcel-request/:parcelId',async (req,res)=>{
+            let {riderResponse, riderEmail, riderName} = req.body;
+            const parcelId = req.params.parcelId;
+
+            let workStatus = '';
+
+            if(riderResponse === "accept"){
+                workStatus = "Picking up a parcel";
+                deliveryStatus = "Rider arriving";
+            }
+            else{
+                workStatus = "Available";
+                deliveryStatus = "Looking for rider";
+                riderEmail = "";
+                riderName = "";
+            }
+
+            //update delivery status of the parcel based rider response
+            const updatedParcelDoc = await parcelCollection.updateOne({ _id: new ObjectId(parcelId) }, {
+                $set: {
+                    deliveryStatus: deliveryStatus,
+                    riderEmail: riderEmail,
+                    riderName: riderName
+                }
+            });
+
+            //update work status of the rider based on his response
+            const updatedWorkStatus = await ridersCollection.updateOne({riderEmail:riderEmail},{
+                $set : {
+                    workStatus : workStatus
+                }  
+            })
+
+            res.send({updatedParcelDoc, updatedWorkStatus});
         })
 
         //get a rider's details - admin

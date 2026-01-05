@@ -56,10 +56,10 @@ const RiderPage = () => {
   };
 
   const goOnline = () => {
-    updateWorkStatus("available");
+    updateWorkStatus("Available");
   };
   const goOffline = () => {
-    updateWorkStatus("offline");
+    updateWorkStatus("Offline");
   };
 
   if (isLoading) {
@@ -75,20 +75,34 @@ const RiderPage = () => {
       <div className="bg-surface p-6 md:p-10 rounded-xl shadow">
         <h1 className="text-2xl md:text-4xl font-bold mb-6">Rider Page</h1>
 
-        <h3 className="font-semibold text-2xl my-4">You are now <span className="text-blue-600">{currentWorkStatus}</span></h3>
+        <h3 className="font-semibold text-2xl my-4">
+          Current Status:
+          <span className="text-blue-600"> {currentWorkStatus}</span>
+        </h3>
 
         <div className="my-5 flex gap-4">
           <button
             onClick={() => goOnline()}
-            className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${currentWorkStatus !== "offline" ? "bg-gray-300" : "bg-blue-600"}`}
-            disabled={currentWorkStatus === "available" || currentWorkStatus === "On a delivery"}
+            className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${
+              currentWorkStatus.toLowerCase() !== "offline"
+                ? "bg-gray-300"
+                : "bg-blue-600"
+            }`}
+            disabled={
+              currentWorkStatus.toLowerCase() === "available" ||
+              currentWorkStatus.toLowerCase() === "On a delivery"
+            }
           >
             Go Online
           </button>
           <button
             onClick={() => goOffline()}
-            className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${currentWorkStatus === "offline" ? "bg-gray-300" : "bg-red-500"}`}
-            disabled={currentWorkStatus === "offline"}
+            className={`btn btn-sm text-xl text-white font-semibold border-none outline-none ${
+              currentWorkStatus.toLowerCase() === "offline"
+                ? "bg-gray-300"
+                : "bg-red-500"
+            }`}
+            disabled={currentWorkStatus.toLowerCase() === "offline"}
           >
             Go Offline
           </button>
@@ -97,7 +111,6 @@ const RiderPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Field label="Name" value={rider?.riderName} />
 
-         
           <Field label="Email" value={rider?.riderEmail} />
 
           <Field label="Driving License" value={rider?.drivingLicense} />

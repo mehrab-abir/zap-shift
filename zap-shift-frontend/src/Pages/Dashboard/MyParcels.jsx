@@ -148,9 +148,7 @@ const MyParcels = () => {
                   <td
                     className={`${parcel.deliveryStatus === "Pending to pickup" ? "text-yellow-500" : parcel.deliveryStatus === "Rider Assigned" ? "text-blue-500" : parcel.deliveryStatus === "Rider arriving" ? "text-purple-500" : parcel.deliveryStatus === "Delivered" && "text-green-500"} font-semibold`}
                   >
-                    {parcel.deliveryStatus
-                      ? parcel.deliveryStatus
-                      : "Parcel created"}
+                    {parcel.deliveryStatus}
                   </td>
                   <td className="font-semibold">${parcel.deliveryFee}</td>
                   <td className="flex items-center gap-4">
