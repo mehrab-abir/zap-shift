@@ -84,6 +84,19 @@ async function run() {
             next();
         }
 
+        //middleware for rider verification
+        //must be called after 'verifyToken' in the api definition
+        const verifyRider = async (req, res, next) => {
+            const email = req.token_email;
+
+            const user = await usersCollection.findOne({ email: email });
+
+            if (!user || user.currentRole !== "rider") {
+                return res.status(403).send({ message: "forbidden access" });
+            }
+            next();
+        }
+
         //tracking log
         const logTracking = async (trackingId, deliveryStatus) => {
             const log = {
@@ -433,7 +446,7 @@ async function run() {
         })
 
         //rider accepts/rejects/confirm-pickup of a parcel
-        app.patch('/parcel-request/:parcelId',async (req,res)=>{
+        app.patch('/parcel-request/:parcelId',verifyToken, verifyRider,async (req,res)=>{
             let {riderResponse, riderEmail, riderName, trackingId} = req.body;
             const parcelId = req.params.parcelId;
 
@@ -482,7 +495,7 @@ async function run() {
         })
 
         //complete a delivery
-        app.post('/rider/complete-delivery',async(req,res)=>{
+        app.post('/rider/complete-delivery',verifyToken, verifyRider,async(req,res)=>{
             const {parcelName, fare, senderName, senderEmail, senderDistrict, receiverName, receiverEmail, receiverDistrict, riderName, riderEmail} = req.body;
 
             const completedAt = new Date();
@@ -495,7 +508,7 @@ async function run() {
         })
 
         //get all completed deliveries of a rider
-        app.get('/rider/my-completed-deliveries/:email',async(req,res)=>{
+        app.get('/rider/my-completed-deliveries/:email',verifyToken, verifyRider,async(req,res)=>{
             const email = req.params.email;
             const completedDeliveries = await completedDeliveriesCollection.find({riderEmail : email}).toArray();
             res.send(completedDeliveries);
@@ -597,6 +610,38 @@ async function run() {
             });
 
             res.send(afterUpdate);
+        })
+
+        //Dashboard home page apis --user
+        app.get('/count-sent-parcel/:email',verifyToken, async (req,res)=>{
+            const email = req.params.email;
+            const yourSentParcels = await parcelCollection.countDocuments({senderEmail : email});
+            res.send(yourSentParcels);
+        })
+
+        //Dashboard home page apis --rider
+        app.get('/count-deliveries/:email',verifyToken, verifyRider,async (req,res)=>{
+            const email = req.params.email;
+            const yourDeliveriesCount = await completedDeliveriesCollection.countDocuments({riderEmail : email});
+            res.send(yourDeliveriesCount);
+        })
+
+        //get total income of a rider
+        app.get("/total-income/:email",verifyToken, verifyRider, async (req,res)=>{
+            const email = req.params.email;
+            const result = await completedDeliveriesCollection.aggregate([
+                {$match : {riderEmail : email}},
+                {
+                    $group : {
+                        _id : null,
+                        totalIncome : {$sum : {$toDouble : "$fare"}}
+                    }
+                }
+            ]).toArray();
+
+            const totalIncome = result[0]?.totalIncome || 0;
+
+            res.send(totalIncome);
         })
 
         // Send a ping to confirm a successful connection

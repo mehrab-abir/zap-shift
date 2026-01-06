@@ -64,6 +64,12 @@ const DashboardLayout = () => {
               Home
             </NavLink>
             <NavLink
+              to="/dashboard"
+              className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+            >
+              Dashboard Home
+            </NavLink>
+            <NavLink
               to="/dashboard/myparcels"
               className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
             >
@@ -84,20 +90,19 @@ const DashboardLayout = () => {
 
             {role === "rider" && (
               <>
-              <NavLink
-                to="/dashboard/rider-page"
-                className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
-              >
-                Rider Page
-              </NavLink>
-              <NavLink
-                to="/dashboard/my-deliveries"
-                className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
-              >
-                My Deliveries
-              </NavLink>
+                <NavLink
+                  to="/dashboard/rider-page"
+                  className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                >
+                  Rider Page
+                </NavLink>
+                <NavLink
+                  to="/dashboard/my-deliveries"
+                  className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                >
+                  My Deliveries
+                </NavLink>
               </>
-              
             )}
 
             {thisUser?.appliedToBeRider && (
@@ -135,7 +140,7 @@ const DashboardLayout = () => {
         </div>
       </div>
 
-      <div className="p-10">
+      <div className="py-2 md:p-10">
         <Outlet></Outlet>
       </div>
 

@@ -107,17 +107,17 @@ const MyParcels = () => {
       <h1 className="text-2xl font-bold">My Parcels ({myParcels.length})</h1>
 
       <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2">
-        <table className="table">
+        <table className="table table-sm md:table-md">
           {/* head */}
           <thead>
             <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Tracking Id</th>
-              <th>Payment Status</th>
-              <th>Delivery Status</th>
-              <th>Delivery Fees</th>
-              <th>Action</th>
+              <th className="text-center">#</th>
+              <th className="text-center">Name</th>
+              <th className="text-center">Tracking Id</th>
+              <th className="text-center">Payment Status</th>
+              <th className="text-center">Delivery Status</th>
+              <th className="text-center">Delivery Fees</th>
+              <th className="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -127,15 +127,19 @@ const MyParcels = () => {
                   <th>{index + 1}</th>
                   <td
                     onClick={() => viewDetails(parcel)}
-                    className="font-semibold cursor-pointer hover:underline"
+                    className="font-semibold cursor-pointer hover:underline text-center"
                   >
                     {parcel.parcelName}
                   </td>
-                  <td>
-                    <Link className="font-semibold hover:underline hover:text-lime-500" to={`/track-parcel/${parcel.trackingId}`}>{parcel.trackingId}</Link>
-                    
+                  <td className="text-center">
+                    <Link
+                      className="font-semibold hover:underline hover:text-lime-500 text-xs md:text-base"
+                      to={`/track-parcel/${parcel.trackingId}`}
+                    >
+                      {parcel.trackingId}
+                    </Link>
                   </td>
-                  <td>
+                  <td className="text-center">
                     {parcel.paymentStatus === "Paid" ? (
                       <span className="text-green-400 font-semibold">Paid</span>
                     ) : (
@@ -148,32 +152,48 @@ const MyParcels = () => {
                     )}
                   </td>
                   <td
-                    className={`${parcel.deliveryStatus === "In transit" ? "text-accent" : parcel.deliveryStatus === "Rider Assigned" ? "text-blue-500" : parcel.deliveryStatus === "Rider arriving" ? "text-purple-500" : parcel.deliveryStatus === "Delivered" ? "text-green-500" : "text-primary"} font-semibold`}
+                    className={`${
+                      parcel.deliveryStatus === "In transit"
+                        ? "text-accent"
+                        : parcel.deliveryStatus === "Rider Assigned"
+                        ? "text-blue-500"
+                        : parcel.deliveryStatus === "Rider arriving"
+                        ? "text-purple-500"
+                        : parcel.deliveryStatus === "Delivered"
+                        ? "text-green-500"
+                        : "text-primary"
+                    } font-semibold text-center`}
                   >
-                    {parcel.deliveryStatus ? parcel.deliveryStatus : "Parcel created"}
+                    {parcel.deliveryStatus
+                      ? parcel.deliveryStatus
+                      : "Parcel created"}
                   </td>
-                  <td className="font-semibold">${parcel.deliveryFee}</td>
-                  <td className="flex items-center gap-4">
-                    <button
-                      onClick={() => viewDetails(parcel)}
-                      className="cursor-pointer tooltip"
-                      data-tip="View details"
-                    >
-                      <CiSearch className="text-2xl hover:text-lime-500" />
-                    </button>
-                    <button
-                      disabled={parcel.paymentStatus === "Paid"}
-                      className={`cursor-pointer`}
-                      onClick={() => handleDelete(parcel._id)}
-                    >
-                      <RiDeleteBin6Line
-                        className={`text-2xl  ${
-                          parcel.paymentStatus === "Paid"
-                            ? "text-gray-400 hover:text-gray-400"
-                            : "hover:text-red-500"
-                        }`}
-                      />
-                    </button>
+                  <td className="font-semibold text-center">
+                    ${parcel.deliveryFee}
+                  </td>
+                  <td className="align-middle">
+                    <div className="flex gap-4">
+                      <button
+                        onClick={() => viewDetails(parcel)}
+                        className="cursor-pointer tooltip"
+                        data-tip="View details"
+                      >
+                        <CiSearch className="text-2xl hover:text-lime-500" />
+                      </button>
+                      <button
+                        disabled={parcel.paymentStatus === "Paid"}
+                        className={`cursor-pointer`}
+                        onClick={() => handleDelete(parcel._id)}
+                      >
+                        <RiDeleteBin6Line
+                          className={`text-2xl  ${
+                            parcel.paymentStatus === "Paid"
+                              ? "text-gray-400 hover:text-gray-400"
+                              : "hover:text-red-500"
+                          }`}
+                        />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               );

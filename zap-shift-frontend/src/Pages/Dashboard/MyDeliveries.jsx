@@ -96,7 +96,7 @@ const MyDeliveries = () => {
   }
 
   return (
-    <div className="bg-surface p-10">
+    <div className="bg-surface p-5 md:p-10 w-11/12 mx-auto">
       <h1 className="text-2xl md:text-4xl font-bold my-5">My Deliveries</h1>
 
       <h3 className="text-xl font-bold text-accent">Parcel request:</h3>
@@ -193,8 +193,8 @@ const MyDeliveries = () => {
       </div>
 
       {/* my completed deliveries */}
-      <div className="mt-10 border border-gray-400 rounded-lg p-5">
-        <h2 className="text-2xl font-bold text-accent mb-2">
+      <div className="mt-10 rounded-lg p-2 md:p-5">
+        <h2 className="text-2xl font-bold text-accent mb-5">
           Your completed Deliveries
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
