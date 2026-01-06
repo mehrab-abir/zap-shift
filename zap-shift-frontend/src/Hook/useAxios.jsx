@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { AuthContext } from "../Context/Auth/AuthContext";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://zap-shift-backend-theta.vercel.app",
 });
 
 const useAxios = () => {
