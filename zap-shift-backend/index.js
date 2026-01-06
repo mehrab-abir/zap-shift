@@ -644,6 +644,21 @@ async function run() {
             res.send(totalIncome);
         })
 
+
+        //Dashboard homepage apis --admin
+        app.get("/parcel-deliverystatus",verifyToken, verifyAdmin, async(req,res)=>{
+            const result = await parcelCollection.aggregate([
+                {
+                    $group : {
+                        _id : "$deliveryStatus",
+                        count : { $sum : 1}
+                    }
+                }
+            ]).toArray();
+
+            res.send(result);
+        })
+
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");

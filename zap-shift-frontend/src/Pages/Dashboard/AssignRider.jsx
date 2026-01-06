@@ -138,7 +138,7 @@ const AssignRider = () => {
                             : "text-primary"
                         } font-semibold`}
                       >
-                        {parcel.deliveryStatus}
+                        {parcel.deliveryStatus ? parcel.deliveryStatus : "Parcel Created"}
                       </td>
                       <td>{new Date(parcel.createdAt).toLocaleDateString()}</td>
                       <td>

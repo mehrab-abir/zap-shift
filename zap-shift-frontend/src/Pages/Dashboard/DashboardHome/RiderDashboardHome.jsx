@@ -18,7 +18,7 @@ const RiderDashboardHome = () => {
   });
 
   const {data : totalIncome} = useQuery({
-    queryKey : ["total-income"],
+    queryKey : ["total-income", user?.email],
     queryFn : async ()=>{
         const response = await axios.get(`/total-income/${user?.email}`);
         return response.data;

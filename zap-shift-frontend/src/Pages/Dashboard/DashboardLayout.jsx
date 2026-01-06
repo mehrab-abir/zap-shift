@@ -123,7 +123,7 @@ const DashboardLayout = () => {
                   All Riders
                 </NavLink>
                 <NavLink
-                  to="/dashboard/pending-pickup-parcels"
+                  to="/dashboard/allparcels"
                   className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
                 >
                   Assign Rider To Parcel

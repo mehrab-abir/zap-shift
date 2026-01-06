@@ -156,7 +156,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/pending-pickup-parcels",
+        path: "/dashboard/allparcels",
         element: (
           <AdminRoute>
             <AssignRider></AssignRider>

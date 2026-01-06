@@ -145,7 +145,7 @@ const MyParcels = () => {
                     ) : (
                       <button
                         onClick={() => handlePayment(parcel)}
-                        className="text-red-500 font-semibold cursor-pointer"
+                        className="text-red-500 font-semibold cursor-pointer hover:underline"
                       >
                         Pay Now
                       </button>
@@ -161,6 +161,8 @@ const MyParcels = () => {
                         ? "text-purple-500"
                         : parcel.deliveryStatus === "Delivered"
                         ? "text-green-500"
+                        : parcel.deliveryStatus === "Looking for rider"
+                        ? "text-yellow-500"
                         : "text-primary"
                     } font-semibold text-center`}
                   >
@@ -213,7 +215,7 @@ const MyParcels = () => {
             <p><span className="font-semibold">Delivery Fee:</span> ${selectedParcel.deliveryFee}</p>
             <p><span className="font-semibold">Rider Name:</span> {selectedParcel.riderName}</p>
             <p><span className="font-semibold">Rider Email:</span> {selectedParcel.riderEmail}</p>
-            <p><span className="font-semibold">Delivery Status:</span> {selectedParcel.deliveryStatus}</p>
+            <p><span className="font-semibold">Delivery Status:</span> {selectedParcel.deliveryStatus ? selectedParcel.deliveryStatus : "Parcel Request Placed"}</p>
             <p><span className="font-semibold">Tracking ID:</span> {selectedParcel.trackingId}</p>
           </div>
 
