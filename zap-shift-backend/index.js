@@ -127,13 +127,20 @@ async function run() {
 
         //get all my parcels - as normal user
         app.get('/parcels', verifyToken, async (req, res) => {
-            const { email } = req.query;
+            const { email, searchparcel } = req.query;
+            const query = {};
 
             if (email !== req.token_email) {
                 return res.status(403).send({ message: "forbidden access" });
             }
 
-            const parcels = await parcelCollection.find({ senderEmail: req.token_email }).toArray();
+            query.senderEmail = req.token_email;
+
+            if(searchparcel){
+                query.parcelName = { $regex: searchparcel, $options: 'i' }
+            }
+
+            const parcels = await parcelCollection.find(query).toArray();
             res.send(parcels);
         })
 

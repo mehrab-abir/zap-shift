@@ -5,6 +5,7 @@ import { AuthContext } from "../Context/Auth/AuthContext";
 
 const axiosInstance = axios.create({
   baseURL: "https://zap-shift-backend-theta.vercel.app",
+  // baseURL : "http://localhost:3000",
 });
 
 const useAxios = () => {
