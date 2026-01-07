@@ -106,7 +106,7 @@ const MyParcels = () => {
       )}
       <h1 className="text-2xl font-bold">My Parcels ({myParcels.length})</h1>
 
-      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2">
+      <div className={`overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2 ${myParcels.length <= 4 ? 'h-[50vh]' : 'h-auto'}`}>
         <table className="table table-sm md:table-md">
           {/* head */}
           <thead>

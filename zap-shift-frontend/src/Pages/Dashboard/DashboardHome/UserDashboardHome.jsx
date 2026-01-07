@@ -59,7 +59,7 @@ const UserDashboardHome = () => {
         </button>
       </div>
 
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col md:flex-row md:items-center justify-between">
         {role === "user" && (
         <div className="mt-5">
           <h3 className="text-2xl font-semibold text-lime-600">
@@ -73,6 +73,7 @@ const UserDashboardHome = () => {
           </Link>
         </div>
       )}
+      <div></div>
       <button className="btn btn-sm bg-primary text-black">
         <Link to='/'>Go to Home Page</Link>
       </button>

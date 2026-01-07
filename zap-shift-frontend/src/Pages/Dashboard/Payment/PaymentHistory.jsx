@@ -26,12 +26,10 @@ const PaymentHistory = () => {
 
   return (
     <div className="w-11/12 md:w-10/12 mx-auto">
-      <h1 className="text-2xl md:text-4xl font-bold">
-        Payment History
-      </h1>
+      <h1 className="text-2xl md:text-4xl font-bold">Payment History</h1>
 
       <div className="bg-surface mt-5">
-        <div className="overflow-x-auto">
+        <div className={`overflow-x-auto ${payments.length <=4 ? 'h-[50vh]' : 'h-auto'}`}>
           <table className="table">
             {/* head */}
             <thead>
@@ -49,14 +47,16 @@ const PaymentHistory = () => {
               {payments.map((payment, index) => {
                 return (
                   <tr key={payment._id}>
-                    <th>{index+1}</th>
+                    <th>{index + 1}</th>
                     <td>{payment.parcelName}</td>
                     <td>{payment.receiverName}</td>
                     <td>{payment.amount}</td>
                     <td>{payment.transactionId}</td>
                     <td>{new Date(payment.paidAt).toDateString()}</td>
                     <td>
-                        <button className="btn btn-sm bg-primary text-black">View</button>
+                      <button className="btn btn-sm bg-primary text-black">
+                        View
+                      </button>
                     </td>
                   </tr>
                 );

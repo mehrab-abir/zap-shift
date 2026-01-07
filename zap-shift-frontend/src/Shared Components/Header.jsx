@@ -5,7 +5,7 @@ import { LiaTimesCircleSolid } from "react-icons/lia";
 import { MdDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
 import { AuthContext } from "../Context/Auth/AuthContext";
-import userAvatar from '../assets/userAvatar.png';
+import userAvatar from "../assets/userAvatar.png";
 
 const Header = () => {
   const { user, logOutUser } = use(AuthContext);
@@ -26,7 +26,8 @@ const Header = () => {
   };
 
   // console.log(user);
-  const userProfile = user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
+  const userProfile =
+    user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
 
   return (
     <header className="w-full md:w-10/12 mx-auto py-5 bg-surface md:rounded-xl">
@@ -148,20 +149,25 @@ const Header = () => {
             Home
           </NavLink>
           {user && (
-            <NavLink
-              to="/dashboard"
-              className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-              onClick={() => setOpenMenu(!openMenu)}
-            >
-              Dashboard
-            </NavLink>
+            <>
+              <NavLink
+                to="/dashboard"
+                className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+                onClick={() => setOpenMenu(!openMenu)}
+              >
+                Dashboard
+              </NavLink>
+
+              <NavLink
+                to="/sendparcel"
+                className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+                onClick={() => setOpenMenu(!openMenu)}
+              >
+                Send a Parcel
+              </NavLink>
+            </>
           )}
-          <NavLink
-            to="/sendparcel"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-          >
-            Send a Parcel
-          </NavLink>
+
           <NavLink
             to="/coverage"
             className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
@@ -177,20 +183,31 @@ const Header = () => {
             Be A Rider
           </NavLink>
 
-          <NavLink
-            to="/auth/login"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-            onClick={() => setOpenMenu(!openMenu)}
-          >
-            Log In
-          </NavLink>
-          <NavLink
-            to="/auth/register"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-            onClick={() => setOpenMenu(!openMenu)}
-          >
-            Register
-          </NavLink>
+          {user ? (
+            <button
+              onClick={handleLogOut}
+              className="btn btn-sm md:btn-md self-center bg-surface border border-red-500"
+            >
+              Log Out
+            </button>
+          ) : (
+            <>
+              <NavLink
+                to="/auth/login"
+                className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+                onClick={() => setOpenMenu(!openMenu)}
+              >
+                Log In
+              </NavLink>
+              <NavLink
+                to="/auth/register"
+                className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+                onClick={() => setOpenMenu(!openMenu)}
+              >
+                Register
+              </NavLink>
+            </>
+          )}
         </nav>
       </div>
     </header>
