@@ -52,6 +52,7 @@ const GoogleLogin = () => {
         type="button"
         onClick={googleLogin}
         className="btn bg-surface w-full"
+        disabled={isSubmitting===true}
       >
         <FcGoogle className="text-2xl" />
         {isSubmitting ? <i>Logging In...</i> : "Log In With Google"}

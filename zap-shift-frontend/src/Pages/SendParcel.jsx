@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
@@ -12,6 +12,8 @@ const SendParcel = () => {
   const axios = useAxios();
 
   const serviceCenters = useLoaderData();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const regions = [...new Set(serviceCenters.map((c) => c.region))];
   //   console.log(regions)
   //   console.log(serviceCenters);
@@ -34,6 +36,7 @@ const SendParcel = () => {
 
   const handleParcelDetails = (data) => {
     // console.log(data);
+    setIsSubmitting(true);
 
     const isDocument = data.parcelType === "document";
     const isSameDistrict = data.senderDistrict === data.receiverDistrict;
@@ -88,7 +91,10 @@ const SendParcel = () => {
           })
           .catch((error) => console.log("Post error", error));
       }
-    });
+    })
+    .finally(()=>{
+      setIsSubmitting(false);
+    })
   };
 
   return (
@@ -338,8 +344,9 @@ const SendParcel = () => {
           <button
             type="submit"
             className="btn bg-primary text-black border-none outline-none hover:shadow-md hover:shadow-lime-300 mt-5 w-full"
+            disabled={isSubmitting}
           >
-            Submit
+            {isSubmitting ? <i>Submitting...</i> : 'Submit'}
           </button>
         </form>
       </div>

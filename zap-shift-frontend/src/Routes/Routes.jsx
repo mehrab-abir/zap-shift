@@ -27,6 +27,7 @@ import RiderRoute from "./RiderRoute";
 import RiderApplicationStatus from "../Pages/Dashboard/RiderApplicationStatus";
 import MyDeliveries from "../Pages/Dashboard/MyDeliveries";
 import ParcelTracking from "../Pages/ParcelTracking";
+import LoaderBar from "../Shared Components/LoaderBar";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: () => fetch("/service_center.json"),
-        hydrateFallbackElement: <p>Loading...</p>,
+        hydrateFallbackElement: <LoaderBar></LoaderBar>,
       },
       {
         path: "coverage",
@@ -59,7 +60,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: () => fetch("/service_center.json"),
-        hydrateFallbackElement: <p>Loading...</p>,
+        hydrateFallbackElement: <LoaderBar></LoaderBar>,
       },
       {
         path : "/track-parcel/:trackingId",

@@ -6,6 +6,7 @@ import { LiaTimesSolid } from "react-icons/lia";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { Link } from "react-router";
+import LoaderBar from "../../Shared Components/LoaderBar";
 
 const AllRiders = () => {
   const axios = useAxios();
@@ -50,9 +51,7 @@ const AllRiders = () => {
 
   if (isLoading) {
     return (
-      <p>
-        <i>Loading...</i>
-      </p>
+      <LoaderBar></LoaderBar>
     );
   }
 

@@ -140,7 +140,7 @@ async function run() {
                 query.parcelName = { $regex: searchparcel, $options: 'i' }
             }
 
-            const parcels = await parcelCollection.find(query).toArray();
+            const parcels = await parcelCollection.find(query).sort({createdAt: -1}).toArray();
             res.send(parcels);
         })
 

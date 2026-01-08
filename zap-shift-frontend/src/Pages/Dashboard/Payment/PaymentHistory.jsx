@@ -3,6 +3,7 @@ import React from "react";
 import { use } from "react";
 import { AuthContext } from "../../../Context/Auth/AuthContext";
 import useAxios from "../../../Hook/useAxios";
+import LoaderBar from "../../../Shared Components/LoaderBar";
 
 const PaymentHistory = () => {
   const { user } = use(AuthContext);
@@ -18,9 +19,7 @@ const PaymentHistory = () => {
 
   if (isLoading) {
     return (
-      <p>
-        <i>Loading...</i>
-      </p>
+      <LoaderBar></LoaderBar>
     );
   }
 

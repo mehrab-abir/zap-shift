@@ -6,9 +6,10 @@ import { MdDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
 import { AuthContext } from "../Context/Auth/AuthContext";
 import userAvatar from "../assets/userAvatar.png";
+import LoaderBar from "./LoaderBar";
 
 const Header = () => {
-  const { user, logOutUser } = use(AuthContext);
+  const { user, logOutUser, loading } = use(AuthContext);
 
   const [openMenu, setOpenMenu] = useState(false);
   const [theme, setTheme] = useState(
@@ -28,6 +29,10 @@ const Header = () => {
   // console.log(user);
   const userProfile =
     user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
+
+    if(loading){
+      return <LoaderBar></LoaderBar>
+    }
 
   return (
     <header className="w-full md:w-10/12 mx-auto py-5 bg-surface md:rounded-xl">

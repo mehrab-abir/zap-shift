@@ -3,15 +3,14 @@ import useRole from "../../Hook/useRole";
 import AdminDashboardHome from "./DashboardHome/AdminDashboardHome";
 import RiderDashboardHome from "./DashboardHome/RiderDashboardHome";
 import UserDashboardHome from "./DashboardHome/UserDashboardHome";
+import LoaderBar from "../../Shared Components/LoaderBar";
 
 const DashboardInterface = () => {
   const { isLoading, role } = useRole();
 
   if (isLoading) {
     return (
-      <p>
-        <i>Loading...</i>
-      </p>
+      <LoaderBar></LoaderBar>
     );
   }
 

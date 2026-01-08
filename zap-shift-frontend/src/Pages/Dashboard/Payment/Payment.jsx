@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import useAxios from "../../../Hook/useAxios";
+import LoaderBar from "../../../Shared Components/LoaderBar";
 
 const Payment = () => {
   const { parcelId } = useParams();
@@ -36,7 +37,7 @@ const Payment = () => {
   };
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoaderBar></LoaderBar>;
   }
 
   return (

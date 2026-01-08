@@ -5,6 +5,7 @@ import { AuthContext } from "../../../Context/Auth/AuthContext";
 import useAxios from "../../../Hook/useAxios";
 import { Link } from "react-router";
 import useRole from "../../../Hook/useRole";
+import LoaderBar from "../../../Shared Components/LoaderBar";
 
 const UserDashboardHome = () => {
   const { user, loading } = use(AuthContext);
@@ -21,9 +22,7 @@ const UserDashboardHome = () => {
 
   if (loading) {
     return (
-      <p>
-        <i>Loading...</i>
-      </p>
+      <LoaderBar></LoaderBar>
     );
   }
 

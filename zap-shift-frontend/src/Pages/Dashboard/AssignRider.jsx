@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import useAxios from "../../Hook/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import LoaderBar from "../../Shared Components/LoaderBar";
 
 const AssignRider = () => {
   const axios = useAxios();
@@ -104,7 +105,7 @@ const AssignRider = () => {
               {isLoading ? (
                 <tr>
                   <td>
-                    <i>Loading...</i>
+                    <LoaderBar></LoaderBar>
                   </td>
                 </tr>
               ) : (

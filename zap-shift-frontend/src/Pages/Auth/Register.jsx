@@ -179,6 +179,7 @@ const Register = () => {
             <button
               type="submit"
               className="btn bg-primary w-full text-black rounded-md border-none mt-4 hover:shadow-md hover:shadow-indigo-300"
+              disabled={isSubmitting===true}
             >
               {isSubmitting ? <i>Signing Up...</i> : 'Sign Up'}
             </button>

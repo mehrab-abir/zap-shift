@@ -3,6 +3,7 @@ import useAxios from "../../Hook/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../../Context/Auth/AuthContext";
 import Swal from "sweetalert2";
+import LoaderBar from "../../Shared Components/LoaderBar";
 
 const MyDeliveries = () => {
   const { user } = use(AuthContext);
@@ -89,9 +90,7 @@ const MyDeliveries = () => {
 
   if (isLoading) {
     return (
-      <p>
-        <i>Loading...</i>
-      </p>
+      <LoaderBar></LoaderBar>
     );
   }
 

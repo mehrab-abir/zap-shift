@@ -4,6 +4,7 @@ import { AuthContext } from "../../../Context/Auth/AuthContext";
 import useAxios from "../../../Hook/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
+import LoaderBar from "../../../Shared Components/LoaderBar";
 
 const RiderDashboardHome = () => {
   const { user, loading } = use(AuthContext);
@@ -27,9 +28,7 @@ const RiderDashboardHome = () => {
 
   if (loading) {
     return (
-      <p>
-        <i>Loading...</i>
-      </p>
+      <LoaderBar></LoaderBar>
     );
   }
   return (

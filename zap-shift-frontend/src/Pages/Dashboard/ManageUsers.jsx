@@ -5,6 +5,7 @@ import { FaFileShield } from "react-icons/fa6";
 import { FiShieldOff } from "react-icons/fi";
 import Swal from "sweetalert2";
 import userAvatar from '../../assets/userAvatar.png';
+import LoaderBar from "../../Shared Components/LoaderBar";
 
 const ManageUsers = () => {
   const axios = useAxios();
@@ -95,7 +96,7 @@ const ManageUsers = () => {
               {isLoading ? (
                 <tr>
                   <td colSpan={6} className="text-center py-6">
-                    <i>Loading...</i>
+                    <LoaderBar></LoaderBar>
                   </td>
                 </tr>
               ) : (

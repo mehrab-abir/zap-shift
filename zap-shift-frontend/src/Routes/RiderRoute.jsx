@@ -1,12 +1,13 @@
 import React from 'react';
 import useRole from '../Hook/useRole';
 import ForbiddenRoute from '../Shared Components/ForbiddenRoute';
+import LoaderBar from '../Shared Components/LoaderBar';
 
 const RiderRoute = ({children}) => {
     const {isLoading, role} = useRole();
 
     if(isLoading){
-        return <p><i>Loading...</i></p>
+        return <LoaderBar></LoaderBar>
     }
 
     if(role !== "rider"){

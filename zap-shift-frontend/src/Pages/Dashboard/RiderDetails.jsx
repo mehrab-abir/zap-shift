@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useParams } from 'react-router';
 import useAxios from '../../Hook/useAxios';
+import LoaderBar from '../../Shared Components/LoaderBar';
 
 const Field = ({ label, value }) => (
   <div className="flex flex-col gap-1">
@@ -23,7 +24,7 @@ const RiderDetails = () => {
     })
 
     if(isLoading){
-        return <p><i>Loading...</i></p>
+        return <LoaderBar></LoaderBar>
     }
 
     return (

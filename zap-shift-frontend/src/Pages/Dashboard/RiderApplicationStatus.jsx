@@ -2,6 +2,7 @@ import React, { use } from 'react';
 import useAxios from '../../Hook/useAxios';
 import { useQuery } from '@tanstack/react-query';
 import { AuthContext } from '../../Context/Auth/AuthContext';
+import LoaderBar from '../../Shared Components/LoaderBar';
 
 const RiderApplicationStatus = () => {
     const {user} = use(AuthContext);
@@ -16,7 +17,7 @@ const RiderApplicationStatus = () => {
     })
 
     if(isLoading){
-        return <p><i>Loading...</i></p>
+        return <LoaderBar></LoaderBar>
     }
 
     return (

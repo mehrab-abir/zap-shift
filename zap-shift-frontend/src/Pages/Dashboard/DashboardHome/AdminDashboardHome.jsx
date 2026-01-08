@@ -2,6 +2,7 @@ import React from "react";
 import useAxios from "../../../Hook/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
+import LoaderBar from "../../../Shared Components/LoaderBar";
 
 const AdminDashboardHome = () => {
   const axios = useAxios();
@@ -15,7 +16,7 @@ const AdminDashboardHome = () => {
   });
 
   if(isLoading){
-    return <p><i>Loading...</i></p>
+    return <LoaderBar></LoaderBar>
   }
 
   return (

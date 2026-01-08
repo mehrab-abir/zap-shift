@@ -9,6 +9,7 @@ import { Link } from "react-router";
 import { CiSearch } from "react-icons/ci";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Swal from "sweetalert2";
+import LoaderBar from "../../Shared Components/LoaderBar";
 
 const MyParcels = () => {
   const { user } = use(AuthContext);
@@ -131,9 +132,7 @@ const MyParcels = () => {
           </thead>
           <tbody>
             {isLoading ? (
-              <p className="text-center">
-                <i>Loading...</i>
-              </p>
+              <LoaderBar></LoaderBar>
             ) : (
               myParcels.map((parcel, index) => {
                 return (

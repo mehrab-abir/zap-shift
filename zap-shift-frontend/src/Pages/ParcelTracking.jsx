@@ -2,6 +2,7 @@ import React from "react";
 import useBasicAxios from "../Hook/useBasicAxios";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
+import LoaderBar from "../Shared Components/LoaderBar";
 
 const ParcelTracking = () => {
   const axiosBasic = useBasicAxios();
@@ -17,9 +18,7 @@ const ParcelTracking = () => {
 
   if (isLoading) {
     return (
-      <p>
-        <i>Loading...</i>
-      </p>
+      <LoaderBar></LoaderBar>
     );
   }
 
