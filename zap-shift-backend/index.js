@@ -127,7 +127,7 @@ async function run() {
 
         //get all my parcels - as normal user
         app.get('/parcels', verifyToken, async (req, res) => {
-            const { email, searchparcel } = req.query;
+            const { email, searchparcel, latest } = req.query;
             const query = {};
 
             if (email !== req.token_email) {
@@ -138,6 +138,11 @@ async function run() {
 
             if(searchparcel){
                 query.parcelName = { $regex: searchparcel, $options: 'i' }
+            }
+
+            if(latest){
+                const latestParcels = await parcelCollection.find({senderEmail : email}).sort({createdAt: -1}).limit(2).toArray();
+                return res.send(latestParcels);
             }
 
             const parcels = await parcelCollection.find(query).sort({createdAt: -1}).toArray();
@@ -627,6 +632,11 @@ async function run() {
             const email = req.params.email;
             const yourSentParcels = await parcelCollection.countDocuments({senderEmail : email});
             res.send(yourSentParcels);
+        })
+
+        //latest parcels sent by a user
+        app.get('/latest-parcels',(req,res)=>{
+
         })
 
         //Dashboard home page apis --rider

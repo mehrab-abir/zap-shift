@@ -20,6 +20,14 @@ const UserDashboardHome = () => {
     },
   });
 
+  const {data : latestParcels = []} = useQuery({
+    queryKey : ["latest-parcels", user?.email],
+    queryFn : async ()=>{
+      const response = await axios.get(`/parcels?email=${user?.email}&latest=latest`);
+      return response.data;
+    }
+  })
+
   if (loading) {
     return (
       <LoaderBar></LoaderBar>
@@ -56,6 +64,26 @@ const UserDashboardHome = () => {
         <button className="btn btn-sm bg-cyan-700 border-none text-white mt-4">
           <Link to="/sendparcel"> Send a Parcel Now!</Link>
         </button>
+      </div>
+
+      {/* latest parcels set by user */}
+      <h3 className="text-2xl font-bold mb-1">Latest parcels sent by you</h3>
+      <div className="flex flex-col space-y-2.5 mb-5">
+        {
+          latestParcels.map((parcel)=>{
+            return (
+              <div key={parcel._id} className="p-2 bg-base rounded-lg shadow-lg">
+                  <p> <span className="font-semibold">Parcel Name:</span> {parcel.parcelName}</p>
+                  <p> <span className="font-semibold">Receiver Name:</span> {parcel.receiverName}</p>
+                  <p> <span className="font-semibold">Receiver Address:</span> {parcel.receiverAddress}</p>
+                  <p> <span className="font-semibold">Receiver District:</span> {parcel.receiverDistrict}</p>
+                  <p> <span className="font-semibold">Tracking ID:</span> {parcel.trackingId}</p>
+                  <p> <span className="font-semibold">Delivery Status: </span> {parcel.deliveryStatus ? parcel.deliveryStatus : "Parcel Created"}</p>
+                  <p></p>
+              </div>
+            )
+          })
+        }
       </div>
 
     <div className="flex flex-col md:flex-row md:items-center justify-between">
