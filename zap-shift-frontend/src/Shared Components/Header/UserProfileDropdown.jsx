@@ -6,14 +6,34 @@ import { AuthContext } from "../../Context/Auth/AuthContext";
 import { Link } from "react-router";
 import { useState } from "react";
 import { MdOutlineArrowDropDownCircle } from "react-icons/md";
+import { useEffect } from "react";
+import { useRef } from "react";
 
 const UserProfileDropdown = () => {
   const { user, logOutUser, loading } = use(AuthContext);
+
   const [openDropdown, setOpenDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const handleLogOut = () => {
     logOutUser().then(() => {});
   };
+
+  //close user dropdown on clicking anywhere other than the dropdown area
+  useEffect(()=>{
+    const closeDropdown = (e)=>{
+      if(dropdownRef.current && !dropdownRef.current.contains(e.target)){
+        setOpenDropdown(false);
+      }
+    }
+
+    document.addEventListener("mousedown",closeDropdown);
+
+    return (()=>{
+      document.removeEventListener("mousedown",closeDropdown);
+    })
+
+  },[])
 
   if (loading) {
     return <LoaderBar></LoaderBar>;
@@ -23,7 +43,7 @@ const UserProfileDropdown = () => {
     user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
 
   return (
-    <div className="flex ietms-center gap-2">
+    <div className="flex ietms-center gap-2" ref={dropdownRef}>
       <div
         className="flex items-center gap-2 cursor-pointer"
         onClick={() => setOpenDropdown(!openDropdown)}
