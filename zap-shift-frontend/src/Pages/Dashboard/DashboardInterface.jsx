@@ -1,6 +1,6 @@
 import React from "react";
 import useRole from "../../Hook/useRole";
-import AdminDashboardHome from "./DashboardHome/AdminDashboardHome";
+import AdminDashboardHome from "../Dashboard/DashboardHome/Admin Dashboard Home/AdminDashboardHome";
 import RiderDashboardHome from "./DashboardHome/RiderDashboardHome";
 import UserDashboardHome from "./DashboardHome/UserDashboardHome";
 import LoaderBar from "../../Shared Components/LoaderBar";

@@ -210,10 +210,6 @@ const MyDeliveries = () => {
                     {delivery.parcelName}
                   </p>
                   <p>
-                    <span className="font-bold">Parcel Type: </span>
-                    {delivery.parcelType}
-                  </p>
-                  <p>
                     <span className="font-bold">Sender Name: </span>
                     {delivery.senderName}
                   </p>

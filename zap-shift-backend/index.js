@@ -525,7 +525,17 @@ async function run() {
         //get all completed deliveries of a rider
         app.get('/rider/my-completed-deliveries/:email',verifyToken, verifyRider,async(req,res)=>{
             const email = req.params.email;
-            const completedDeliveries = await completedDeliveriesCollection.find({riderEmail : email}).toArray();
+            const latest = req.query.latest;
+
+            const cursor = completedDeliveriesCollection.find({ riderEmail: email }).sort({ completedAt: -1 });
+
+            //send latest 2 deliveries only
+            if(latest){
+                const latestDeliveries = await cursor.limit(2).toArray();
+                return res.send(latestDeliveries);
+            }
+
+            const completedDeliveries = await cursor.toArray();
             res.send(completedDeliveries);
         })
 
@@ -672,6 +682,20 @@ async function run() {
                     $group : {
                         _id : "$deliveryStatus",
                         count : { $sum : 1}
+                    }
+                }
+            ]).toArray();
+
+            res.send(result);
+        })
+
+        //parcel sent from different regions
+        app.get('/parcels-by-region',verifyToken, verifyAdmin, async(req,res)=>{
+            const result = await parcelCollection.aggregate([
+                {
+                    $group : {
+                        _id : "$senderRegion",
+                        count : {$sum : 1}
                     }
                 }
             ]).toArray();

@@ -1,12 +1,16 @@
 import React from "react";
-import useAxios from "../../../Hook/useAxios";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router";
-import LoaderBar from "../../../Shared Components/LoaderBar";
+import RegionBarChart from "./RegionBarChart";
+import DeliveryStatusPieChart from "./DeliveryStatusPieChart";
+import useAxios from "../../../../Hook/useAxios";
+import { useQuery } from "@tanstack/react-query";
+import LoaderBar from '../../../../Shared Components/LoaderBar'
 
 const AdminDashboardHome = () => {
+
   const axios = useAxios();
 
+  //count parcels based on delivery status
   const { data, isLoading } = useQuery({
     queryKey: ["delivery-status"],
     queryFn: async () => {
@@ -25,16 +29,21 @@ const AdminDashboardHome = () => {
         Admin
       </h1>
 
-      <div className="flex flex-col lg:flex-row justify-between lg:items-center">
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-bold mb-2">
-            Number of Parcels by: Delivery Status
+      <div className="flex flex-col-reverse lg:flex-row justify-between lg:items-center">
+        <div className="flex flex-col mt-5 lg:mt-0">
+          <h1 className="text-2xl font-semibold mb-2">
+            Number of Parcels by Delivery Status
           </h1>
-          <div className="stats shadow bg-base">
+          <div className="stats shadow bg-base flex flex-wrap">
             {data?.map((stat) => {
               return (
-                <div key={stat._id} className="stat place-items-center">
-                  <div className="stat-title text-lg">{stat._id ? stat._id : "Parcel Request Placed"}</div>
+                <div
+                  key={stat._id}
+                  className="stat place-items-center border-dashed border-b border-r-0 border-gray-400"
+                >
+                  <div className="stat-title text-lg">
+                    {stat._id ? stat._id : "Parcel Request Placed"}
+                  </div>
                   <div className="stat-value">{stat.count}</div>
                 </div>
               );
@@ -48,6 +57,15 @@ const AdminDashboardHome = () => {
           </Link>
         </div>
 
+        {/* pie chart */}
+        <DeliveryStatusPieChart></DeliveryStatusPieChart>
+      </div>
+
+      <div className="mt-10 flex flex-col lg:flex-row justify-between item-center">
+        {/* parcels sent by region */}
+        <RegionBarChart></RegionBarChart>
+
+        {/* quick links */}
         <div className="flex flex-col">
           <p className="text-lg flex flex-col mt-4">
             See:

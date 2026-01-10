@@ -36,24 +36,24 @@ const UserDashboardHome = () => {
 
   return (
     <div className="bg-surface p-5 md:p-10">
-      <h1 className="text-2xl md:text-4xl font-bold mb-4 text-accent">
+      <h1 className="text-2xl md:text-4xl font-bold mb-4 text-accent text-center">
         Your Stats As A User
       </h1>
       <div className="flex flex-col md:flex-row md:items-center justify-between md:gap-10">
-        <h2 className="text-xl md:text-2xl font-bold">
+        <h2 className="text-lg md:text-2xl font-semibold">
           Number of parcels you sent : {parcelSentCount}
         </h2>
-        <p className="text-lg flex flex-col mt-4">
-          See:
+        <p className="text-lg flex flex-col mt-2">
+          <span className="mb-1">See:</span>
           <Link
             to="/dashboard/myparcels"
-            className="text-accent hover:underline font-semibold"
+            className="text-sm md:text-lg text-accent hover:underline font-semibold"
           >
             &gt;Your Parcels
           </Link>
           <Link
             to="/dashboard/payment-history"
-            className="text-accent hover:underline font-semibold"
+            className="text-sm md:text-lg text-accent hover:underline font-semibold"
           >
             &gt;Payment History
           </Link>
