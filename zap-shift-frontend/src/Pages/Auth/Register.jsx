@@ -6,9 +6,9 @@ import { FaEyeSlash } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Context/Auth/AuthContext";
 import GoogleLogin from "./GoogleLogin";
-import axios from "axios";
 import useAxios from "../../Hook/useAxios";
 import Swal from "sweetalert2";
+import uploadToImgbb from "../../Utils/utils";
 
 const Register = () => {
   const { createAccount, updateUser, setUser } = use(AuthContext);
@@ -31,22 +31,15 @@ const Register = () => {
 
     setIsSubmitting(true);
 
-    const profileImg = data.profileImg[0];
+    const imageFile = data.profileImg[0];
+    const photoURL = await uploadToImgbb(imageFile);
+    console.log("PhotoURL : ",photoURL);
+
     const result = await createAccount(data.email, data.password);
-
-    const formData = new FormData();
-    formData.append("image", profileImg);
-
-    const image_api_url = `https://api.imgbb.com/1/upload?key=${
-      import.meta.env.VITE_image_host_key
-    }`;
-
-    const img_data = await axios.post(image_api_url, formData);
-    // console.log(img_data.data.data.display_url);
 
     const userInfo = {
       displayName: data.name,
-      photoURL: img_data.data.data.display_url,
+      photoURL: photoURL,
     };
 
     await updateUser(userInfo);
@@ -55,7 +48,7 @@ const Register = () => {
     const newUser = {
       displayName: data.name,
       email: data.email,
-      photoURL: img_data.data.data.display_url,
+      photoURL: photoURL,
       currentRole : "user",
       createdAt : new Date()
     };

@@ -328,6 +328,20 @@ async function run() {
             res.send(afterPost);
         })
 
+        //update user name
+        app.patch('/update-user-name/:email',async (req,res)=>{
+            const {email} = req.params;
+            const {displayName} = req.body;
+
+            const nameUpdated = await usersCollection.updateOne({email:email},{
+                $set : {
+                    displayName : displayName
+                }
+            });
+
+            res.send(nameUpdated);
+        })
+
         //rider application status
         app.get('/rider-application/:email',async (req,res)=>{
             const {email} = req.params;

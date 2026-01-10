@@ -21,14 +21,29 @@ const UserProfileDropdown = () => {
 
   const userProfile =
     user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
+
   return (
     <div className="flex ietms-center gap-2">
-      <div className="flex items-center gap-2 cursor-pointer" onClick={()=>setOpenDropdown(!openDropdown)}>
-        <img src={userProfile} alt="" className="w-10 md:w-12 rounded-full" />
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => setOpenDropdown(!openDropdown)}
+      >
+        <img
+          src={userProfile}
+          alt=""
+          referrerPolicy="no-referrer"
+          className="w-10 md:w-12 rounded-full"
+        />
         <MdOutlineArrowDropDownCircle className="text-2xl" />
       </div>
 
-      <div className={`absolute top-21 right-5 md:right-10 bg-surface p-3 rounded-lg shadow-lg z-35 ${openDropdown ? 'top-21 opacity-100 pointer-events-auto' : 'top-25 opacity-0 pointer-events-none'} transition-all duration-500`}>
+      <div
+        className={`absolute top-21 right-5 md:right-10 bg-surface p-3 rounded-lg shadow-lg z-35 ${
+          openDropdown
+            ? "top-21 opacity-100 pointer-events-auto"
+            : "top-25 opacity-0 pointer-events-none"
+        } transition-all duration-500`}
+      >
         <div className="flex flex-col space-y-1.5">
           <div>
             <p className="text-sm md:text-base">{user?.displayName}</p>

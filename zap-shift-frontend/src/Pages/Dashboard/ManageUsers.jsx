@@ -111,6 +111,7 @@ const ManageUsers = () => {
                         <div className="mask mask-squircle h-12 w-12">
                           <img
                             src={userProfile}
+                            referrerPolicy="no-referrer"
                             alt="Avatar Tailwind CSS Component"
                           />
                         </div>
