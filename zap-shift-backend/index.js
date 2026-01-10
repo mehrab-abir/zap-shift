@@ -342,6 +342,20 @@ async function run() {
             res.send(nameUpdated);
         })
 
+        //update user photo
+        app.patch('/user-photo-update/:email',async(req,res)=>{
+            const {email} = req.params;
+            const {photoURL} = req.body;
+
+            const photoUpdated = await usersCollection.updateOne({email:email},{
+                $set : {
+                    photoURL : photoURL
+                }
+            });
+
+            res.send(photoUpdated);
+        })
+
         //rider application status
         app.get('/rider-application/:email',async (req,res)=>{
             const {email} = req.params;

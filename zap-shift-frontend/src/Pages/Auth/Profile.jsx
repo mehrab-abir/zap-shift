@@ -8,6 +8,7 @@ import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
 import useAxios from "../../Hook/useAxios";
 import Swal from "sweetalert2";
+import uploadToImgbb from "../../Utils/utils";
 
 const Profile = () => {
   const { user, updateUser, setUser, setLoading } = use(AuthContext);
@@ -16,8 +17,13 @@ const Profile = () => {
   const [editName, setEditName] = useState(false);
   const nameRef = useRef();
 
+  const imageModalRef = useRef();
+  const imageRef = useRef(null);
+  const [noImageError, setNoImageError] = useState("");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  //update name
   const handleSaveName = async () => {
     setIsSubmitting(true);
 
@@ -34,7 +40,9 @@ const Profile = () => {
       }));
 
       //update in mongodb
-      const response = await axios.patch(`/update-user-name/${user?.email}`, { displayName });
+      const response = await axios.patch(`/update-user-name/${user?.email}`, {
+        displayName,
+      });
       console.log(response);
 
       if (response.data.modifiedCount) {
@@ -49,6 +57,50 @@ const Profile = () => {
     } finally {
       setIsSubmitting(false);
       setLoading(false);
+    }
+  };
+
+  //update profile image
+  const handleUpdateImage = async () => {
+    setNoImageError("");
+
+    const imageFile = imageRef.current.files[0];
+
+    if (!imageFile) {
+      setNoImageError("Select an image");
+      return;
+    }
+
+    try {
+      const photoURL = await uploadToImgbb(imageFile);
+
+      // console.log(imageFile);
+
+      //update in firebase
+      await updateUser({ photoURL });
+
+      setUser((prevUser) => ({
+        ...prevUser,
+        photoURL,
+      }));
+
+      //update in mongodb
+      const response = await axios.patch(`/user-photo-update/${user?.email}`, {
+        photoURL,
+      });
+
+      if (response.data.modifiedCount) {
+        Swal.fire({
+          title: "Image updated!",
+          icon: "success",
+          draggable: true,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      imageModalRef.current.close();
     }
   };
 
@@ -68,7 +120,10 @@ const Profile = () => {
                 alt=""
                 className="w-28 h-auto object-cover rounded-md"
               />
-              <FaEdit className="absolute text-3xl -right-8 bottom-1 text-gray-600 cursor-pointer" />
+              <FaEdit
+                onClick={() => imageModalRef.current.showModal()}
+                className="absolute text-3xl -right-8 bottom-1 text-gray-600 cursor-pointer"
+              />
             </div>
 
             <h3 className="text-xl font-semibold text-secondary mt-2">
@@ -86,7 +141,7 @@ const Profile = () => {
                 defaultValue={user?.displayName}
                 className={`outline-none w-full ${
                   editName
-                    ? "pointer-events-auto text-gray-800"
+                    ? "pointer-events-auto text-accent"
                     : "pointer-events-none text-gray-600"
                 }`}
                 ref={nameRef}
@@ -108,13 +163,43 @@ const Profile = () => {
               onClick={() => handleSaveName()}
               className="btn bg-primary outline-none border-none text-black w-full"
             >
-              {isSubmitting ? <i>Saving...</i>: "Save"}
+              {isSubmitting ? <i>Saving...</i> : "Save"}
             </button>
           </div>
         </div>
       </div>
 
-      {/* update profile modal  */}
+      {/* update image modal  */}
+      <dialog
+        ref={imageModalRef}
+        className="modal modal-bottom sm:modal-middle"
+      >
+        <div className="modal-box">
+          <h3 className="font-bold text-lg mb-2">Upload Image</h3>
+          <input
+            type="file"
+            name="avatar"
+            accept="image/*"
+            className="file-input file-input-bordered w-full outline-none"
+            ref={imageRef}
+          />
+          <p className="mt-1 text-red-500 text-sm">{noImageError}</p>
+
+          <button
+            onClick={() => handleUpdateImage()}
+            className="btn btn-sm bg-primary mt-5 text-black"
+          >
+            Save
+          </button>
+
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };
