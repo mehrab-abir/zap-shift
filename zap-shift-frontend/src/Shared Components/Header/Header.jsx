@@ -23,27 +23,29 @@ const Header = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-    if(loading){
-      return <LoaderBar></LoaderBar>
-    }
+  if (loading) {
+    return <LoaderBar></LoaderBar>;
+  }
 
   return (
     <header className="w-full md:w-10/12 mx-auto py-5 bg-surface md:rounded-xl">
       <div className="px-5 flex justify-between items-center">
-        <div
-          onClick={() => setOpenMenu(true)}
-          className="md:hidden flex flex-col items-center justify-center space-y-1 cursor-pointer"
-        >
-          <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
-          <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
-          <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
+        <div className="flex items-center gap-5">
+          <div
+            onClick={() => setOpenMenu(true)}
+            className="lg:hidden flex flex-col items-center justify-center space-y-1 cursor-pointer"
+          >
+            <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
+            <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
+            <span className="w-7 h-1 bg-gray-300 rounded-md"></span>
+          </div>
+          <Link to="/" className="flex">
+            <img src={logo} alt="" />
+            <h1 className="font-bold text-xl md:text-2xl lg:text-3xl self-center md:self-end -ml-4">
+              ZapShift
+            </h1>
+          </Link>
         </div>
-        <Link to="/" className="flex">
-          <img src={logo} alt="" />
-          <h1 className="font-bold text-xl md:text-3xl self-center md:self-end -ml-4">
-            ZapShift
-          </h1>
-        </Link>
 
         {/* navbar for large screens */}
         <NavbarLargeDevice></NavbarLargeDevice>
@@ -83,7 +85,10 @@ const Header = () => {
       </div>
 
       {/* menu for small screens  */}
-      <NavbarSmallDevice openMenu={openMenu} setOpenMenu={setOpenMenu}></NavbarSmallDevice>
+      <NavbarSmallDevice
+        openMenu={openMenu}
+        setOpenMenu={setOpenMenu}
+      ></NavbarSmallDevice>
     </header>
   );
 };

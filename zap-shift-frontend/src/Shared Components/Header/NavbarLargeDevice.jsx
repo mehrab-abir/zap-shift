@@ -7,7 +7,7 @@ const NavbarLargeDevice = () => {
     const {user} = use(AuthContext);
 
     return (
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden lg:flex items-center space-x-3 lg:space-x-6">
                   <NavLink
                     to="/"
                     className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
