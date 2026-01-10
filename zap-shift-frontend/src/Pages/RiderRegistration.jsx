@@ -17,7 +17,7 @@ const RiderRegistration = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { register, handleSubmit, control } = useForm();
+  const { register, handleSubmit, control, reset } = useForm();
 
   const regions = [...new Set(servieCenters.map((c) => c.region))];
 
@@ -89,6 +89,7 @@ const RiderRegistration = () => {
               className="input w-full focus:outline-2 outline-lime-500"
               {...register("riderName")}
               value={user?.displayName}
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -98,6 +99,7 @@ const RiderRegistration = () => {
               className="input w-full focus:outline-2 outline-lime-500"
               {...register("riderEmail")}
               value={user?.email}
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -107,6 +109,7 @@ const RiderRegistration = () => {
               className="input w-full focus:outline-2 outline-lime-500"
               {...register("drivingLicense")}
               placeholder="Enter your driving license number"
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -116,6 +119,7 @@ const RiderRegistration = () => {
               className="input w-full focus:outline-2 outline-lime-500"
               {...register("nidNumber")}
               placeholder="Enter your NID number"
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -125,6 +129,7 @@ const RiderRegistration = () => {
               className="input w-full focus:outline-2 outline-lime-500"
               {...register("phoneNumber")}
               placeholder="Enter your phone number"
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -134,6 +139,7 @@ const RiderRegistration = () => {
               className="input w-full focus:outline-2 outline-lime-500"
               {...register("bikeModel")}
               placeholder="Bike brand model and year"
+              required
             />
           </div>
           <div className="flex flex-col">
@@ -143,6 +149,7 @@ const RiderRegistration = () => {
               className="input w-full focus:outline-2 outline-lime-500"
               {...register("bikeRegistrationNumber")}
               placeholder="Bike registration number"
+              required
             />
           </div>
 
@@ -153,6 +160,7 @@ const RiderRegistration = () => {
               className="input w-full focus:outline-2 outline-lime-500"
               {...register("currentAddress")}
               placeholder="Your current address"
+              required
             />
           </div>
 
@@ -162,6 +170,7 @@ const RiderRegistration = () => {
               defaultValue="Region"
               className="select input w-full focus:outline-2 outline-lime-500 cursor-pointer"
               {...register("riderRegion")}
+              required
             >
               <option disabled={true}>Your Region</option>
               {regions.map((region, index) => {
@@ -180,6 +189,7 @@ const RiderRegistration = () => {
               defaultValue="District"
               className="select input w-full focus:outline-2 outline-lime-500 cursor-pointer"
               {...register("riderDistrict")}
+              required
             >
               <option disabled={true}>Your District</option>
               {districtByRegion(riderRegion).map((district, index) => {
@@ -191,12 +201,13 @@ const RiderRegistration = () => {
               })}
             </select>
           </div>
+          <button onClick={()=>reset()} className="btn btn-sm max-w-fit">Reset</button>
 
           <button
             type="submit"
             className="btn bg-primary mt-5 text-black cursor-pointer"
           >
-            {isSubmitting ? <i>Submitting...</i> : 'Submit'}
+            {isSubmitting ? <i>Submitting...</i> : "Submit"}
           </button>
         </form>
 

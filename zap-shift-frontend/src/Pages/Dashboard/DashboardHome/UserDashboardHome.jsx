@@ -111,14 +111,14 @@ const UserDashboardHome = () => {
     <div className="flex flex-col md:flex-row md:items-center justify-between">
         {role === "user" && (
         <div className="mt-5">
-          <h3 className="text-2xl font-semibold text-lime-600">
-            Interested to earn as a delivery rider?{" "}
+          <h3 className="text-xl font-semibold text-lime-600">
+            Interested in earning as a delivery rider?{" "}
           </h3>
           <Link
             to="/rider-registration"
             className="text-accent hover:underline font-semibold text-lg mt-2"
           >
-            &gt; Apply to be a Delivery Rider
+            &gt; Click here to apply
           </Link>
         </div>
       )}

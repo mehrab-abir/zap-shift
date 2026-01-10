@@ -27,6 +27,18 @@ const Login = () => {
     logIn(data.email, data.password)
       .then(() => {
         navigate(location?.state || "/", { replace: true });
+
+        toast.success("Welcome Back!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       })
       .catch((err) =>
         toast.error(`${err.code}`, {
@@ -109,8 +121,6 @@ const Login = () => {
               )}
             </div>
 
-            <p className="text-red-500 text-sm">{}</p>
-
             <button
               type="submit"
               className="btn bg-primary w-full text-black rounded-md border-none mt-4 hover:shadow-md hover:shadow-indigo-300"
@@ -135,7 +145,7 @@ const Login = () => {
         newestOnTop={false}
         closeOnClick={false}
         rtl={false}
-        pauseOnFocusLoss={false}
+        pauseOnFocusLoss
         draggable
         pauseOnHover={false}
         theme="light"

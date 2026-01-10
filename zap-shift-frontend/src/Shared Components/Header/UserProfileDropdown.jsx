@@ -72,10 +72,18 @@ const UserProfileDropdown = () => {
             </p>
           </div>
 
-          <Link to="/dashboard" className="hover:underline text-accent">
+          <Link
+            to="/dashboard"
+            className="hover:underline text-accent"
+            onClick={() => setOpenDropdown(!openDropdown)}
+          >
             Dashboard
           </Link>
-          <Link to="/manage-profile" className="hover:underline text-accent">
+          <Link
+            to="/manage-profile"
+            className="hover:underline text-accent"
+            onClick={() => setOpenDropdown(!openDropdown)}
+          >
             Manage Profile
           </Link>
           <button

@@ -3,8 +3,8 @@ import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../../Context/Auth/AuthContext";
 import { useLocation, useNavigate } from "react-router";
 import useAxios from "../../Hook/useAxios";
-import Swal from "sweetalert2";
 import { useState } from "react";
+import { Bounce, toast } from "react-toastify";
 
 const GoogleLogin = () => {
   const { googleSignIn, setUser } = use(AuthContext);
@@ -31,16 +31,32 @@ const GoogleLogin = () => {
       const postNewUser = await axiosHook.post("/users", newUser);
       if (postNewUser.data.insertedId) {
         navigate(location?.state || "/", { replace: true });
-        Swal.fire({
-          title: "Account created!",
-          icon: "success",
+        toast.success("Welcome!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: false,
           draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
         });
       } else if (postNewUser.data.userExists) {
         navigate(location?.state || "/", { replace: true });
       }
     } catch (error) {
-      console.log("Error: ", error);
+      toast.error(`${error.code}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -52,11 +68,25 @@ const GoogleLogin = () => {
         type="button"
         onClick={googleLogin}
         className="btn bg-surface w-full"
-        disabled={isSubmitting===true}
+        disabled={isSubmitting === true}
       >
         <FcGoogle className="text-2xl" />
         {isSubmitting ? <i>Logging In...</i> : "Log In With Google"}
       </button>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="light"
+        transition={Bounce}
+      />
     </div>
   );
 };

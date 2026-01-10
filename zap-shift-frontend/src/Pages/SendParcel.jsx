@@ -8,7 +8,7 @@ import useAxios from "../Hook/useAxios";
 const SendParcel = () => {
   const { user } = use(AuthContext);
   const navigate = useNavigate();
-  const { register, handleSubmit, control } = useForm();
+  const { register, handleSubmit, control, formState : {errors} } = useForm();
   const axios = useAxios();
 
   const serviceCenters = useLoaderData();
@@ -141,6 +141,9 @@ const SendParcel = () => {
                   {...register("parcelName", { required: true })}
                   placeholder="Parcel name"
                 />
+                {errors.parcelName?.type === "required" && (
+                  <p className="text-red-500 text-sm">*Parcel name required</p>
+                )}
               </div>
               <div className="flex-1">
                 <label>Parcel Weight (KG)</label>
@@ -152,6 +155,9 @@ const SendParcel = () => {
                   {...register("parcelWeight", { required: true })}
                   placeholder="Parcel weight (KG)"
                 />
+                {errors.parcelWeight?.type === "required" && (
+                  <p className="text-red-500 text-sm">*This field required</p>
+                )}
               </div>
             </div>
           </div>
@@ -171,6 +177,9 @@ const SendParcel = () => {
                     {...register("senderName", { required: true })}
                     placeholder="Sender name"
                   />
+                  {errors.senderName?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
                 <div className="flex-1">
                   <label className="font-semibold">Sender Email</label>
@@ -181,6 +190,9 @@ const SendParcel = () => {
                     {...register("senderEmail", { required: true })}
                     placeholder="Sender email"
                   />
+                  {errors.senderEmail?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
                 <div className="flex-1">
                   <label className="font-semibold">Sender Phone No.</label>
@@ -190,6 +202,9 @@ const SendParcel = () => {
                     {...register("senderPhone", { required: true })}
                     placeholder="Sender phone no"
                   />
+                  {errors.senderPhone?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
 
                 <div className="flex-1">
@@ -200,6 +215,9 @@ const SendParcel = () => {
                     {...register("senderAddress", { required: true })}
                     placeholder="Sender address"
                   />
+                  {errors.senderAddress?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
 
                 <div className="flex-1">
@@ -207,7 +225,7 @@ const SendParcel = () => {
                   <select
                     defaultValue="Sender Region"
                     className="select input w-full focus:outline-2 outline-lime-500 cursor-pointer"
-                    {...register("senderRegion")}
+                    {...register("senderRegion", { required: true })}
                   >
                     <option disabled={true}>Sender Region</option>
                     {regions.map((region, index) => {
@@ -218,6 +236,9 @@ const SendParcel = () => {
                       );
                     })}
                   </select>
+                  {errors.senderRegion?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
 
                 <div className="flex-1">
@@ -225,7 +246,7 @@ const SendParcel = () => {
                   <select
                     defaultValue="Sender District"
                     className="select input w-full focus:outline-2 outline-lime-500 cursor-pointer"
-                    {...register("senderDistrict")}
+                    {...register("senderDistrict", { required: true })}
                   >
                     <option disabled={true}>Sender District</option>
                     {districtByRegion(senderRegion).map((district, index) => {
@@ -236,6 +257,9 @@ const SendParcel = () => {
                       );
                     })}
                   </select>
+                  {errors.senderDistrict?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
 
                 <div className="flex-1">
@@ -246,6 +270,11 @@ const SendParcel = () => {
                     {...register("pickupInstruction", { required: true })}
                     placeholder="Pickup instruction"
                   />
+                  {errors.pickupInstruction?.type === "required" && (
+                    <p className="text-red-500 text-sm">
+                      Please write some instructions for delivery rider
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -262,6 +291,9 @@ const SendParcel = () => {
                     {...register("receiverName", { required: true })}
                     placeholder="receiver name"
                   />
+                  {errors.receiverName?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
                 <div className="flex-1">
                   <label className="font-semibold">Receiver Email</label>
@@ -271,6 +303,9 @@ const SendParcel = () => {
                     {...register("receiverEmail", { required: true })}
                     placeholder="receiver email"
                   />
+                  {errors.receiverEmail?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
                 <div className="flex-1">
                   <label className="font-semibold">Receiver Phone No.</label>
@@ -280,6 +315,9 @@ const SendParcel = () => {
                     {...register("receiverPhone", { required: true })}
                     placeholder="receiver phone no"
                   />
+                  {errors.receiverPhone?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
 
                 <div className="flex-1">
@@ -290,6 +328,9 @@ const SendParcel = () => {
                     {...register("receiverAddress", { required: true })}
                     placeholder="receiver address"
                   />
+                  {errors.receiverAddress?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
 
                 <div className="flex-1">
@@ -308,6 +349,9 @@ const SendParcel = () => {
                       );
                     })}
                   </select>
+                  {errors.receiverRegion?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
 
                 <div className="flex-1">
@@ -326,6 +370,9 @@ const SendParcel = () => {
                       );
                     })}
                   </select>
+                  {errors.receiverDistrict?.type === "required" && (
+                    <p className="text-red-500 text-sm">*This field required</p>
+                  )}
                 </div>
 
                 <div className="flex-1">
@@ -336,6 +383,11 @@ const SendParcel = () => {
                     {...register("deliveryInstruction", { required: true })}
                     placeholder="Delivery instruction"
                   />
+                  {errors.deliveryInstruction?.type === "required" && (
+                    <p className="text-red-500 text-sm">
+                      Please write some instructions for delivery rider
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -346,7 +398,7 @@ const SendParcel = () => {
             className="btn bg-primary text-black border-none outline-none hover:shadow-md hover:shadow-lime-300 mt-5 w-full"
             disabled={isSubmitting}
           >
-            {isSubmitting ? <i>Submitting...</i> : 'Submit'}
+            {isSubmitting ? <i>Submitting...</i> : "Submit"}
           </button>
         </form>
       </div>
