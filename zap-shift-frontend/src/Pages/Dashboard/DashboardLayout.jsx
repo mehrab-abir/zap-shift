@@ -1,6 +1,6 @@
 import React, { use, useState } from "react";
 import { Outlet } from "react-router";
-import Header from "../../Shared Components/Header";
+import Header from "../../Shared Components/Header/Header";
 import Footer from "../../Shared Components/Footer";
 import { IoChevronForwardCircleOutline } from "react-icons/io5";
 import { IoChevronBackCircleOutline } from "react-icons/io5";

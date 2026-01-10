@@ -66,22 +66,44 @@ const UserDashboardHome = () => {
         </button>
       </div>
 
-      {/* latest parcels set by user */}
+      {/* latest parcels sent by user */}
       <h3 className="text-2xl font-bold mb-1">Latest parcels sent by you</h3>
       <div className="flex flex-col space-y-2.5 mb-5">
         {
           latestParcels.map((parcel)=>{
             return (
-              <div key={parcel._id} className="p-2 bg-base rounded-lg shadow-lg">
-                  <p> <span className="font-semibold">Parcel Name:</span> {parcel.parcelName}</p>
-                  <p> <span className="font-semibold">Receiver Name:</span> {parcel.receiverName}</p>
-                  <p> <span className="font-semibold">Receiver Address:</span> {parcel.receiverAddress}</p>
-                  <p> <span className="font-semibold">Receiver District:</span> {parcel.receiverDistrict}</p>
-                  <p> <span className="font-semibold">Tracking ID:</span> {parcel.trackingId}</p>
-                  <p> <span className="font-semibold">Delivery Status: </span> {parcel.deliveryStatus ? parcel.deliveryStatus : "Parcel Created"}</p>
-                  <p></p>
+              <div
+                key={parcel._id}
+                className="p-2 bg-base rounded-lg shadow-lg"
+              >
+                <p>
+                  {" "}
+                  <span className="font-semibold">Parcel Name:</span>{" "}
+                  {parcel.parcelName}
+                </p>
+                <p>
+                  {" "}
+                  <span className="font-semibold">Receiver Name:</span>{" "}
+                  {parcel.receiverName}
+                </p>
+                <p>
+                  {" "}
+                  <span className="font-semibold">Receiver Address:</span>{" "}
+                  {parcel.receiverAddress}
+                </p>
+                <p>
+                  {" "}
+                  <span className="font-semibold">Receiver District:</span>{" "}
+                  {parcel.receiverDistrict}
+                </p>
+                <Link
+                  to={`/track-parcel/${parcel.trackingId}`}
+                  className="btn btn-sm bg-green-600 text-white font-semibold text-center md:text-start my-2 hover:underline"
+                >
+                  Track Parcel
+                </Link>
               </div>
-            )
+            );
           })
         }
       </div>
