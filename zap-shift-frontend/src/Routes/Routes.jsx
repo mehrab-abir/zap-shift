@@ -28,6 +28,7 @@ import RiderApplicationStatus from "../Pages/Dashboard/RiderApplicationStatus";
 import MyDeliveries from "../Pages/Dashboard/MyDeliveries";
 import ParcelTracking from "../Pages/ParcelTracking";
 import LoaderBar from "../Shared Components/LoaderBar";
+import Profile from "../Pages/Auth/Profile";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,12 @@ const router = createBrowserRouter([
       {
         path : "/track-parcel/:trackingId",
         Component : ParcelTracking
+      },
+      {
+        path : '/manage-profile',
+        element : <PrivateRoute>
+          <Profile></Profile>
+        </PrivateRoute>
       }
     ],
   },
