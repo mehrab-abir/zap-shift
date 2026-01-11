@@ -70,7 +70,7 @@ const CalculateCost = () => {
         hassle. From personal packages to business shipments — we deliver on
         time, every time.
       </p>
-      <p className="mt-2 text-muted md:w-[50%]">
+      <p className="my-4 text-muted md:w-[50%]">
         Calculate the cost before you proceed to request a parcel delivery
       </p>
 
