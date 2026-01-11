@@ -1,14 +1,19 @@
 import React from 'react';
+import img from '../assets/authImage.png'
 
 const AboutUs = () => {
     return (
       <div className="w-11/12 md:w-10/12 bg-surface mx-auto my-10 p-10 rounded-lg">
         <h1 className="text-xl md:text-3xl font-bold">About Us</h1>
-        <p className="mt-2 text-muted md:w-[50%]">
+        <div className='flex flex-col items-center justify-center'>
+          <img src={img} alt="" className='mx-auto' />
+        <p className="mt-2 text-muted md:w-[50%] text-center">
           Enjoy fast, reliable parcel delivery with real-time tracking and zero
           hassle. From personal packages to business shipments — we deliver on
           time, every time.
         </p>
+        </div>
+        
 
         <h2 className='font-smeibold text-xl md:text-2xl my-10'>Story</h2>
 

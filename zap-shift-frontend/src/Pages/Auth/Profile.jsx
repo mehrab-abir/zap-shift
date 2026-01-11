@@ -119,6 +119,7 @@ const Profile = () => {
                 src={userProfilePic}
                 alt=""
                 className="w-28 h-auto object-cover rounded-md"
+                referrerPolicy="no-referrer"
               />
               <FaEdit
                 onClick={() => imageModalRef.current.showModal()}

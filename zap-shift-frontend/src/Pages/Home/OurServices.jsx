@@ -1,5 +1,6 @@
 import React from "react";
-import serviceImg from "../../assets/service.png";
+import deliveryVan from "../../assets/delivery-van.png";
+
 
 const OurServices = () => {
   return (
@@ -7,7 +8,7 @@ const OurServices = () => {
       <h1 className="text-center text-2xl md:text-4xl font-bold text-white">
         Our Services
       </h1>
-      <p className="text-center my-8 text-white md:w-[60%] mx-auto">
+      <p className="text-center my-8 text-white w-[90%] md:w-[60%] mx-auto">
         Enjoy fast, reliable parcel delivery with real-time tracking and zero
         hassle. From personal packages to business shipments — we deliver on
         time, every time.
@@ -15,7 +16,7 @@ const OurServices = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-10">
         <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
-          <img src={serviceImg} alt="" />
+          <img src={deliveryVan} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Express and Standard Delivery
           </h3>
@@ -27,7 +28,7 @@ const OurServices = () => {
         </div>
 
         <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
-          <img src={serviceImg} alt="" />
+          <img src={deliveryVan} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Nationwide Delivery
           </h3>
@@ -37,7 +38,7 @@ const OurServices = () => {
           </p>
         </div>
         <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
-          <img src={serviceImg} alt="" />
+          <img src={deliveryVan} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Fulfillment Solution
           </h3>
@@ -47,7 +48,7 @@ const OurServices = () => {
           </p>
         </div>
         <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
-          <img src={serviceImg} alt="" />
+          <img src={deliveryVan} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Cash on Home Delivery
           </h3>
@@ -57,7 +58,7 @@ const OurServices = () => {
           </p>
         </div>
         <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
-          <img src={serviceImg} alt="" />
+          <img src={deliveryVan} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Corporate Service / Contract In Logistics
           </h3>
@@ -67,7 +68,7 @@ const OurServices = () => {
           </p>
         </div>
         <div className="flex flex-col items-center p-6 rounded-3xl bg-surface space-y-3 hover:bg-lime-500! hover:text-black!">
-          <img src={serviceImg} alt="" />
+          <img src={deliveryVan} alt="" />
           <h3 className="text-xl font-bold text-center text-primary">
             Parcel Return
           </h3>

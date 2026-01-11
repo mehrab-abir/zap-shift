@@ -74,14 +74,14 @@ const CalculateCost = () => {
         Calculate the cost before you proceed to request a parcel delivery
       </p>
 
-      <div className="flex flex-col md:flex-row justify-around items-center p-10">
+      <div className="flex flex-col md:flex-row justify-around items-center md:p-10">
         <form
           onSubmit={handleSubmit(handleCalculation)}
-          className="flex flex-col space-y-3"
+          className="flex flex-col space-y-3 w-full flex-1"
         >
           <p className="mb-2">Select Parcle Type: </p>
-          <div className="flex gap-4 items-center">
-            <label className="">
+          <div className="flex flex-col sm:flex-row space-x-4 space-y-2 sm:space-y-0 sm:items-center">
+            <label className="text-base">
               <input
                 type="radio"
                 value="document"
@@ -90,14 +90,14 @@ const CalculateCost = () => {
               />
               &nbsp;&nbsp;Document
             </label>
-            <label className="">
+            <label className="text-base">
               <input
                 type="radio"
                 value="non-document"
                 className="radio radio-sm"
                 {...register("parcelType", { required: true })}
               />
-              &nbsp;&nbsp; Non-Document
+              &nbsp;&nbsp;Non-Document
             </label>
           </div>
 
@@ -200,18 +200,16 @@ const CalculateCost = () => {
             Calculate Cost
           </button>
         </form>
-        <div className="self-center text-center mt-10 md:mt-0">
+        <div className="self-center text-center mt-10 md:mt-0 flex-1">
           {totalCost > 0 ? (
             <>
-              <h3 className="text-2xl md:text-3xl font-bold">
-                Total Cost:{" "}
+              <h3 className="text-2xl md:text-3xl font-bold">Total Cost: </h3>
+              <h3 className="text-2xl font-semibold mt-2 text-accent">
+                ${totalCost}
               </h3>
-              <h3 className="text-2xl font-semibold mt-2 text-accent">${totalCost}</h3>
             </>
           ) : (
-            <h3 className="text-2xl md:text-3xl font-bold">
-              Total Cost{" "}
-            </h3>
+            <h3 className="text-2xl md:text-3xl font-bold">Total Cost </h3>
           )}
         </div>
       </div>
