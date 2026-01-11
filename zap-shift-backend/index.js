@@ -403,7 +403,7 @@ async function run() {
         })
 
         //get all riders who are - approved, in same district as sender and workStatus is available
-        app.get('/assign-pickup/riders',verifyToken, verifyAdmin,async (req,res)=>{
+        app.get('/assign-to-parcel/riders',verifyToken, verifyAdmin,async (req,res)=>{
             let {status, riderDistrict, workStatus} = req.query;
 
             const query = {
@@ -742,5 +742,5 @@ async function run() {
 run().catch(console.dir);
 
 app.listen(port, () => {
-    console.log(`Zap shift server is running on port localhost:${port}`);
+    console.log(`Zap shift server is running on port -> localhost:${port}`);
 })

@@ -35,10 +35,7 @@ const UserDashboardHome = () => {
   }
 
   return (
-    <div className="bg-surface p-5 md:p-10">
-      <h1 className="text-2xl md:text-4xl font-bold mb-4 text-accent text-center">
-        Your Stats As A User
-      </h1>
+    <div className="bg-surface p-5 md:p-8 rounded-lg">
       <div className="flex flex-col md:flex-row md:items-center justify-between md:gap-10">
         <h2 className="text-lg md:text-2xl font-semibold">
           Number of parcels you sent : {parcelSentCount}

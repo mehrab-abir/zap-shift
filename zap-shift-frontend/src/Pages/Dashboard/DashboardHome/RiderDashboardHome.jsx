@@ -43,11 +43,7 @@ const RiderDashboardHome = () => {
     );
   }
   return (
-    <div className="bg-surface p-5 md:p-10 mb-5">
-      <h1 className="text-2xl md:text-4xl font-bold mb-4 text-accent text-center">
-        Your Stats As A Delivery Rider
-      </h1>
-
+    <div className="bg-surface p-5 md:p-8 mb-5 rounded-lg">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between md:gap-10">
         <h2 className="text-lg md:text-2xl font-semibold">
           Number of deliveries you completed : {countDeliveries}

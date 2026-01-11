@@ -60,30 +60,35 @@ const DashboardLayout = () => {
             <NavLink
               to="/"
               className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+              onClick={() => setOpenDrawer(!openDrawer)}
             >
               Home
             </NavLink>
             <NavLink
               to="/dashboard"
               className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+              onClick={() => setOpenDrawer(!openDrawer)}
             >
               Dashboard Home
             </NavLink>
             <NavLink
               to="/dashboard/myparcels"
               className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+              onClick={() => setOpenDrawer(!openDrawer)}
             >
               My Parcels
             </NavLink>
             <NavLink
               to="/sendparcel"
               className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+              onClick={() => setOpenDrawer(!openDrawer)}
             >
               Send a Parcel
             </NavLink>
             <NavLink
               to="/dashboard/payment-history"
               className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+              onClick={() => setOpenDrawer(!openDrawer)}
             >
               Payment History
             </NavLink>
@@ -93,12 +98,14 @@ const DashboardLayout = () => {
                 <NavLink
                   to="/dashboard/rider-page"
                   className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                  onClick={() => setOpenDrawer(!openDrawer)}
                 >
                   Rider Page
                 </NavLink>
                 <NavLink
                   to="/dashboard/my-deliveries"
                   className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                  onClick={() => setOpenDrawer(!openDrawer)}
                 >
                   My Deliveries
                 </NavLink>
@@ -109,6 +116,7 @@ const DashboardLayout = () => {
               <NavLink
                 to="/dashboard/rider-application"
                 className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                onClick={() => setOpenDrawer(!openDrawer)}
               >
                 Rider Application
               </NavLink>
@@ -119,18 +127,21 @@ const DashboardLayout = () => {
                 <NavLink
                   to="/dashboard/riders"
                   className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                  onClick={() => setOpenDrawer(!openDrawer)}
                 >
                   All Riders
                 </NavLink>
                 <NavLink
                   to="/dashboard/allparcels"
                   className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                  onClick={() => setOpenDrawer(!openDrawer)}
                 >
                   Assign Rider To Parcel
                 </NavLink>
                 <NavLink
                   to="/dashboard/manage-users"
                   className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"
+                  onClick={() => setOpenDrawer(!openDrawer)}
                 >
                   Manage Users
                 </NavLink>

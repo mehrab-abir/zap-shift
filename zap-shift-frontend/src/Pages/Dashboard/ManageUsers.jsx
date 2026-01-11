@@ -4,12 +4,12 @@ import useAxios from "../../Hook/useAxios";
 import { FaFileShield } from "react-icons/fa6";
 import { FiShieldOff } from "react-icons/fi";
 import Swal from "sweetalert2";
-import userAvatar from '../../assets/userAvatar.png';
+import userAvatar from "../../assets/userAvatar.png";
 import LoaderBar from "../../Shared Components/LoaderBar";
 
 const ManageUsers = () => {
   const axios = useAxios();
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
   const {
     isLoading,
@@ -32,8 +32,8 @@ const ManageUsers = () => {
       denyButtonText: `No`,
     });
 
-    if(result.isConfirmed){
-        const roleInfo = {
+    if (result.isConfirmed) {
+      const roleInfo = {
         currentRole: newRole,
         previousRole: user.currentRole,
       };
@@ -42,15 +42,18 @@ const ManageUsers = () => {
       if (response.data.modifiedCount) {
         refetch();
         Swal.fire({
-          title: `${newRole === 'admin' ? `${user.displayName} is now an Admin` : `${user.displayName} is no more an Admin`}`,
+          title: `${
+            newRole === "admin"
+              ? `${user.displayName} is now an Admin`
+              : `${user.displayName} is no more an Admin`
+          }`,
           icon: "success",
           draggable: true,
         });
       }
+    } else if (result.isDenied) {
+      Swal.fire("Nothing changed");
     }
-    else if (result.isDenied) {
-        Swal.fire("Nothing changed");
-      }
   };
 
   const makeAdmin = (user) => {
@@ -101,7 +104,10 @@ const ManageUsers = () => {
                 </tr>
               ) : (
                 users.map((user, index) => {
-                  const userProfile = user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
+                  const userProfile =
+                    user?.photoURL ||
+                    user?.providerData[0]?.photoURL ||
+                    userAvatar;
                   return (
                     <tr key={user._id}>
                       <th>{index + 1}</th>
@@ -124,34 +130,36 @@ const ManageUsers = () => {
                         {user.currentRole.toUpperCase()}
                       </td>
                       <td className="align-middle space-x-4">
-                        <button
-                          onClick={() => makeAdmin(user)}
-                          className="cursor-pointer tooltip"
-                          disabled={user.currentRole === "admin"}
-                          data-tip="make admin"
-                        >
-                          <FaFileShield
-                            className={`text-2xl  ${
-                              user.currentRole === "admin"
-                                ? "text-gray-300 cursor-not-allowed"
-                                : "text-blue-600"
-                            }`}
-                          />
-                        </button>
-                        <button
-                          onClick={() => removeFromAdmin(user)}
-                          className="cursor-pointer tooltip"
-                          disabled={user.currentRole !== "admin"}
-                          data-tip="remove from admin"
-                        >
-                          <FiShieldOff
-                            className={`text-2xl  ${
-                              user.currentRole !== "admin"
-                                ? "text-gray-300 cursor-not-allowed"
-                                : "text-red-500"
-                            }`}
-                          />
-                        </button>
+                        <div className="flex justify-between">
+                          <button
+                            onClick={() => makeAdmin(user)}
+                            className="cursor-pointer tooltip"
+                            disabled={user.currentRole === "admin"}
+                            data-tip="make admin"
+                          >
+                            <FaFileShield
+                              className={`text-lg md:text-2xl  ${
+                                user.currentRole === "admin"
+                                  ? "text-gray-300 cursor-not-allowed"
+                                  : "text-blue-600"
+                              }`}
+                            />
+                          </button>
+                          <button
+                            onClick={() => removeFromAdmin(user)}
+                            className="cursor-pointer tooltip"
+                            disabled={user.currentRole !== "admin"}
+                            data-tip="remove from admin"
+                          >
+                            <FiShieldOff
+                              className={`text-lg md:text-2xl  ${
+                                user.currentRole !== "admin"
+                                  ? "text-gray-300 cursor-not-allowed"
+                                  : "text-red-500"
+                              }`}
+                            />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );

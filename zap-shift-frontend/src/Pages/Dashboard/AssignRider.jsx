@@ -10,11 +10,16 @@ const AssignRider = () => {
   const [deliveryStatus, setDeliveryStatus] = useState("");
   const [searchText, setSearchText] = useState("");
   const assignRiderModalRef = useRef();
+  const parcelDetailsModalRef = useRef();
 
   const [selectedParcel, setSelectedParcel] = useState({});
 
-  const { data: parcels = [], isLoading , refetch : refetchParcel} = useQuery({
-    queryKey: ["pending-pickup", deliveryStatus, searchText],
+  const {
+    data: parcels = [],
+    isLoading,
+    refetch: refetchParcel,
+  } = useQuery({
+    queryKey: ["requested-parcels", deliveryStatus, searchText],
     queryFn: async () => {
       const response = await axios.get(
         `/admin/parcels?deliveryStatus=${deliveryStatus}&searchText=${searchText}`
@@ -25,10 +30,10 @@ const AssignRider = () => {
 
   //query for assigning rider
   const { data: riders = [] } = useQuery({
-    queryKey: ["'riders", selectedParcel],
+    queryKey: ["riders", selectedParcel],
     queryFn: async () => {
       const response = await axios.get(
-        `/assign-pickup/riders?status=approved&riderDistrict=${selectedParcel?.senderDistrict}&workStatus=Available`
+        `/assign-to-parcel/riders?status=approved&riderDistrict=${selectedParcel?.senderDistrict}&workStatus=Available`
       );
       return response.data;
     },
@@ -39,24 +44,32 @@ const AssignRider = () => {
     assignRiderModalRef.current.showModal();
   };
 
-  //assign rider
-  const assignRider = async (rider)=>{
-    const assignedRiderInfo = {
-        riderId : rider._id, 
-        riderName : rider.riderName,
-        riderEmail : rider.riderEmail,
-        parcelId : selectedParcel._id,
-        trackingId : selectedParcel.trackingId
-    }
+  const parcelDetailsModal = (parcel) => {
+    setSelectedParcel(parcel);
+    parcelDetailsModalRef.current.showModal();
+  };
 
-    const response = await axios.patch("/parcels/rider-assigned",assignedRiderInfo);
+  //assign rider
+  const assignRider = async (rider) => {
+    const assignedRiderInfo = {
+      riderId: rider._id,
+      riderName: rider.riderName,
+      riderEmail: rider.riderEmail,
+      parcelId: selectedParcel._id,
+      trackingId: selectedParcel.trackingId,
+    };
+
+    const response = await axios.patch(
+      "/parcels/rider-assigned",
+      assignedRiderInfo
+    );
     console.log(response);
-    if(response.data.updatedParcel.acknowledged){
-        assignRiderModalRef.current.close();
-        refetchParcel();
-        Swal.fire(`Rider assigned`);
+    if (response.data.updatedParcel.acknowledged) {
+      assignRiderModalRef.current.close();
+      refetchParcel();
+      Swal.fire(`Rider assigned`);
     }
-  }
+  };
 
   return (
     <div className="bg-surface p-10 rounded-xl">
@@ -113,7 +126,12 @@ const AssignRider = () => {
                   return (
                     <tr key={parcel._id}>
                       <th>{index + 1}</th>
-                      <td>{parcel.parcelName}</td>
+                      <td
+                        className="font-semibold hover:underline cursor-pointer"
+                        onClick={() => parcelDetailsModal(parcel)}
+                      >
+                        {parcel.parcelName}
+                      </td>
                       <td>{parcel.senderEmail}</td>
                       <td>{parcel.senderDistrict}</td>
                       <td>${parcel.deliveryFee}</td>
@@ -139,7 +157,9 @@ const AssignRider = () => {
                             : "text-primary"
                         } font-semibold`}
                       >
-                        {parcel.deliveryStatus ? parcel.deliveryStatus : "Parcel Created"}
+                        {parcel.deliveryStatus
+                          ? parcel.deliveryStatus
+                          : "Parcel Created"}
                       </td>
                       <td>{new Date(parcel.createdAt).toLocaleDateString()}</td>
                       <td>
@@ -189,32 +209,115 @@ const AssignRider = () => {
               </thead>
               <tbody>
                 {riders.map((rider, index) => {
-                      return (
-                        <tr key={rider._id}>
-                          <th>{index + 1}</th>
-                          <td>{rider.riderName}</td>
-                          <td>{rider.riderDistrict}</td>
-                          <td>{rider.workStatus}</td>
-                          <td>
-                            <button
-                              onClick={() => assignRider(rider)}
-                              className={`btn btn-sm ${
-                                rider.workStatus !== "Available"
-                                  ? "bg-gray-300 text-black"
-                                  : "bg-green-800 text-[#ebebeb]"
-                              }`}
-                            >
-                              {rider.workStatus !== "Available"
-                                ? "Not Available"
-                                : "Assign"}
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                  return (
+                    <tr key={rider._id}>
+                      <th>{index + 1}</th>
+                      <td>{rider.riderName}</td>
+                      <td>{rider.riderDistrict}</td>
+                      <td>{rider.workStatus}</td>
+                      <td>
+                        <button
+                          onClick={() => assignRider(rider)}
+                          className={`btn btn-sm ${
+                            rider.workStatus !== "Available"
+                              ? "bg-gray-300 text-black"
+                              : "bg-green-800 text-[#ebebeb]"
+                          }`}
+                        >
+                          {rider.workStatus !== "Available"
+                            ? "Not Available"
+                            : "Assign"}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
+
+      {/*Parcel Details modal */}
+      <dialog
+        ref={parcelDetailsModalRef}
+        className="modal modal-bottom sm:modal-middle"
+      >
+        <div className="modal-box">
+          {
+            <div className="p-2 rounded-md">
+              <p>
+                <span className="font-bold">Parcel Type: </span>
+                {selectedParcel.parcelType}
+              </p>
+              <p>
+                <span className="font-bold">Parcel Name: </span>
+                {selectedParcel.parcelName}
+              </p>
+              <p>
+                <span className="font-bold">Parcel Weight: </span>
+                {selectedParcel.parcelWeight} Kg
+              </p>
+              <p>
+                <span className="font-bold">Sender Name: </span>
+                {selectedParcel.senderName}
+              </p>
+              <p>
+                <span className="font-bold">Sender Email: </span>
+                {selectedParcel.senderEmail}
+              </p>
+              <p>
+                <span className="font-bold">Receiver Name: </span>
+                {selectedParcel.receiverName}
+              </p>
+              <p>
+                <span className="font-bold">Receiver Email: </span>
+                {selectedParcel.receiverEmail}
+              </p>
+              <p>
+                <span className="font-bold">Sender Region: </span>
+                {selectedParcel.senderRegion}
+              </p>
+              <p>
+                <span className="font-bold">Sender District: </span>
+                {selectedParcel.senderDistrict}
+              </p>
+              <p>
+                <span className="font-bold">Receiver Region: </span>
+                {selectedParcel.receiverRegion}
+              </p>
+              <p>
+                <span className="font-bold">Receiver District: </span>
+                {selectedParcel.receiverDistrict}
+              </p>
+              <p>
+                <span className="font-bold">Delivery Fee: </span>
+                ${selectedParcel.deliveryFee}
+              </p>
+              <p>
+                <span className="font-bold">Payment Status: </span>
+                {selectedParcel.paymentStatus}
+              </p>
+              <p>
+                <span className="font-bold">Delivery Status: </span>
+                {selectedParcel.deliveryStatus}
+              </p>
+              <p>
+                <span className="text-lime-600 font-bold">Rider Name: </span>
+                {selectedParcel.riderName}
+              </p>
+              <p>
+                <span className="text-lime-600 font-bold">Rider Email: </span>
+                {selectedParcel.riderEmail}
+              </p>
+            </div>
+          }
           <div className="modal-action">
             <form method="dialog">
               {/* if there is a button in form, it will close the modal */}

@@ -14,13 +14,13 @@ const Banner = () => {
         <div className="flex items-center absolute bottom-5 text-sm md:text-neutral md:bottom-16 ml-20 gap-10">
           <Link
             to="/calculate-cost"
-            className="btn rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black"
+            className="btn btn-sm md:btn-md rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black"
           >
             Calculate Cost
           </Link>
           <Link
             to="/rider-registration"
-            className="btn rounded-full bg-gray-800 border border-lime-500 outline-none hover:bg-primary-hover text-white"
+            className="btn btn-sm md:btn-md rounded-full bg-gray-800 border border-lime-500 outline-none hover:bg-primary-hover text-white"
           >
             Be A Rider
           </Link>
@@ -31,13 +31,13 @@ const Banner = () => {
         <div className="flex items-center absolute bottom-5 text-sm md:text-neutral md:bottom-16 ml-20 gap-10">
           <Link
             to="/calculate-cost"
-            className="btn rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black"
+            className="btn btn-sm md:btn-md rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black"
           >
             Calculate Cost
           </Link>
           <Link
             to="/rider-registration"
-            className="btn rounded-full bg-gray-800 border border-lime-500 outline-none hover:bg-primary-hover text-white"
+            className="btn btn-sm md:btn-md rounded-full bg-gray-800 border border-lime-500 outline-none hover:bg-primary-hover text-white"
           >
             Be A Rider
           </Link>
@@ -48,13 +48,13 @@ const Banner = () => {
         <div className="flex items-center absolute bottom-5 text-sm md:text-neutral md:bottom-16 ml-20 gap-10">
           <Link
             to="/calculate-cost"
-            className="btn rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black"
+            className="btn btn-sm md:btn-md rounded-full bg-primary hover:bg-primary-hover hover:text-white border-none text-black"
           >
             Calculate Cost
           </Link>
           <Link
             to="/rider-registration"
-            className="btn rounded-full bg-gray-800 border border-lime-500 outline-none hover:bg-primary-hover text-white"
+            className="btn btn-sm md:btn-md rounded-full bg-gray-800 border border-lime-500 outline-none hover:bg-primary-hover text-white"
           >
             Be A Rider
           </Link>

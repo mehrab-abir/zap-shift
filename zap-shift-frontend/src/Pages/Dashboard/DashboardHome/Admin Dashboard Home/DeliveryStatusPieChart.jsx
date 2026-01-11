@@ -11,7 +11,14 @@ import useAxios from '../../../../Hook/useAxios';
 import { useQuery } from '@tanstack/react-query';
 
 const RADIAN = Math.PI / 180;
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#00CC00",
+  "#CC00CC",
+];
 
 const renderCustomizedLabel = ({
   cx,
