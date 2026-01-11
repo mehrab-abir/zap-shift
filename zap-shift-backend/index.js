@@ -314,48 +314,6 @@ async function run() {
             res.send(allPayments);
         })
 
-        //post user to db
-        app.post('/users', async (req, res) => {
-            const newUser = req.body;
-
-            const userExists = await usersCollection.findOne({ email: newUser.email });
-
-            if (userExists) {
-                return res.send({ userExists: "user already exists, not posted." });
-            }
-
-            const afterPost = await usersCollection.insertOne(newUser);
-            res.send(afterPost);
-        })
-
-        //update user name
-        app.patch('/update-user-name/:email',async (req,res)=>{
-            const {email} = req.params;
-            const {displayName} = req.body;
-
-            const nameUpdated = await usersCollection.updateOne({email:email},{
-                $set : {
-                    displayName : displayName
-                }
-            });
-
-            res.send(nameUpdated);
-        })
-
-        //update user photo
-        app.patch('/user-photo-update/:email',async(req,res)=>{
-            const {email} = req.params;
-            const {photoURL} = req.body;
-
-            const photoUpdated = await usersCollection.updateOne({email:email},{
-                $set : {
-                    photoURL : photoURL
-                }
-            });
-
-            res.send(photoUpdated);
-        })
-
         //rider application status
         app.get('/rider-application/:email',async (req,res)=>{
             const {email} = req.params;
@@ -729,6 +687,49 @@ async function run() {
             ]).toArray();
 
             res.send(result);
+        })
+
+        //user account related apis
+        //post user to db
+        app.post('/users', async (req, res) => {
+            const newUser = req.body;
+
+            const userExists = await usersCollection.findOne({ email: newUser.email });
+
+            if (userExists) {
+                return res.send({ userExists: "user already exists, not posted." });
+            }
+
+            const afterPost = await usersCollection.insertOne(newUser);
+            res.send(afterPost);
+        })
+
+        //update user name
+        app.patch('/update-user-name/:email', async (req, res) => {
+            const { email } = req.params;
+            const { displayName } = req.body;
+
+            const nameUpdated = await usersCollection.updateOne({ email: email }, {
+                $set: {
+                    displayName: displayName
+                }
+            });
+
+            res.send(nameUpdated);
+        })
+
+        //update user photo
+        app.patch('/user-photo-update/:email', async (req, res) => {
+            const { email } = req.params;
+            const { photoURL } = req.body;
+
+            const photoUpdated = await usersCollection.updateOne({ email: email }, {
+                $set: {
+                    photoURL: photoURL
+                }
+            });
+
+            res.send(photoUpdated);
         })
 
         // Send a ping to confirm a successful connection
