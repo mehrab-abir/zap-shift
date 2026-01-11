@@ -10,13 +10,15 @@ import { useEffect } from "react";
 import { useRef } from "react";
 
 const UserProfileDropdown = () => {
-  const { user, logOutUser, loading } = use(AuthContext);
+  const { user, logOutUser, loading, setLoading } = use(AuthContext);
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
   const handleLogOut = () => {
-    logOutUser().then(() => {});
+    logOutUser().then(() => {
+      setLoading(false);
+    });
   };
 
   //close user dropdown on clicking anywhere other than the dropdown area

@@ -1,13 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const Footer = () => {
     return (
       <footer className="footer footer-horizontal footer-center bg-primary-soft text-base-content rounded p-10">
         <nav className="grid grid-flow-col gap-4">
-          <a className="link link-hover">About us</a>
-          <a className="link link-hover">Contact</a>
-          <a className="link link-hover">Jobs</a>
-          <a className="link link-hover">Press kit</a>
+          <Link to='/' className="link link-hover">Home</Link>
+          <Link to='/about-us' className="link link-hover">About us</Link>
+          <Link to='/coverage' className="link link-hover">Service Coverage</Link>
+          <Link to="/rider-registration" className="link link-hover">Be a Rider</Link>
         </nav>
         <nav>
           <div className="grid grid-flow-col gap-4">
@@ -48,8 +49,7 @@ const Footer = () => {
         </nav>
         <aside>
           <p>
-            Copyright © {new Date().getFullYear()} - All right reserved by ACME
-            Industries Ltd
+            Copyright © {new Date().getFullYear()} - All right reserved by <Link to='https://www.linkedin.com/in/mehrababir' target='blank' className='text-accent hover:underline'>Mehrab Jalil Abir</Link>
           </p>
         </aside>
       </footer>

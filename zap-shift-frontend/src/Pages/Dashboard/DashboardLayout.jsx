@@ -56,7 +56,7 @@ const DashboardLayout = () => {
             onClick={() => setOpenDrawer(!openDrawer)}
             className="text-4xl text-white top-10 right-2 absolute cursor-pointer"
           />
-          <nav className="mt-10 flex flex-col space-y-2 md:text-lg text-white">
+          <nav className="mt-10 flex flex-col space-y-2 md:text-lg text-secondary">
             <NavLink
               to="/"
               className="hover:text-lime-500 hover:tracking-wider transition-all duration-500"

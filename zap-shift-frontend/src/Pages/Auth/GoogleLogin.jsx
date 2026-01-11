@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const GoogleLogin = () => {
-  const { googleSignIn, setUser } = use(AuthContext);
+  const { googleSignIn, setUser, setLoading } = use(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const axiosHook = useAxios();
@@ -59,6 +59,7 @@ const GoogleLogin = () => {
       });
     } finally {
       setIsSubmitting(false);
+      setLoading(false);
     }
   };
 

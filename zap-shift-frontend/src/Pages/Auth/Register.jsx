@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import uploadToImgbb from "../../Utils/utils";
 
 const Register = () => {
-  const { createAccount, updateUser, setUser } = use(AuthContext);
+  const { createAccount, updateUser, setUser, setLoading } = use(AuthContext);
   const axiosHook = useAxios();
 
   const navigate = useNavigate();
@@ -67,6 +67,7 @@ const Register = () => {
     setUser({ ...user, userInfo });
 
     setIsSubmitting(false);
+    setLoading(false);
   };
 
   return (

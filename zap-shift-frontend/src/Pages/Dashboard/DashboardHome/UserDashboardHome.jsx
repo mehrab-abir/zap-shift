@@ -20,18 +20,18 @@ const UserDashboardHome = () => {
     },
   });
 
-  const {data : latestParcels = []} = useQuery({
-    queryKey : ["latest-parcels", user?.email],
-    queryFn : async ()=>{
-      const response = await axios.get(`/parcels?email=${user?.email}&latest=latest`);
+  const { data: latestParcels = [] } = useQuery({
+    queryKey: ["latest-parcels", user?.email],
+    queryFn: async () => {
+      const response = await axios.get(
+        `/parcels?email=${user?.email}&latest=latest`
+      );
       return response.data;
-    }
-  })
+    },
+  });
 
   if (loading) {
-    return (
-      <LoaderBar></LoaderBar>
-    );
+    return <LoaderBar></LoaderBar>;
   }
 
   return (
@@ -57,6 +57,12 @@ const UserDashboardHome = () => {
           >
             &gt;Payment History
           </Link>
+          <Link
+            to="/manage-profile"
+            className="text-sm md:text-lg text-accent hover:underline font-semibold"
+          >
+            &gt;Profile
+          </Link>
         </p>
       </div>
 
@@ -68,9 +74,9 @@ const UserDashboardHome = () => {
 
       {/* latest parcels sent by user */}
       <h3 className="text-2xl font-bold mb-1">Latest parcels sent by you</h3>
-      <div className="flex flex-col space-y-2.5 mb-5">
-        {
-          latestParcels.map((parcel)=>{
+      {latestParcels.length > 0 ? (
+        <div className="flex flex-col space-y-2.5 mb-5">
+          {latestParcels.map((parcel) => {
             return (
               <div
                 key={parcel._id}
@@ -104,30 +110,33 @@ const UserDashboardHome = () => {
                 </Link>
               </div>
             );
-          })
-        }
-      </div>
-
-    <div className="flex flex-col md:flex-row md:items-center justify-between">
-        {role === "user" && (
-        <div className="mt-5">
-          <h3 className="text-xl font-semibold text-lime-600">
-            Interested in earning as a delivery rider?{" "}
-          </h3>
-          <Link
-            to="/rider-registration"
-            className="text-accent hover:underline font-semibold text-lg mt-2"
-          >
-            &gt; Click here to apply
-          </Link>
+          })}
         </div>
+      ) : (
+        <p className="text-secondary text-center my-10 h-[10vh]">
+          -You have not sent any parcel yet-
+        </p>
       )}
-      <div></div>
-      <button className="btn btn-sm bg-primary text-black">
-        <Link to='/'>Go to Home Page</Link>
-      </button>
-    </div>
-      
+
+      <div className="flex flex-col md:flex-row md:items-center justify-between">
+        {role === "user" && (
+          <div className="mt-5">
+            <h3 className="text-xl font-semibold text-lime-600">
+              Interested in earning as a delivery rider?{" "}
+            </h3>
+            <Link
+              to="/rider-registration"
+              className="text-accent hover:underline font-semibold text-lg mt-2"
+            >
+              &gt; Click here to apply
+            </Link>
+          </div>
+        )}
+        <div></div>
+        <button className="btn btn-sm bg-primary text-black">
+          <Link to="/">Go to Home Page</Link>
+        </button>
+      </div>
     </div>
   );
 };

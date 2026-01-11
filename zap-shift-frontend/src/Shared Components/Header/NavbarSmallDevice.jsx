@@ -3,11 +3,10 @@ import { use } from "react";
 import { NavLink } from "react-router";
 import { LiaTimesCircleSolid } from "react-icons/lia";
 import { AuthContext } from "../../Context/Auth/AuthContext";
-import useRole from "../../Hook/useRole";
+import LoaderBar from "../LoaderBar";
 
 const NavbarSmallDevice = ({ openMenu, setOpenMenu }) => {
   const { user, logOutUser, loading } = use(AuthContext);
-  const { role } = useRole();
 
   const handleLogOut = () => {
     logOutUser().then(() => {});
@@ -62,15 +61,21 @@ const NavbarSmallDevice = ({ openMenu, setOpenMenu }) => {
         >
           Coverage
         </NavLink>
-        {role !== "rider" && (
-          <NavLink
-            to="/rider-registration"
-            className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-            onClick={() => setOpenMenu(!openMenu)}
-          >
-            Be A Rider
-          </NavLink>
-        )}
+        <NavLink
+          to="/calculate-cost"
+          className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+          onClick={() => setOpenMenu(!openMenu)}
+        >
+          Calculate Cost
+        </NavLink>
+
+        <NavLink
+          to="/rider-registration"
+          className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+          onClick={() => setOpenMenu(!openMenu)}
+        >
+          Be A Rider
+        </NavLink>
         <NavLink
           to="/about-us"
           className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"

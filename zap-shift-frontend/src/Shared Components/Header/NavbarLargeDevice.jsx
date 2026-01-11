@@ -2,11 +2,9 @@ import React from "react";
 import { use } from "react";
 import { NavLink } from "react-router";
 import { AuthContext } from "../../Context/Auth/AuthContext";
-import useRole from "../../Hook/useRole";
 
 const NavbarLargeDevice = () => {
   const { user } = use(AuthContext);
-  const { role } = useRole();
 
   return (
     <nav className="hidden lg:flex items-center space-x-3 lg:space-x-6">
@@ -28,14 +26,12 @@ const NavbarLargeDevice = () => {
       >
         Send a Parcel
       </NavLink>
-      {role !== "rider" && (
-        <NavLink
-          to="/rider-registration"
-          className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
-        >
-          Be a Rider
-        </NavLink>
-      )}
+      <NavLink
+        to="/rider-registration"
+        className="hover:tracking-wider transition-all duration-300 hover:text-lime-400"
+      >
+        Be a Rider
+      </NavLink>
 
       {user && (
         <NavLink
