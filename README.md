@@ -2,8 +2,6 @@
 
 **ZAPSHIFT** is a full‑stack, role‑based parcel pickup & delivery management system built to model real‑world logistics workflows. It handles everything from parcel booking and payment to rider assignment, tracking, and delivery confirmation- all in a single MERN‑based platform.
 
-> Designed with scalability, security, and operational clarity in mind.
-
 ---
 
 ### Live site: https://zap-shift-courier-service.web.app
@@ -111,12 +109,3 @@ Each status update automatically generates a tracking record.
 - Secure payment verification
 
 ---
-
-## ⭐ Why ZAPSHIFT
-
-ZAPSHIFT focuses on **practical system design**, clean UI/UX, and realistic logistics workflows, making it a strong example of a production‑style MERN application.
-
----
-
-**Built to reflect how real delivery platforms operate, not just a CRUD app.**
-
