@@ -16,7 +16,7 @@ const HowItWorks = () => {
           </div>
           <div className="p-5 bg-surface rounded-3xl">
             <BsTruck className="text-4xl mt-3" />
-            <h4 className="text-lg font-bold my-3">Booking Pick & Drop</h4>
+            <h4 className="text-lg font-bold my-3">Cash On Delivery</h4>
             <p className="text-sm">
               From personal packages to business shipments — we deliver on time,
               every time.
@@ -24,7 +24,7 @@ const HowItWorks = () => {
           </div>
           <div className="p-5 bg-surface rounded-3xl ">
             <BsTruck className="text-4xl mt-3" />
-            <h4 className="text-lg font-bold my-3">Booking Pick & Drop</h4>
+            <h4 className="text-lg font-bold my-3">Delivery Hub</h4>
             <p className="text-sm">
               From personal packages to business shipments — we deliver on time,
               every time.
@@ -32,7 +32,7 @@ const HowItWorks = () => {
           </div>
           <div className="p-5 bg-surface rounded-3xl">
             <BsTruck className="text-4xl mt-3" />
-            <h4 className="text-lg font-bold my-3">Booking Pick & Drop</h4>
+            <h4 className="text-lg font-bold my-3">Booking SME & Corporate</h4>
             <p className="text-sm">
               From personal packages to business shipments — we deliver on time,
               every time.

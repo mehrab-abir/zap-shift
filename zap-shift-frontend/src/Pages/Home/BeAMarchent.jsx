@@ -1,5 +1,6 @@
 import React from 'react';
 import locationMarchent from "../../assets/location-merchant.png";
+import { Link } from 'react-router';
 
 const BeAMarchent = () => {
     return (
@@ -18,9 +19,9 @@ const BeAMarchent = () => {
             <button className="btn bg-primary text-black rounded-full hover:bg-lime-400!">
               Become a Merchant
             </button>
-            <button className="btn bg-accent text-lime-400 border border-lime-400 rounded-full hover:bg-lime-400! hover:text-black">
+            <Link to='/rider-registration' className="btn bg-accent text-lime-400 border border-lime-400 rounded-full hover:bg-lime-400! hover:text-black">
               Earn With ZapShift Courier
-            </button>
+            </Link>
           </div>
         </div>
 

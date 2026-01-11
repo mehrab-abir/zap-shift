@@ -29,6 +29,8 @@ import MyDeliveries from "../Pages/Dashboard/MyDeliveries";
 import ParcelTracking from "../Pages/ParcelTracking";
 import LoaderBar from "../Shared Components/LoaderBar";
 import Profile from "../Pages/Auth/Profile";
+import ErrorPage from "../Shared Components/ErrorPage";
+import CalculateCost from "../Pages/CalculateCost";
 
 const router = createBrowserRouter([
   {
@@ -64,15 +66,27 @@ const router = createBrowserRouter([
         hydrateFallbackElement: <LoaderBar></LoaderBar>,
       },
       {
-        path : "/track-parcel/:trackingId",
-        Component : ParcelTracking
+        path: "/track-parcel/:trackingId",
+        Component: ParcelTracking,
       },
       {
-        path : '/manage-profile',
-        element : <PrivateRoute>
-          <Profile></Profile>
-        </PrivateRoute>
-      }
+        path: "/manage-profile",
+        element: (
+          <PrivateRoute>
+            <Profile></Profile>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/about-us",
+        Component: AboutUs,
+      },
+      {
+        path: "/calculate-cost",
+        Component: CalculateCost,
+        loader: () => fetch("/service_center.json"),
+        hydrateFallbackElement: <LoaderBar></LoaderBar>,
+      },
     ],
   },
   {
@@ -131,7 +145,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/rider-application",
-        Component : RiderApplicationStatus
+        Component: RiderApplicationStatus,
       },
       {
         path: "/dashboard/rider-page",
@@ -142,10 +156,12 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path : "/dashboard/my-deliveries",
-        element : <RiderRoute>
-          <MyDeliveries></MyDeliveries>
-        </RiderRoute>
+        path: "/dashboard/my-deliveries",
+        element: (
+          <RiderRoute>
+            <MyDeliveries></MyDeliveries>
+          </RiderRoute>
+        ),
       },
       {
         path: "/dashboard/riders",
@@ -180,6 +196,10 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "*",
+    Component: ErrorPage,
   },
 ]);
 

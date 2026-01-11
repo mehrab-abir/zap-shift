@@ -54,7 +54,7 @@ const UserProfileDropdown = () => {
           referrerPolicy="no-referrer"
           className="w-10 md:w-12 rounded-full"
         />
-        <MdOutlineArrowDropDownCircle className="text-2xl" />
+        <MdOutlineArrowDropDownCircle className="text-xl text-gray-400" />
       </div>
 
       <div

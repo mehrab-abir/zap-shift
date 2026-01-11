@@ -45,16 +45,16 @@ const SendParcel = () => {
     let cost = 0;
 
     if (isDocument) {
-      cost = isSameDistrict ? 60 : 80;
+      cost = isSameDistrict ? 20 : 35;
     } else {
       if (weight <= 3) {
-        cost = isSameDistrict ? 110 : 150;
+        cost = isSameDistrict ? 40 : 65;
       } else {
-        const minCharge = isSameDistrict ? 110 : 150;
+        const minCharge = isSameDistrict ? 40 : 65;
         const extraWeight = weight - 3;
         const extraCharge = isSameDistrict
-          ? extraWeight * 40
-          : extraWeight * 40 + 40;
+          ? extraWeight * 20
+          : extraWeight * 20 + 20;
         cost = minCharge + extraCharge;
       }
     }

@@ -4,7 +4,7 @@ import { AuthContext } from "../../Context/Auth/AuthContext";
 import { useLocation, useNavigate } from "react-router";
 import useAxios from "../../Hook/useAxios";
 import { useState } from "react";
-import { Bounce, toast } from "react-toastify";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const GoogleLogin = () => {
   const { googleSignIn, setUser } = use(AuthContext);

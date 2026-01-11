@@ -42,7 +42,7 @@ const ServiceCoverage = () => {
             type="text"
             name="location"
             className="input outline-none w-full md:w-1/2 rounded-r-none"
-            placeholder="Enter a city to fly there..."
+            placeholder="Enter a city"
           />
           <button type="submit" className="btn bg-primary hover:bg-primary-hover text-black rounded-l-none border-none">
             Go

@@ -26,11 +26,6 @@ const CustomerReviews = () => {
       <h1 className="text-xl md:text-3xl font-bold text-accent text-center my-5">
         What our customers are saying
       </h1>
-      <p className="text-center text-sm text-secondary w-[90%] md:w-[60%] mx-auto">
-        Enhance posture, mobility, and well-being effortlessly with Posture Pro.
-        Achieve proper alignment, reduce pain, and strengthen your body with
-        ease!
-      </p>
 
       <div className="mt-10 flex items-center justify-center">
         <Swiper
