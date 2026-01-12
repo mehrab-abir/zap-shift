@@ -77,16 +77,16 @@ const AssignRider = () => {
         All Parcels ({parcels.length})
       </h1>
 
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col md:flex-row justify-between md:items-center mb-4">
         <input
           type="text"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           placeholder="Search by sender email"
-          className="input outline-none"
+          className="input outline-none w-full"
         />
         <select
-          className="select focus:outline-2 focus:outline-lime-500 cursor-pointer"
+          className="select focus:outline-2 focus:outline-lime-500 cursor-pointer w-full mt-2 md:mt-0"
           value={deliveryStatus}
           onChange={(e) => setDeliveryStatus(e.target.value)}
         >
