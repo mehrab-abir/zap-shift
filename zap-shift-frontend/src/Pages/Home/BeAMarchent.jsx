@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 const BeAMarchent = () => {
     return (
-      <div className="my-15 p-10 bg-accent rounded-3xl flex flex-col-reverse md:flex-row justify-between items-center">
+      <div className="my-15 p-10 bg-accent md:rounded-3xl flex flex-col-reverse md:flex-row justify-between items-center">
         <div className="mt-10 md:mt-0">
           <h1 className="text-xl md:text-3xl font-bold text-white text-center md:text-left">
             Merchant and Customer Satisfaction is Our First Priority

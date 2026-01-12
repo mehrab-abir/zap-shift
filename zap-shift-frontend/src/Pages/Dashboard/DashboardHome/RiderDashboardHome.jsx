@@ -68,7 +68,7 @@ const RiderDashboardHome = () => {
         </p>
       </div>
 
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center mb-10">
         <button className="btn btn-sm bg-lime-600 border-none text-white mt-4">
           <Link to="/dashboard/rider-page"> Go Online Now!</Link>
         </button>
