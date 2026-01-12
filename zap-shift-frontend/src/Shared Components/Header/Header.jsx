@@ -1,13 +1,13 @@
 import React, { use, useEffect, useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router";
-import { MdDarkMode } from "react-icons/md";
+import { MdOutlineDarkMode } from "react-icons/md";
 import { CiLight } from "react-icons/ci";
 import { AuthContext } from "../../Context/Auth/AuthContext";
-import LoaderBar from "../LoaderBar";
 import NavbarSmallDevice from "./NavbarSmallDevice";
 import NavbarLargeDevice from "./NavbarLargeDevice";
 import UserProfileDropdown from "./UserProfileDropdown";
+import LoaderBar from "../LoaderBar";
 
 const Header = () => {
   const { user, loading } = use(AuthContext);
@@ -23,8 +23,8 @@ const Header = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  if (loading) {
-    return <LoaderBar></LoaderBar>;
+  if(loading){
+    return <LoaderBar></LoaderBar>
   }
 
   return (
@@ -50,16 +50,16 @@ const Header = () => {
         {/* navbar for large screens */}
         <NavbarLargeDevice></NavbarLargeDevice>
 
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-4 items-center">
           {theme === "light" ? (
-            <MdDarkMode
+            <MdOutlineDarkMode
               onClick={() => setTheme("dark")}
-              className="text-2xl md:text-4xl cursor-pointer"
+              className="text-3xl md:text-4xl cursor-pointer"
             />
           ) : (
             <CiLight
               onClick={() => setTheme("light")}
-              className="text-2xl md:text-4xl cursor-pointer"
+              className="text-3xl md:text-4xl cursor-pointer"
             />
           )}
 

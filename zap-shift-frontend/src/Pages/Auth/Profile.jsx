@@ -62,12 +62,14 @@ const Profile = () => {
 
   //update profile image
   const handleUpdateImage = async () => {
+    setIsSubmitting(true);
     setNoImageError("");
 
     const imageFile = imageRef.current.files[0];
 
     if (!imageFile) {
       setNoImageError("Select an image");
+      setIsSubmitting(false);
       return;
     }
 
@@ -99,6 +101,7 @@ const Profile = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      setIsSubmitting(false);
       setLoading(false);
       imageModalRef.current.close();
     }
@@ -118,7 +121,7 @@ const Profile = () => {
               <img
                 src={userProfilePic}
                 alt=""
-                className="w-28 h-auto object-cover rounded-md"
+                className="w-28 h-28 object-cover rounded-md"
                 referrerPolicy="no-referrer"
               />
               <FaEdit
@@ -190,7 +193,7 @@ const Profile = () => {
             onClick={() => handleUpdateImage()}
             className="btn btn-sm bg-primary mt-5 text-black"
           >
-            Save
+            {isSubmitting ? <i>Saving...</i> : 'Save'}
           </button>
 
           <div className="modal-action">

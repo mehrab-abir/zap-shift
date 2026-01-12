@@ -19,8 +19,12 @@ const AdminDashboardHome = () => {
     },
   });
 
-  if(isLoading){
-    return <LoaderBar></LoaderBar>
+  if (isLoading) {
+    return (
+      <div className="h-[50vh]">
+        <LoaderBar></LoaderBar>
+      </div>
+    );
   }
 
   return (

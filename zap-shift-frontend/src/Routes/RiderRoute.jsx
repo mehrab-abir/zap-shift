@@ -6,8 +6,12 @@ import LoaderBar from '../Shared Components/LoaderBar';
 const RiderRoute = ({children}) => {
     const {isLoading, role} = useRole();
 
-    if(isLoading){
-        return <LoaderBar></LoaderBar>
+    if (isLoading) {
+      return (
+        <div className="h-[50vh]">
+          <LoaderBar></LoaderBar>
+        </div>
+      );
     }
 
     if(role !== "rider"){

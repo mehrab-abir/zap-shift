@@ -28,7 +28,8 @@ const AllRiders = () => {
   const updateRiderStatus = async (rider, status) => {
     // console.log("Rider email while updating status: ", rider.riderEmail);
     const response = await axios.patch(`/riders/${rider._id}`, {
-      status, email : rider.riderEmail,
+      status,
+      email: rider.riderEmail,
     });
     // console.log(response);
     if (response.data.afterUpdate.modifiedCount) {
@@ -48,12 +49,6 @@ const AllRiders = () => {
   const handleRejection = (rider) => {
     updateRiderStatus(rider, "rejected");
   };
-
-  if (isLoading) {
-    return (
-      <LoaderBar></LoaderBar>
-    );
-  }
 
   return (
     <div className="bg-surface p-10 rounded-xl">
@@ -78,68 +73,81 @@ const AllRiders = () => {
         <div className="overflow-x-auto">
           <table className="table">
             {/* head */}
-            <thead>
+            {isLoading ? (
               <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Region</th>
-                <th>District</th>
-                <th>Status</th>
-                <th>Action</th>
+                <td colSpan={6} className="text-center h-[25vh]">
+                  <LoaderBar />
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {riders.map((rider, index) => {
-                return (
-                  <tr key={rider._id}>
-                    <th>{index + 1}</th>
-                    <td>{rider.riderName}</td>
-                    <td>{rider.riderEmail}</td>
-                    <td>{rider.riderRegion}</td>
-                    <td>{rider.riderDistrict}</td>
-                    <td
-                      className={`${
-                        rider.status === "approved"
-                          ? "text-green-500"
-                          : rider.status === "pending"
-                          ? "text-yellow-500"
-                          : "text-red-500"
-                      } font-semibold`}
-                    >
-                      {rider.status.toUpperCase()}
-                    </td>
-                    <td className="flex gap-2">
-                      <button
-                        onClick={() => handleApproval(rider)}
-                        className={`btn btn-sm bg-base text-primary cursor-pointer`}
-                        disabled={rider.status === "approved"}
-                      >
-                        <IoMdCheckmark
-                          className={`text-2xl ${
-                            rider.status === "approved" && "text-gray-300"
-                          }`}
-                        />
-                      </button>
-                      <button
-                        onClick={() => handleRejection(rider)}
-                        className={`btn btn-sm bg-base text-primary cursor-pointer`}
-                        disabled={rider.status === "rejected"}
-                      >
-                        <LiaTimesSolid
-                          className={`text-2xl ${
-                            rider.status === "rejected" && "text-gray-300"
-                          }`}
-                        />
-                      </button>
-                      <Link to={`/dashboard/riders/riderdetails/${rider._id}`} className="btn btn-sm bg-base text-primary cursor-pointer">
-                        Details
-                      </Link>
-                    </td>
+            ) : (
+              <>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Region</th>
+                    <th>District</th>
+                    <th>Status</th>
+                    <th>Action</th>
                   </tr>
-                );
-              })}
-            </tbody>
+                </thead>
+                <tbody>
+                  {riders.map((rider, index) => {
+                    return (
+                      <tr key={rider._id}>
+                        <th>{index + 1}</th>
+                        <td>{rider.riderName}</td>
+                        <td>{rider.riderEmail}</td>
+                        <td>{rider.riderRegion}</td>
+                        <td>{rider.riderDistrict}</td>
+                        <td
+                          className={`${
+                            rider.status === "approved"
+                              ? "text-green-500"
+                              : rider.status === "pending"
+                              ? "text-yellow-500"
+                              : "text-red-500"
+                          } font-semibold`}
+                        >
+                          {rider.status.toUpperCase()}
+                        </td>
+                        <td className="flex gap-2">
+                          <button
+                            onClick={() => handleApproval(rider)}
+                            className={`btn btn-sm bg-base text-primary cursor-pointer`}
+                            disabled={rider.status === "approved"}
+                          >
+                            <IoMdCheckmark
+                              className={`text-2xl ${
+                                rider.status === "approved" && "text-gray-300"
+                              }`}
+                            />
+                          </button>
+                          <button
+                            onClick={() => handleRejection(rider)}
+                            className={`btn btn-sm bg-base text-primary cursor-pointer`}
+                            disabled={rider.status === "rejected"}
+                          >
+                            <LiaTimesSolid
+                              className={`text-2xl ${
+                                rider.status === "rejected" && "text-gray-300"
+                              }`}
+                            />
+                          </button>
+                          <Link
+                            to={`/dashboard/riders/riderdetails/${rider._id}`}
+                            className="btn btn-sm bg-base text-primary cursor-pointer"
+                          >
+                            Details
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </>
+            )}
           </table>
         </div>
       </div>

@@ -117,8 +117,8 @@ const AssignRider = () => {
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td>
-                    <LoaderBar></LoaderBar>
+                  <td colSpan={6} className="text-center h-[25vh]">
+                    <LoaderBar />
                   </td>
                 </tr>
               ) : (
@@ -297,8 +297,8 @@ const AssignRider = () => {
                 {selectedParcel.receiverDistrict}
               </p>
               <p>
-                <span className="font-bold">Delivery Fee: </span>
-                ${selectedParcel.deliveryFee}
+                <span className="font-bold">Delivery Fee: </span>$
+                {selectedParcel.deliveryFee}
               </p>
               <p>
                 <span className="font-bold">Payment Status: </span>

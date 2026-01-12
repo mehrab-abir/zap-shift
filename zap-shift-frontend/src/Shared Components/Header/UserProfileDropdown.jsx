@@ -3,43 +3,38 @@ import userAvatar from "../../assets/userAvatar.png";
 import { use } from "react";
 import LoaderBar from "../LoaderBar";
 import { AuthContext } from "../../Context/Auth/AuthContext";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import { MdOutlineArrowDropDownCircle } from "react-icons/md";
 import { useEffect } from "react";
 import { useRef } from "react";
 
 const UserProfileDropdown = () => {
-  const { user, logOutUser, loading, setLoading } = use(AuthContext);
+  const { user, logOutUser, loading } = use(AuthContext);
+  const navigate = useNavigate();
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
-  const handleLogOut = () => {
-    logOutUser().then(() => {
-      setLoading(false);
-    });
+  const handleLogOut = async () => {
+    navigate("/", { replace: true });
+    await logOutUser();
   };
 
   //close user dropdown on clicking anywhere other than the dropdown area
-  useEffect(()=>{
-    const closeDropdown = (e)=>{
-      if(dropdownRef.current && !dropdownRef.current.contains(e.target)){
+  useEffect(() => {
+    const closeDropdown = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setOpenDropdown(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown",closeDropdown);
+    document.addEventListener("mousedown", closeDropdown);
 
-    return (()=>{
-      document.removeEventListener("mousedown",closeDropdown);
-    })
-
-  },[])
-
-  if (loading) {
-    return <LoaderBar></LoaderBar>;
-  }
+    return () => {
+      document.removeEventListener("mousedown", closeDropdown);
+    };
+  }, []);
 
   const userProfile =
     user?.photoURL || user?.providerData[0]?.photoURL || userAvatar;
@@ -50,12 +45,17 @@ const UserProfileDropdown = () => {
         className="flex items-center gap-2 cursor-pointer"
         onClick={() => setOpenDropdown(!openDropdown)}
       >
-        <img
-          src={userProfile}
-          alt=""
-          referrerPolicy="no-referrer"
-          className="w-10 md:w-12 rounded-full"
-        />
+        {loading ? (
+          <LoaderBar></LoaderBar>
+        ) : (
+          <img
+            src={userProfile}
+            alt=""
+            referrerPolicy="no-referrer"
+            className="object-cover w-11 h-11 md:w-12 md:h-12 rounded-full"
+          />
+        )}
+
         <MdOutlineArrowDropDownCircle className="text-xl text-gray-400" />
       </div>
 

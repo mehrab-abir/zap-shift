@@ -23,10 +23,15 @@ const RiderDetails = () => {
         }
     })
 
-    if(isLoading){
-        return <LoaderBar></LoaderBar>
+    if (isLoading) {
+      return (
+        <div className="h-[50vh]">
+          <LoaderBar></LoaderBar>
+        </div>
+      );
     }
 
+    
     return (
       <div className="">
         <div className="bg-surface p-6 md:p-10 rounded-xl shadow">

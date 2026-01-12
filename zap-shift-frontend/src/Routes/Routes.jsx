@@ -5,7 +5,6 @@ import ServiceCoverage from "../Pages/ServiceCoverage";
 import Login from "../Pages/Auth/Login";
 import AuthLayout from "../Pages/Auth/AuthLayout";
 import Register from "../Pages/Auth/Register";
-import ForgetPassword from "../Pages/Auth/ForgetPassword";
 import SendParcel from "../Pages/SendParcel";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../Pages/Dashboard/DashboardLayout";
@@ -104,10 +103,6 @@ const router = createBrowserRouter([
       {
         path: "/auth/register",
         Component: Register,
-      },
-      {
-        path: "/auth/resetpassword",
-        Component: ForgetPassword,
       },
     ],
   },

@@ -90,7 +90,9 @@ const MyDeliveries = () => {
 
   if (isLoading) {
     return (
-      <LoaderBar></LoaderBar>
+      <div className="h-[50vh]">
+        <LoaderBar></LoaderBar>
+      </div>
     );
   }
 

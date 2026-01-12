@@ -132,7 +132,11 @@ const MyParcels = () => {
           </thead>
           <tbody>
             {isLoading ? (
-              <LoaderBar></LoaderBar>
+              <tr>
+                <td colSpan={6} className="text-center h-[25vh]">
+                  <LoaderBar />
+                </td>
+              </tr>
             ) : (
               myParcels.map((parcel, index) => {
                 return (

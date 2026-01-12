@@ -7,7 +7,13 @@ const PrivateRoute = ({children}) => {
     const {user, loading} = use(AuthContext);
     const location = useLocation();
 
-    if(loading) return <LoaderBar></LoaderBar>
+    if (loading) {
+      return (
+        <div className="h-[50vh]">
+          <LoaderBar></LoaderBar>
+        </div>
+      );
+    }
 
     if(!user){
         return <Navigate state={location.pathname} to='/auth/login' replace></Navigate>

@@ -54,7 +54,7 @@ const DeliveryStatusPieChart = ({ isAnimationActive = true }) => {
   const axios = useAxios();
 
   //count parcels based on delivery status
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["delivery-status"],
     queryFn: async () => {
       const response = await axios.get("/parcel-deliverystatus");
@@ -66,10 +66,6 @@ const DeliveryStatusPieChart = ({ isAnimationActive = true }) => {
     ...d,
     _id: d._id || "Parcel Request Placed",
   }));
-
-  if (isLoading) {
-    return <LoaderBar></LoaderBar>;
-  }
 
   return (
     <div

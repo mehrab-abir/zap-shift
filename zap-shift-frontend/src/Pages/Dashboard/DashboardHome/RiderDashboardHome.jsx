@@ -39,9 +39,12 @@ const RiderDashboardHome = () => {
 
   if (loading) {
     return (
-      <LoaderBar></LoaderBar>
+      <div className="h-[50vh]">
+        <LoaderBar></LoaderBar>
+      </div>
     );
   }
+  
   return (
     <div className="bg-surface p-5 md:p-8 mb-5 rounded-lg">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between md:gap-10">

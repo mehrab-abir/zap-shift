@@ -1,20 +1,17 @@
 import React from "react";
 import { use } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { LiaTimesCircleSolid } from "react-icons/lia";
 import { AuthContext } from "../../Context/Auth/AuthContext";
-import LoaderBar from "../LoaderBar";
 
 const NavbarSmallDevice = ({ openMenu, setOpenMenu }) => {
-  const { user, logOutUser, loading } = use(AuthContext);
+  const { user, logOutUser } = use(AuthContext);
+  const navigate = useNavigate();
 
-  const handleLogOut = () => {
-    logOutUser().then(() => {});
+  const handleLogOut = async () => {
+    navigate("/", { replace: true });
+    await logOutUser();
   };
-
-  if (loading) {
-    return <LoaderBar></LoaderBar>;
-  }
 
   return (
     <div

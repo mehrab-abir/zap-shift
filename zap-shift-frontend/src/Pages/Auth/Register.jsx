@@ -31,9 +31,14 @@ const Register = () => {
 
     setIsSubmitting(true);
 
-    const imageFile = data.profileImg[0];
-    const photoURL = await uploadToImgbb(imageFile);
-    console.log("PhotoURL : ",photoURL);
+    let photoURL = null;
+
+    if (data.profileImg[0]) {
+      const imageFile = data.profileImg[0];
+      photoURL = await uploadToImgbb(imageFile);
+    }
+
+    // console.log("PhotoURL : ", photoURL);
 
     const result = await createAccount(data.email, data.password);
 
@@ -49,8 +54,8 @@ const Register = () => {
       displayName: data.name,
       email: data.email,
       photoURL: photoURL,
-      currentRole : "user",
-      createdAt : new Date()
+      currentRole: "user",
+      createdAt: new Date(),
     };
 
     const response = await axiosHook.post(`/users`, newUser);
@@ -173,9 +178,9 @@ const Register = () => {
             <button
               type="submit"
               className="btn bg-primary w-full text-black rounded-md border-none mt-4 hover:shadow-md hover:shadow-indigo-300"
-              disabled={isSubmitting===true}
+              disabled={isSubmitting === true}
             >
-              {isSubmitting ? <i>Signing Up...</i> : 'Sign Up'}
+              {isSubmitting ? <i>Signing Up...</i> : "Sign Up"}
             </button>
 
             <p className="text-center my-4">Or</p>

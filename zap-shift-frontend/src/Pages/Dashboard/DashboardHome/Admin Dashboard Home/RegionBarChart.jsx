@@ -16,7 +16,7 @@ const RegionBarChart = ({ isAnimationActive = true }) => {
   const axios = useAxios();
 
   //parcels by region
-  const { data: parcelRegion, isLoading } = useQuery({
+  const { data: parcelRegion } = useQuery({
     queryKey: ["parcel-region"],
     queryFn: async () => {
       const response = await axios.get("/parcels-by-region");
@@ -24,10 +24,6 @@ const RegionBarChart = ({ isAnimationActive = true }) => {
     },
   });
 
-  if(isLoading){
-    return <LoaderBar></LoaderBar>
-  }
-  
   return (
     <div className="flex-1">
       <h2 className="text-2xl font-semibold mb-2">Parcels sent by region:</h2>

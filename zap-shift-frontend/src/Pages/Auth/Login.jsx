@@ -1,4 +1,4 @@
-import React, { use, useState } from "react";
+import React, { use, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import authImage from "../../assets/authImage.png";
 import { Link, useLocation, useNavigate } from "react-router";
@@ -9,9 +9,13 @@ import { AuthContext } from "../../Context/Auth/AuthContext";
 import GoogleLogin from "./GoogleLogin";
 
 const Login = () => {
-  const { logIn, setLoading } = use(AuthContext);
+  const { logIn, setLoading, forgotPassword } = use(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const resetPasswordModalRef = useRef();
+  const emailRef = useRef();
+  const [resetPasswordMsg, setResetPasswordMsg] = useState('');
 
   const {
     register,
@@ -45,7 +49,7 @@ const Login = () => {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
-          closeOnClick: false,
+          closeOnClick: true,
           pauseOnHover: false,
           draggable: true,
           progress: undefined,
@@ -58,6 +62,21 @@ const Login = () => {
         setLoading(false);
       });
   };
+
+  //reset password
+  const resetPassword = async ()=>{
+    setResetPasswordMsg('');
+
+    const email = emailRef.current.value;
+    if(!email){
+      setResetPasswordMsg("*Please enter your account email");
+      return;
+    }
+    
+    await forgotPassword(email);
+
+    setResetPasswordMsg("Password reset link has been sent. Please check your email, including spams");
+  }
 
   return (
     <div className="bg-surface pb-10">
@@ -121,6 +140,8 @@ const Login = () => {
               )}
             </div>
 
+            <p onClick={()=>resetPasswordModalRef.current.showModal()} className="hover:underline hover:text-lime-500 mt-1 text-sm cursor-pointer">Forgot Password?</p>
+
             <button
               type="submit"
               className="btn bg-primary w-full text-black rounded-md border-none mt-4 hover:shadow-md hover:shadow-indigo-300"
@@ -143,7 +164,7 @@ const Login = () => {
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
-        closeOnClick={false}
+        closeOnClick={true}
         rtl={false}
         pauseOnFocusLoss
         draggable
@@ -151,6 +172,24 @@ const Login = () => {
         theme="light"
         transition={Bounce}
       />
+
+      {/* reset password modal */}
+      <dialog ref={resetPasswordModalRef} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg mb-2">Enter the email associated with your account</h3>
+          <input ref={emailRef} type="email" className="input outline-none w-full" placeholder="Your email" />
+
+          <p className={`mt-1 text-sm ${resetPasswordMsg.includes("Password") ? 'text-blue-500' : 'text-red-500'}`}>{resetPasswordMsg}</p>
+
+          <button onClick={()=>resetPassword()} className="mt-3 btn btn-sm md:btn-md bg-primary text-black">Reset Password</button>
+          <div className="modal-action">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn">Close</button>
+            </form>
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 };

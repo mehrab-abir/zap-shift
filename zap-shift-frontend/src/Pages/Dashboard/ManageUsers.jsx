@@ -99,7 +99,9 @@ const ManageUsers = () => {
               {isLoading ? (
                 <tr>
                   <td colSpan={6} className="text-center py-6">
-                    <LoaderBar></LoaderBar>
+                    <div className="h-[25vh]">
+                      <LoaderBar></LoaderBar>
+                    </div>
                   </td>
                 </tr>
               ) : (
