@@ -18,6 +18,7 @@ const ParcelTracking = () => {
 
   return (
     <div className="w-11/12 bg-surface mx-auto my-10 p-10">
+      <title>Track Parcel</title>
       <h2 className="text-2xl font-bold text-center">Track your parcel</h2>
 
       <div className="mt-5">

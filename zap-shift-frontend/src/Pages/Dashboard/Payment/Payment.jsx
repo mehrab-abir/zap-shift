@@ -46,6 +46,7 @@ const Payment = () => {
 
   return (
     <div className="w-11/12 md:w-10/12 my-5 mx-auto">
+      <title>Pay</title>
       <p>Pay for the Parcel: {parcel.parcelName}</p>
       <p>Amount : {parcel.deliveryFee}</p>
       <button

@@ -34,6 +34,7 @@ const RiderDetails = () => {
     
     return (
       <div className="">
+        <title>Rider Details</title>
         <div className="bg-surface p-6 md:p-10 rounded-xl shadow">
           <h1 className="text-2xl md:text-4xl font-bold mb-6">Rider Details</h1>
 

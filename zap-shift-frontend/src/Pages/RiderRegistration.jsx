@@ -66,6 +66,7 @@ const RiderRegistration = () => {
 
   return (
     <div className="w-11/12 md:w-10/12 mx-auto bg-surface my-10 p-10 rounded-xl">
+      <title>Rider Registration</title>
       <h1 className="text-2xl md:text-4xl font-bold my-5">Be A Rider</h1>
       <p className="text-primary my-3">
         Enjoy fast, reliable parcel delivery with real-time tracking and zero

@@ -11,6 +11,7 @@ import FAQ from './FAQ';
 const HomePage = () => {
     return (
         <div className='w-full md:w-10/12 mx-auto md:mt-5'>
+            <title>Zap Shift - Home</title>
             <Banner></Banner>
             <HowItWorks></HowItWorks>
             <OurServices></OurServices>

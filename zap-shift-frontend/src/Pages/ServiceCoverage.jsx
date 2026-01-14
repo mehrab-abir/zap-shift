@@ -33,6 +33,7 @@ const ServiceCoverage = () => {
   const position = [23.685, 90.3563];
   return (
     <div className="w-10/12 md:10/12 mx-auto mb-10 bg-surface rounded-xl">
+      <title>Service Coverage</title>
       <div className=" pt-5 my-5">
         <h2 className="text-2xl md:text-4xl font-bold text-primary text-center mb-5">
           We deliver all over Bangladesh

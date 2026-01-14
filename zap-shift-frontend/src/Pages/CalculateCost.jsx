@@ -62,6 +62,7 @@ const CalculateCost = () => {
 
   return (
     <div className="w-11/12 md:w-10/12 bg-surface mx-auto my-10 p-10 rounded-lg">
+      <title>Calculate Cost</title>
       <h1 className="text-2xl md:text-3xl font-bold text-center mb-5">
         Calculate Cost
       </h1>

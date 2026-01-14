@@ -26,6 +26,7 @@ const RiderApplicationStatus = () => {
 
   return (
     <div className="bg-surface p-10 text-center">
+      <title>Rider Application</title>
       <h3 className="text-2xl font-bold">Your application to be a rider: </h3>
       <p className="text-lg font-semibold my-5">
         Status:{" "}

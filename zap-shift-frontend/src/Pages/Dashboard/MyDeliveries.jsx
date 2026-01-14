@@ -98,6 +98,7 @@ const MyDeliveries = () => {
 
   return (
     <div className="bg-surface p-5 md:p-10 w-11/12 mx-auto">
+      <title>My Deliveries</title>
       <h1 className="text-2xl md:text-4xl font-bold my-5">My Deliveries</h1>
 
       <h3 className="text-xl font-bold text-accent">Parcel request:</h3>

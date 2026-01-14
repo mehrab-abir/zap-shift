@@ -97,6 +97,7 @@ const MyParcels = () => {
 
   return (
     <div className="p-5 md:p-10">
+      <title>My Parcels</title>
       <div className="flex flex-col md:flex-row justify-between md:items-center">
         <h1 className="text-2xl font-bold mb-5 md:mb-0">
           My Parcels ({myParcels.length})
@@ -123,7 +124,7 @@ const MyParcels = () => {
             <tr>
               <th className="text-center">#</th>
               <th className="text-center">Name</th>
-              <th className="text-center">Tracking Id</th>
+              <th className="text-center">Track Parcel</th>
               <th className="text-center">Payment Status</th>
               <th className="text-center">Delivery Status</th>
               <th className="text-center">Delivery Fees</th>
@@ -150,7 +151,7 @@ const MyParcels = () => {
                     </td>
                     <td className="text-center">
                       <Link
-                        className="font-semibold hover:underline hover:text-lime-500 text-xs md:text-base"
+                        className="font-semibold underline hover:text-lime-500 text-xs md:text-base"
                         to={`/track-parcel/${parcel.trackingId}`}
                       >
                         {parcel.trackingId}

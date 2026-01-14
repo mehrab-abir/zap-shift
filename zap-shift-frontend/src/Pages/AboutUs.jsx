@@ -4,6 +4,7 @@ import img from '../assets/authImage.png'
 const AboutUs = () => {
     return (
       <div className="w-11/12 md:w-10/12 bg-surface mx-auto my-10 p-10 rounded-lg">
+        <title>About</title>
         <h1 className="text-xl md:text-3xl font-bold">About Us</h1>
         <div className='flex flex-col items-center justify-center'>
           <img src={img} alt="" className='mx-auto' />

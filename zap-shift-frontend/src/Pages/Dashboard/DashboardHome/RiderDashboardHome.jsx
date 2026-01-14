@@ -47,6 +47,7 @@ const RiderDashboardHome = () => {
   
   return (
     <div className="bg-surface p-5 md:p-8 mb-5 rounded-lg">
+      <title>Dashboard</title>
       <div className="flex flex-col lg:flex-row lg:items-center justify-between md:gap-10">
         <h2 className="text-lg md:text-2xl font-semibold">
           Number of deliveries you completed : {countDeliveries}

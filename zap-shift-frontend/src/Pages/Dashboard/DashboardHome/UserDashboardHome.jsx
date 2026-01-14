@@ -40,6 +40,7 @@ const UserDashboardHome = () => {
 
   return (
     <div className="bg-surface p-5 md:p-8 rounded-lg">
+      <title>Dashboard</title>
       <div className="flex flex-col md:flex-row md:items-center justify-between md:gap-10">
         <h2 className="text-lg md:text-2xl font-semibold">
           Number of parcels you sent : {parcelSentCount}

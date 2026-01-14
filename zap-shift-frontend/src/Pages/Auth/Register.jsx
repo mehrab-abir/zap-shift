@@ -77,6 +77,7 @@ const Register = () => {
 
   return (
     <div className="bg-surface pb-10">
+      <title>Register</title>
       <div className="w-10/12 mx-auto mt-10 bg-base p-5 shadow-lg rounded-md flex flex-col-reverse md:flex-row items-center justify-between">
         <div className="w-full md:w-1/2">
           <div className="text-center my-5">

@@ -27,6 +27,7 @@ const PaymentHistory = () => {
 
   return (
     <div className="w-11/12 md:w-10/12 mx-auto">
+      <title>Payment History</title>
       <h1 className="text-2xl md:text-4xl font-bold">Payment History</h1>
 
       <div className="bg-surface mt-5">

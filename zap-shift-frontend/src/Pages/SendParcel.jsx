@@ -99,6 +99,7 @@ const SendParcel = () => {
 
   return (
     <div className="w-11/12 md:w-10/12 mx-auto my-10 bg-surface rounded-lg">
+      <title>Send Parcel</title>
       <div className="p-2 md:p-12">
         <h1 className="text-2xl md:text-4xl font-bold text-primary mb-5">
           Send A Parcel

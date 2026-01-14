@@ -80,6 +80,7 @@ const Login = () => {
 
   return (
     <div className="bg-surface pb-10">
+      <title>Log In</title>
       <div className="w-10/12 mx-auto mt-10 bg-base p-5 shadow-lg rounded-md flex flex-col-reverse md:flex-row items-center justify-between">
         <div className="w-full lg:w-1/2">
           <div className="text-center my-5">

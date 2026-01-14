@@ -29,6 +29,7 @@ const AdminDashboardHome = () => {
 
   return (
     <div className="bg-surface p-5 md:p-10">
+      <title>Admin Dashboard</title>
       <h1 className="text-2xl md:text-4xl text-center font-bold mb-4 text-purple-500">
         Admin
       </h1>

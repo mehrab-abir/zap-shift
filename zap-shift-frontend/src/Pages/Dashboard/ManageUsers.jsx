@@ -66,6 +66,7 @@ const ManageUsers = () => {
 
   return (
     <div className="bg-surface p-10">
+      <title>Manage Users</title>
       <h1 className="text-2xl md:text-4xl font-bold my-6">
         Manage Users ({users.length})
       </h1>

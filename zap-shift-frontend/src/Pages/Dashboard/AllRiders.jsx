@@ -52,6 +52,7 @@ const AllRiders = () => {
 
   return (
     <div className="bg-surface p-10 rounded-xl">
+      <title>All Riders</title>
       <h1 className="text-2xl md:text-4xl font-bold my-5">
         All Riders ({riders.length})
       </h1>

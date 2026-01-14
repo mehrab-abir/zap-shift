@@ -29,6 +29,7 @@ const PaymentSuccess = () => {
 
     return (
       <div className="bg-surface rounded-xl">
+        <title>Payment Successful</title>
         <p className="text-xl text-center font-semibold py-5">Thank you.</p>
         <h1 className="text-2xl font-bold text-green-500 text-center my-5">
           Payment Successful!
