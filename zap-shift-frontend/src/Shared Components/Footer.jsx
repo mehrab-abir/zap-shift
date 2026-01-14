@@ -49,7 +49,7 @@ const Footer = () => {
         </nav>
         <aside>
           <p>
-            Copyright © {new Date().getFullYear()} - All right reserved by <Link to='https://www.linkedin.com/in/mehrababir' target='blank' className='text-accent hover:underline'>Mehrab Jalil Abir</Link>
+            Copyright © {new Date().getFullYear()} - All right reserved.<Link to='https://www.linkedin.com/in/mehrababir' target='blank' className='text-accent hover:underline'>Mehrab Jalil Abir</Link>
           </p>
         </aside>
       </footer>
