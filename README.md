@@ -50,6 +50,10 @@
 - Track earnings, deliveries, and service center performance
 - Role management (User ↔ Admin ↔ Rider)
 
+### Credentials to explore admin role:
+- Email: admin@zapshift.com  
+- Password: Admin*26+  
+
 ---
 
 ## 🔄 Parcel Lifecycle (High‑Level)
